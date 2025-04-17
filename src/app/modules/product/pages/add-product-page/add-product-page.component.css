@@ -1,0 +1,7 @@
+::ng-deep .full--width--button{
+  width: 100% !important;
+}
+
+::ng-deep .full--width--button button{
+  width: 100% !important;
+}

@@ -1,0 +1,82 @@
+<div class="flex flex-column" [formGroup]="fg">
+
+  <!--productName-->
+  <div class="flex flex-column pb-4">
+    <label class="text-sm text-color-secondary"  for="productName">Nom du produit</label>
+    <input pInputText formControlName="productName" id="productName" type="text" placeholder="Nom du produit">
+
+    <!--Message d'erreur-->
+    <div class="min-h-0">
+      <p-message  class="p-message" severity="error" text="Le nom du produit est obligatoire"
+      *ngIf="fg.get('productName')?.touched && fg.get('productName')?.errors?.['required']">
+      </p-message>
+    </div>
+  </div>
+
+  <!--productPurchasePrice-->
+  <div class="text-sm text-color-secondary" class="flex flex-column pb-4">
+    <label class="text-sm text-color-secondary" for="productPurchasePrice"> Prix d'achat</label>
+    <input pInputText formControlName="productPurchasePrice" id="productPurchasePrice" type="text" placeholder="Prix d'achat">
+
+    <!--Message d'erreur-->
+    <div class="min-h-0">
+      <ng-container *ngIf="fg.get('productPurchasePrice')?.invalid && (fg.get('productPurchasePrice')?.dirty || fg.get('productPurchasePrice')?.touched)">
+
+        <!-- Info manquante-->
+        <p-message *ngIf="fg.get('productPurchasePrice')?.hasError('required')"
+          class="p-message" severity="error" text="Le prix d'achat est obligatoire">
+        </p-message>
+
+        <!-- Format erroné -->
+        <p-message *ngIf="fg.get('productPurchasePrice')?.hasError('validateNumber')"
+          class="p-message" severity="error" text="Le prix d'achat à un format invalide">
+        </p-message>
+      </ng-container>
+    </div>
+  </div>
+
+  <!--productDesiredSoldPrice-->
+  <div class="flex flex-column pb-4">
+    <label class="text-sm text-color-secondary" for="productDesiredSoldPrice">Prix de vente souhaité</label>
+    <input pInputText formControlName="productDesiredSoldPrice" id="productDesiredSoldPrice" type="text" placeholder="Prix de vente souhaité">
+
+    <!--Message d'erreur-->
+    <div class="min-h-0">
+      <ng-container *ngIf="fg.get('productDesiredSoldPrice')?.invalid && (fg.get('productDesiredSoldPrice')?.dirty || fg.get('productDesiredSoldPrice')?.touched)">
+
+        <!--message d'erreur -->
+        <p-message  class="p-message" severity="error" text="Le prix de vente souhaité est obligatoire"
+          *ngIf="fg.get('productDesiredSoldPrice')?.hasError?.('required')">
+        </p-message>
+
+        <!--message d'erreur -->
+        <p-message  class="p-message" severity="error" text="Le prix d'achat à un format invalide"
+          *ngIf="fg.get('productDesiredSoldPrice')?.hasError?.('validateNumber')">
+        </p-message>
+
+
+      </ng-container>
+    </div>
+  </div>
+
+  <!--productCategory-->
+  <div class="flex flex-column pb-4">
+    <label class="text-sm text-color-secondary" for="productCategory">Catégory du produit</label>
+    <p-dropdown
+    [options]="productCategories"
+    formControlName="productCategory"
+    optionLabel="name"
+    placeholder="Catégoryie de produit" />
+
+    <!--Message d'erreur-->
+    <div class="min-h-0">
+      <p-message  class="p-message" severity="error" text="La catégory de produit est obligatoire"
+      *ngIf="fg.get('productCategory')?.touched && fg.get('productCategory')?.errors?.['required']">
+      </p-message>
+    </div>
+  </div>
+
+   <!--Image-->
+   <app-add-file [fg]="fg" (selectedFileEmitter)="selectImageEmit($event)" inputFileFormControlName="selectedImage"></app-add-file>
+
+</div>

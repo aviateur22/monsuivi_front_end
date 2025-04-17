@@ -1,0 +1,38 @@
+<div  class="flex flex-column pb-4" [formGroup]="fg" >
+  <div>
+    <label class="text-sm text-color-secondary" [for]="inputFileFormControlName">Sélection de l'image du produit</label>
+
+    <!--Button container-->
+    <div class=" pt-4 flex justify-content-center">
+      <p-button [outlined]="true" severity="info" label="Sélectionner l'image" (click)="inputFile.click()"/>
+    </div>
+
+    <input
+      [formControlName]=inputFileFormControlName
+      [id]="inputFileFormControlName"
+      #inputFile accept=".jpg, .jpeg, .png"
+      type="file"
+      (change)="loadSelectedFile(inputFile?.files?.[0])"
+      style="display:none;" />
+
+    <!--Preview de l'image selectionnée-->
+    <div class="img__container">
+      <ng-container class="" *ngIf="isFileSelected && isFileOfImageType">
+        <img [src]="previewFileFileBase64" alt="productImage.fileName">
+      </ng-container>
+
+         <!-- image par default -->
+    <div *ngIf="fileTitle===''">
+      <img src="image/image.svg" alt="productImage.fileName">
+    </div>
+
+      <!--tite du fichier-->
+      <p>{{fileTitle}}</p>
+    </div>
+
+   <!--Message erreur-->
+   <div *ngIf="fg.get(inputFileFormControlName)?.touched && fg.get(inputFileFormControlName)?.errors?.['required']">
+    <p-message class="p-message" severity="error" text="La séléction de l'image est obligatoire" ></p-message>
+  </div>
+  </div>
+</div>

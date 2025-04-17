@@ -1,1 +1,16 @@
-/* You can add global styles to this file, and also import other style files */
+@font-face {
+  font-family: 'raleway';
+  src: url('./../public/font/Raleway.ttf');
+}
+
+*{
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'raleway', 'arial', sans-serif;
+}
+
+/* Postion des toast messages sur petit ecran */
+.p-toast {
+  max-width: calc(100vw - 40px);
+}
+
