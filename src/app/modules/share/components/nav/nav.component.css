@@ -1,0 +1,33 @@
+nav{
+  height: var(--nav_height);
+}
+
+ul {
+  list-style: none;
+}
+
+.link {
+  text-decoration: none;
+  color: black;
+  padding: 10px;
+  line-height: 2;
+
+}
+
+.active {
+  font-weight: 900;
+  position: relative;
+}
+
+.overlay{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  transition: opacity 0.3s ease;
+  z-index: 30;
+}
+

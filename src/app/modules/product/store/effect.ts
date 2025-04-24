@@ -9,6 +9,7 @@ import { ProductService } from "../services/product.service";
 export class ProductEffect {
 
   constructor(private _action$: Actions, private _productService: ProductService){}
+
   addProduct$ = createEffect(()=>
     this._action$.pipe(
       ofType(productAction.addProductAction),
@@ -26,5 +27,25 @@ export class ProductEffect {
         )
       )
     )
-  )
+  );
+
+  getSellerProducts$ = createEffect(()=>
+    this._action$.pipe(
+      ofType(productAction.getSellerProductsAction),
+      mergeMap(({sellerId}) =>
+        this._productService.getSellerProducts(sellerId).pipe(
+          switchMap(result=>[
+            productAction.getSellerProductsActionComplete({products: { isLoading:false, isSuccess: true, summarizeProducts: result.products}}),
+            shareAction.displayMessageAction({message:{isOnError: false, title: 'Vos propduits' , message: result.responseMessage}})
+          ]),
+          catchError(error=> of(
+            productAction.getSellerProductsActionComplete({products: { isLoading:false, isSuccess: false, summarizeProducts: []}}),
+            shareAction.displayMessageAction({
+            message: {title: 'Vos propduits', message: error.error.error, isOnError: true}
+          })))
+        )
+      )
+    )
+  );
+
 }

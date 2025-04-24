@@ -8,7 +8,12 @@ export const initialProductState: IProductState = {
     isSuccess: false,
     addProduct: null
   },
-  selectImage: null
+  selectImage: null,
+  sellerProducts: {
+    isLoading: false,
+    isSuccess: false,
+    summarizeProducts: []
+  }
 }
 
 export const reducers = createReducer(
@@ -26,5 +31,15 @@ export const reducers = createReducer(
 
   }
 })),
-  on(productAction.selectImage, (state, {selectImage})=>({...state, selectImage: selectImage}))
+  on(productAction.selectImage, (state, {selectImage})=>({...state, selectImage: selectImage})),
+  on(productAction.getSellerProductsAction, (state)=>({
+    ...state, sellerProducts: {...state.sellerProducts, isLoading: true }
+  })),
+  on(productAction.getSellerProductsActionComplete, (state, {products})=>({
+    ...state, sellerProducts: {
+      isLoading: false,
+      isSuccess: products.isSuccess,
+      summarizeProducts: products.summarizeProducts
+    }
+  }))
 )

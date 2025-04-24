@@ -11,13 +11,17 @@ import { ShareEffect } from './store/effect';
 import { MessageModule } from 'primeng/message';
 import { ButtonModule } from 'primeng/button';
 import { MessageService } from 'primeng/api';
+import { NavComponent } from './components/nav/nav.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
-    AddFileComponent
+    AddFileComponent,
+    NavComponent
   ],
   imports: [
     AngularCommonModule,
+    RouterModule,
     FormsModule,
     ReactiveFormsModule,
     MessageModule,
@@ -29,7 +33,8 @@ import { MessageService } from 'primeng/api';
   ],
   providers: [MessageService],
 exports: [
-    AddFileComponent
+    AddFileComponent,
+    NavComponent
   ]
 })
 export class ShareModule { }

@@ -1,0 +1,41 @@
+<nav>
+  <div class="w-full flex align-content-between justify-content-center border-bottom-1">
+      <!--LOGO - APP-->
+      <div class="p-4 navbar-logo cursor-pointer">
+        <h2 (click)="displayMenuOverlay()" class="text-3xl font-bold">Cbasic</h2>
+      </div>
+      <ul class="hidden sm:p-4 sm:flex sm:w-full">
+        <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a class="link" [routerLink]=homeLink routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Accueil</a>
+        </li>
+        <li routerLinkActive="active">
+          <a class="link" [routerLink]=addProductLink routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Ajout de produit</a>
+        </li>
+        <li routerLinkActive="active">
+          <a class="link" [routerLink]=sellerProducts routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Mes produits</a>
+        </li>
+      </ul>
+  </div>
+</nav>
+
+  <!--Menu vertical-->
+  <ng-container *ngIf="isMenuVisible">
+    <nav class="inline sm:hidden flex overlay">
+        <div class="w-full flex flex-column">
+          <div class="flex w-12 p-2 justify-content-end">
+            <p-button (onClick)="displayMenuOverlay()"  icon="pi pi-times" [rounded]="true" [text]="true" severity="danger"></p-button>
+          </div>
+          <ul class="p-4 flex w-full flex-column">
+            <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+              <a (click)="displayMenuOverlay()" class="link text-white" [routerLink]=homeLink routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Accueil</a>
+            </li>
+            <li routerLinkActive="active">
+              <a (click)="displayMenuOverlay()" class="link text-white" [routerLink]=addProductLink routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Ajout de produit</a>
+            </li>
+            <li routerLinkActive="active">
+              <a (click)="displayMenuOverlay()" class="link text-white" [routerLink]=sellerProducts routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Mes produits</a>
+            </li>
+          </ul>
+      </div>
+    </nav>
+  </ng-container>

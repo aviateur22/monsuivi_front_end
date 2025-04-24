@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ProductCategory } from '../../model/product.dto';
+
 import { MapperService } from '../../services/mapper.service';
 import { select, Store } from '@ngrx/store';
 import { IAppState } from '../../../../store/state';
@@ -8,6 +8,7 @@ import { addProductAction } from '../../store/action';
 import * as productSelector from '../../store/selector';
 import { Observable } from 'rxjs';
 import { validateNumber } from '../../validators/input.validator';
+import { IProductCategoryIhmDto } from '../../model/product.dto';
 
 @Component({
   selector: 'app-add-product-page',
@@ -24,10 +25,10 @@ export class AddProductPageComponent {
     productCategory: ['', Validators.required]
   })
 
-  productCategories: ProductCategory[] = [
-    {name: 'Livres', code: 'book'},
-    { name: 'Jeux', code: 'game'},
-    { name: 'Vétements', code: 'clothe'}
+  productCategories: IProductCategoryIhmDto[] = [
+    {name: 'Livres', code: 'bk'},
+    { name: 'Jeux', code: 'ga'},
+    { name: 'Vétements', code: 'cl'}
   ];
 
   productImage: File | null = null;

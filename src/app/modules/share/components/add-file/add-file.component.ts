@@ -46,4 +46,21 @@ export class AddFileComponent {
       }
     }
   }
+
+  loadPhoto(event:Event) {
+    console.log(`[AddFileComponent] - loadPhoto`);
+    this.isFileSelected = false;
+    this.isFileOfImageType =  false;
+    this.fileTitle = '';
+    const input = event.target as HTMLInputElement;
+    if (!input.files|| !input.files[0]) {
+      console.log(`[AddFileComponent] - loadPhoto: pas de photo`);
+      return;
+    }
+    const file = input.files[0];
+    this.fileTitle = file.name;
+    this.fileSelected = file;
+    this.previewFileFileBase64 = URL.createObjectURL(file);
+    this.isFileSelected = true
+  }
 }

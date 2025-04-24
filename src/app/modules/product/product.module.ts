@@ -19,18 +19,23 @@ import { DropdownModule } from 'primeng/dropdown';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
-
+import { SummarizeProductComponent } from './components/summarize-product/summarize-product.component';
+import { ProductsPageComponent } from './pages/products-page/products-page.component';
+import { StatusPipe } from './pipe/status.pipe';
 
 @NgModule({
   declarations: [
     CreatProductComponent,
-    AddProductPageComponent
+    AddProductPageComponent,
+    SummarizeProductComponent,
+    ProductsPageComponent
   ],
   imports: [
-    BrowserAnimationsModule,
     CommonModule,
+    BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
+    StatusPipe,
     ShareModule,
     RouterModule.forChild(productRouting),
     StoreModule.forFeature('productSate', productReducer),

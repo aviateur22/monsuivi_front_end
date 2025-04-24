@@ -1,7 +1,8 @@
 import { IAddProductDto } from "../model/product.dto";
-import { IAddProductAction } from "./model";
+import { IAddProductAction, ISellerProducts } from "./model";
 
 export interface IProductState {
   addProduct: IAddProductAction,
-  selectImage: File | null
+  selectImage: File | null,
+  sellerProducts: ISellerProducts
 }

@@ -4,7 +4,7 @@ import { IResponseMessage } from "../../share/model/share.dto"
  * Format de la categorie produit utilisé pour la selection dans IHM
  * @see AddProductPageComponent
  */
-export interface ProductCategory {
+export interface IProductCategoryIhmDto {
   name: string,
   code: string
 }
@@ -27,4 +27,39 @@ export interface IAddProductDto {
 export interface IAddProductResponseDto extends IResponseMessage {
   productId: number,
 
+}
+
+/**
+ * Catégori de produit
+ */
+export interface IProductCategoryDto {
+  code: string,
+  categoryName: string
+}
+
+/**
+ * Statut du produit
+ */
+export interface IProductStatusDto {
+  code: string,
+  statusName: string
+}
+
+/**
+ * Données sur un produit en mode "résumé"
+ */
+export interface ISummarizeProductDto {
+  id: string,
+  title: string,
+  productCategory: IProductCategoryDto,
+  productStatus: IProductStatusDto,
+  imageToShow: string
+}
+
+/**
+ * Liste des produits d'un seller
+ */
+export interface IGetSellerProductsDto {
+  sellerProducts: ISummarizeProductDto[],
+  responseMessage: string
 }

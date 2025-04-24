@@ -1,0 +1,23 @@
+<div class="card" >
+  <div class="img__container">
+    <img [src]="product.image" alt="image du produit">
+  </div>
+  <div class="header m-2">
+    <!--Statut de vente du produit-->
+    <div class="status__container">
+      <div class="status {{ product.productStatuscode| statusPipe }}">
+      </div>
+    </div>
+    <!--Description-->
+    <div class="description__container">
+      <!--Catégory-->
+      <div class="">
+        <p class="">Catégorie: <span class="uppercase text-sm font-medium">{{product.productCatgegoryLabel}}</span></p>
+      </div>
+      <!--Description-->
+      <div class="p-1">
+        <p class="text-xs">{{product.productName}}</p>
+      </div>
+    </div>
+  </div>
+</div>

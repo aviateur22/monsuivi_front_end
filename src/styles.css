@@ -14,3 +14,7 @@
   max-width: calc(100vw - 40px);
 }
 
+.m-width-1024 {
+  max-width: 1024px;
+}
+

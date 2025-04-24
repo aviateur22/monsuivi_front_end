@@ -2,9 +2,14 @@
   <div>
     <label class="text-sm text-color-secondary" [for]="inputFileFormControlName">Sélection de l'image du produit</label>
 
-    <!--Button container-->
+    <!--Button container selectionner une image-->
     <div class=" pt-4 flex justify-content-center">
-      <p-button [outlined]="true" severity="info" label="Sélectionner l'image" (click)="inputFile.click()"/>
+      <p-button [outlined]="true" severity="info" label="Sélectionner une photo" (click)="inputFile.click()"/>
+    </div>
+
+    <!--Button container prendre une photo-->
+    <div class=" pt-4 flex justify-content-center">
+      <p-button [outlined]="true" severity="info" label="Prendre une photo" (click)="inputPhoto.click()"/>
     </div>
 
     <input
@@ -13,6 +18,16 @@
       #inputFile accept=".jpg, .jpeg, .png"
       type="file"
       (change)="loadSelectedFile(inputFile?.files?.[0])"
+      style="display:none;" />
+
+      <!-- Prise de photo -->
+      <input
+
+      #inputPhoto
+      accept="image/*"
+      type="file"
+      capture="environment"
+      (change)="loadPhoto($event)"
       style="display:none;" />
 
     <!--Preview de l'image selectionnée-->

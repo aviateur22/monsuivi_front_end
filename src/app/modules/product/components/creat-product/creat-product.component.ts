@@ -1,9 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ProductCategory } from '../../model/product.dto';
 import { Store } from '@ngrx/store';
 import { IAppState } from '../../../../store/state';
 import { selectImage } from '../../store/action';
+import { IProductCategoryIhmDto } from '../../model/product.dto';
 
 @Component({
   selector: 'app-creat-product',
@@ -13,8 +13,8 @@ import { selectImage } from '../../store/action';
 export class CreatProductComponent {
 
   @Input() fg!: FormGroup;
-  @Input() productCategories! :  ProductCategory[] | undefined
-  seletcProductCategory: ProductCategory | undefined; // Produit sélectionné
+  @Input() productCategories! :  IProductCategoryIhmDto[] | undefined
+  seletcProductCategory: IProductCategoryIhmDto | undefined; // Produit sélectionné
 
   constructor( private _store: Store<IAppState>) {}
 
