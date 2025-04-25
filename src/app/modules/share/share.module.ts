@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule as AngularCommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddFileComponent } from './components/add-file/add-file.component';
+import { SwipeLeftDirective } from './directive/swipe-left.directive';
 
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -21,6 +22,7 @@ import { RouterModule } from '@angular/router';
   ],
   imports: [
     AngularCommonModule,
+    SwipeLeftDirective,
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
@@ -34,7 +36,8 @@ import { RouterModule } from '@angular/router';
   providers: [MessageService],
 exports: [
     AddFileComponent,
-    NavComponent
+    NavComponent,
+    SwipeLeftDirective
   ]
 })
 export class ShareModule { }

@@ -39,9 +39,9 @@ export class AddFileComponent {
     this.isFileSelected = false;
     this.isFileOfImageType =  false;
     this.fileTitle = '';
-    this.selectedFileEmitter.emit(file);
 
     if(file){
+      this.selectedFileEmitter.emit(file);
       this.fileSelected = file;
       this.fileTitle = file.name;
 
@@ -68,15 +68,18 @@ export class AddFileComponent {
       console.log(`[AddFileComponent] - loadPhoto: pas de photo`);
       return;
     }
-
     const file = input.files[0];
+    console.log(file);
+    this.selectedFileEmitter.emit(file);
+
     this.fileTitle = file.name;
     this.fileSelected = file;
-    const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.previewFileFileBase64 = e.target.result;
-      };
-      reader.readAsDataURL(file);
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
+    fileReader.onload = ()=> {
+      this.previewFileFileBase64 = fileReader.result as string;
+      this.isFileSelected = true;
+    }
       this.isFileSelected = true
   }
 }
