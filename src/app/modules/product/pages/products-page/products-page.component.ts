@@ -41,7 +41,7 @@ export class ProductsPageComponent {
       // Réchargement utilisateur
       this._userService.loadUserFromStorage();
 
-      // Dispatch
+      // Dispatch récupération des données client
       if(this.user)
         this._store.dispatch(getSellerProductsAction({sellerId:this.user.userId}));
 

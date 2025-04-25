@@ -16,7 +16,7 @@ export class SummarizeProduct {
     public readonly productName: string,
     public readonly productStatuscode: string,
     public readonly productCatgegoryLabel: string,
-    public readonly image: string
+    public readonly imagePath: string
   ){}
 }
 

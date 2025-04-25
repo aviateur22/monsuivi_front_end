@@ -6,5 +6,8 @@ export default {
   },
   getSellerProducts: {
     url:`${environment.api_base}/products/seller/{userId}`
+  },
+  streamImage: {
+    url: `${environment.api_base}/products/image/{imagePath}`
   }
 }
