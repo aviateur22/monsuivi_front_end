@@ -8,7 +8,7 @@
     </div>
 
     <!--Button container prendre une photo-->
-    <div class=" pt-4 flex justify-content-center">
+    <div *ngIf="isOnMobile" class=" pt-4 flex justify-content-center">
       <p-button [outlined]="true" severity="info" label="Prendre une photo" (click)="inputPhoto.click()"/>
     </div>
 
@@ -22,7 +22,6 @@
 
       <!-- Prise de photo -->
       <input
-
       #inputPhoto
       accept="image/*"
       type="file"

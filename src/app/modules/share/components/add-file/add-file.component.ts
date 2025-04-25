@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { MobileDeviceService } from '../../../../mobile_device/service/mobile-device.service';
 
 @Component({
   selector: 'app-add-file',
@@ -17,8 +18,18 @@ export class AddFileComponent {
   fileSelected: File|undefined;
   isFileSelected: boolean = false;
   isFileOfImageType = false;
-  previewFileFileBase64: string ='';
+  previewFileFileBase64: string | ArrayBuffer | null ='';
   fileTitle:  string = '';
+
+  // Si sur un téléphone
+  isOnMobile: boolean = false;
+
+  constructor(private _mobileDeviceService: MobileDeviceService){}
+  ngOnInit() {
+    console.log(this.isOnMobile)
+    this.isOnMobile = this._mobileDeviceService.isOnMobileDevice();
+    console.log(this.isOnMobile)
+  }
 
   /**
    * Chargement du document
@@ -57,10 +68,15 @@ export class AddFileComponent {
       console.log(`[AddFileComponent] - loadPhoto: pas de photo`);
       return;
     }
+
     const file = input.files[0];
     this.fileTitle = file.name;
     this.fileSelected = file;
-    this.previewFileFileBase64 = URL.createObjectURL(file);
-    this.isFileSelected = true
+    const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.previewFileFileBase64 = e.target.result;
+      };
+      reader.readAsDataURL(file);
+      this.isFileSelected = true
   }
 }
