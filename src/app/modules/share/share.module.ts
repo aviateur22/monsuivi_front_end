@@ -14,11 +14,13 @@ import { ButtonModule } from 'primeng/button';
 import { MessageService } from 'primeng/api';
 import { NavComponent } from './components/nav/nav.component';
 import { RouterModule } from '@angular/router';
+import { TakePhotoOnMobileComponent } from './components/take-photo-on-mobile/take-photo-on-mobile.component';
 
 @NgModule({
   declarations: [
     AddFileComponent,
-    NavComponent
+    NavComponent,
+    TakePhotoOnMobileComponent
   ],
   imports: [
     AngularCommonModule,
@@ -36,6 +38,7 @@ import { RouterModule } from '@angular/router';
   providers: [MessageService],
 exports: [
     AddFileComponent,
+    TakePhotoOnMobileComponent,
     NavComponent,
     SwipeLeftDirective
   ]

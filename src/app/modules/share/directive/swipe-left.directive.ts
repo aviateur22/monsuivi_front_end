@@ -14,6 +14,8 @@ export class SwipeLeftDirective {
   @HostListener('touchstart', ['$event'])
   onTouchStart(event: TouchEvent) {
     // Réinitialise la position de l'élément
+    this.initialPosition = event.touches[0].clientX;
+
     if (this.isSwiped) {
       this.resetPosition();
     }
