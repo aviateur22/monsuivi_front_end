@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule as AngularCommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddFileComponent } from './components/add-file/add-file.component';
+import { SwipeLeftDirective } from './directive/swipe-left.directive';
 
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -13,14 +14,17 @@ import { ButtonModule } from 'primeng/button';
 import { MessageService } from 'primeng/api';
 import { NavComponent } from './components/nav/nav.component';
 import { RouterModule } from '@angular/router';
+import { TakePhotoOnMobileComponent } from './components/take-photo-on-mobile/take-photo-on-mobile.component';
 
 @NgModule({
   declarations: [
     AddFileComponent,
-    NavComponent
+    NavComponent,
+    TakePhotoOnMobileComponent
   ],
   imports: [
     AngularCommonModule,
+    SwipeLeftDirective,
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
@@ -34,7 +38,9 @@ import { RouterModule } from '@angular/router';
   providers: [MessageService],
 exports: [
     AddFileComponent,
-    NavComponent
+    TakePhotoOnMobileComponent,
+    NavComponent,
+    SwipeLeftDirective
   ]
 })
 export class ShareModule { }

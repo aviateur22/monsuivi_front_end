@@ -1,10 +1,19 @@
+.main__container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin: 5px 0px;
+}
+.swipe--background {
+  background: linear-gradient(to left, white, black);
+}
+
 .card {
   display: flex;
   width: 100%;
   max-width: 1024px;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
-  margin:10px 0px;
-
+  background-color: white;
 }
 
 .header {
@@ -14,9 +23,9 @@
   align-items: center;
   width: 100%;
   flex: 1;
- overflow: hidden;
- margin:0px 5px;
- border-left:solid 1px lightgray ;
+  overflow: hidden;
+  margin:0px 5px;
+  border-left:solid 1px lightgray ;
 }
 
 .img__container {
@@ -58,6 +67,19 @@ div img {
   border-radius: 100%;
 }
 
+.delete__button__container {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1 !important;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  background:linear-gradient(to left, white, black);
+
+}
+
 .product--to--sell{
   background-color: red;
 }
@@ -68,6 +90,10 @@ div img {
 
 @media screen and (min-width: 1024px) {
   .card {
+    border-radius: 10px;
+  }
+
+  .delete__button__container {
     border-radius: 10px;
   }
 

@@ -2,7 +2,7 @@
   <div class="w-full flex align-content-between justify-content-center border-bottom-1">
       <!--LOGO - APP-->
       <div class="p-4 navbar-logo">
-        <h2 (click)="displayMenuOverlay()" class="text-3xl font-bold">Cbasic</h2>
+        <button (click)="displayMenuOverlay()" class="text-3xl font-bold appearance-none">Cbasic</button>
       </div>
       <ul class="hidden sm:p-4 sm:flex sm:w-full">
         <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
@@ -26,13 +26,13 @@
             <p-button (onClick)="displayMenuOverlay()"  icon="pi pi-times" [rounded]="true" [text]="true" severity="danger"></p-button>
           </div>
           <ul class="p-4 flex w-full flex-column">
-            <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <li class="py-2"  routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
               <a (click)="displayMenuOverlay()" class="link text-white" [routerLink]=homeLink routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Accueil</a>
             </li>
-            <li routerLinkActive="active">
+            <li class="py-2" routerLinkActive="active">
               <a (click)="displayMenuOverlay()" class="link text-white" [routerLink]=addProductLink routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Ajout de produit</a>
             </li>
-            <li routerLinkActive="active">
+            <li class="py-2" routerLinkActive="active">
               <a (click)="displayMenuOverlay()" class="link text-white" [routerLink]=sellerProducts routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Mes produits</a>
             </li>
           </ul>

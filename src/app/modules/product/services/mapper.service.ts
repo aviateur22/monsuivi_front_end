@@ -17,7 +17,7 @@ export class MapperService {
    * @param sellerId
    * @returns IAddProductDto
    */
-    mapProductToAdd(data: FormGroup, selectProductImage: File, sellerId: number): FormData {
+    mapProductToAdd(data: FormGroup, selectProductImage: File, sellerId: string): FormData {
         const formData: FormData = new FormData();
         formData.append('productName', data.get('productName')?.value);
         formData.append('productPurchasePrice', data.get('productPurchasePrice')?.value);

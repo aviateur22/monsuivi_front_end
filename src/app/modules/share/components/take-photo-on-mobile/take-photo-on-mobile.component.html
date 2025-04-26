@@ -1,30 +1,34 @@
 <div  class="flex flex-column pb-4" [formGroup]="fg" >
   <div>
-    <label class="text-sm text-color-secondary" [for]="inputFileFormControlName">Sélection de l'image du produit</label>
+    <label class="text-sm text-color-secondary" [for]="inputFileFormControlName">Prendre une photo</label>
 
-    <!--Button container selectionner une image-->
+    <!--Button container prendre une photo-->
     <div class=" pt-4 flex justify-content-center">
-      <p-button [outlined]="true" severity="info" label="Sélectionner une photo" (click)="inputFile.click()"/>
+      <p-button [outlined]="true" severity="info" label="Prendre une photo" (click)="inputPhoto.click()"/>
     </div>
 
-    <input
+      <!-- Prise de photo -->
+      <input
+      #inputPhoto
       [formControlName]=inputFileFormControlName
       [id]="inputFileFormControlName"
-      #inputFile accept=".jpg, .jpeg, .png"
+      accept="image/*"
       type="file"
-      (change)="loadSelectedFile(inputFile?.files?.[0])"
+      capture="environment"
+      (change)="loadPhoto($event)"
       style="display:none;" />
 
     <!--Preview de l'image selectionnée-->
     <div class="img__container">
-      <ng-container class="" *ngIf="isFileSelected && isFileOfImageType">
+      <ng-container class="" *ngIf="isFileSelected">
         <img [src]="previewFileFileBase64" alt="productImage.fileName">
       </ng-container>
 
-         <!-- image par default -->
-        <div *ngIf="fileTitle===''">
-          <img src="image/image.svg" alt="productImage.fileName">
-        </div>
+
+      <!-- image par default -->
+      <div *ngIf="fileTitle===''">
+        <img src="image/image.svg" alt="productImage.fileName">
+      </div>
 
       <!--tite du fichier-->
       <p>{{fileTitle}}</p>

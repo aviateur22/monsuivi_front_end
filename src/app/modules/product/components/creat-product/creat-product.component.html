@@ -76,7 +76,16 @@
     </div>
   </div>
 
-   <!--Image-->
-   <app-add-file [fg]="fg" (selectedFileEmitter)="selectImageEmit($event)" inputFileFormControlName="selectedImage"></app-add-file>
+    <ng-container *ngIf="isOnMobile; else selectImage">
+      <!--Photo a prendre avec un mobile-->
+      <app-take-photo-on-mobile [fg]="fg" (selectedFileEmitter)="selectImageEmit($event)" inputFileFormControlName="selectedImage"></app-take-photo-on-mobile>
+    </ng-container>
+
+    <ng-template #selectImage>
+      <!--Image-->
+      <app-add-file [fg]="fg" (selectedFileEmitter)="selectImageEmit($event)" inputFileFormControlName="selectedImage"></app-add-file>
+    </ng-template>
+
+
 
 </div>

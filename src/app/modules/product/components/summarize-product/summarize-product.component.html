@@ -1,23 +1,32 @@
-<div class="card" >
-  <div class="img__container">
-    <img [src]="imageUrl" alt="image du produit">
-  </div>
-  <div class="header m-2">
-    <!--Statut de vente du produit-->
-    <div class="status__container">
-      <div class="status {{ product.productStatuscode| statusPipe }}">
-      </div>
+<div class="main__container">
+  <!--Affichage des données du produit-->
+  <div swipeLeft class="card" >
+    <div class="img__container">
+      <img [src]="imageUrl" alt="image du produit">
     </div>
-    <!--Description-->
-    <div class="description__container">
-      <!--Catégory-->
-      <div class="">
-        <p class="">Catégorie: <span class="uppercase text-sm font-medium">{{product.productCatgegoryLabel}}</span></p>
+    <div class="header m-2">
+      <!--Statut de vente du produit-->
+      <div class="status__container">
+        <div class="status {{ product.productStatuscode| statusPipe }}">
+        </div>
       </div>
       <!--Description-->
-      <div class="p-1">
-        <p class="text-xs">{{product.productName}}</p>
+      <div class="description__container">
+        <!--Catégory-->
+        <div class="">
+          <p class="">Catégorie: <span class="uppercase text-sm font-medium">{{product.productCatgegoryLabel}}</span></p>
+        </div>
+        <!--Description-->
+        <div class="p-1">
+          <p class="text-xs">{{product.productName}}</p>
+        </div>
       </div>
+    </div>
+  </div>
+ <!--Boutton supprimer-->
+ <div class="delete__button__container">
+    <div class="flex border-circle mr-4 shadow-4 bg-white align-items-center justify-content-center">
+      <i class="p-2 pi pi-trash pi-cog" style="color:red; font-size: 1.5rem"></i>
     </div>
   </div>
 </div>

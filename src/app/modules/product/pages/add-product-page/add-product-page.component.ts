@@ -9,6 +9,8 @@ import * as productSelector from '../../store/selector';
 import { Observable } from 'rxjs';
 import { validateNumber } from '../../validators/input.validator';
 import { IProductCategoryIhmDto } from '../../model/product.dto';
+import { UserService } from '../../../../users/service/user.service';
+import { MobileDeviceService } from '../../../../mobile_device/service/mobile-device.service';
 
 @Component({
   selector: 'app-add-product-page',
@@ -36,8 +38,12 @@ export class AddProductPageComponent {
   isLoading$: Observable<boolean>;
   isAddProductSuccess$: Observable<boolean>;
 
+  // Utilisateur
+  user = this._userService.getUser();
+
   constructor (
     private _fb: FormBuilder,
+    private _userService: UserService,
     private _mapper: MapperService,
     private _store: Store<IAppState>){
     this.selectProductImage$ = this._store.pipe(select(productSelector.selectImageSelector));
@@ -46,6 +52,8 @@ export class AddProductPageComponent {
   }
 
   ngOnInit() {
+    // rechargement du user
+    this._userService.loadUserFromStorage();
 
     // Récupération des données de l'image du produit
     this.selectProductImage$.subscribe(image=>{
@@ -58,6 +66,7 @@ export class AddProductPageComponent {
     this.isAddProductSuccess$.subscribe(isSuccess=>{
       if(isSuccess){
         this.createProductFg.reset();
+        this.productImage = null;
       }
     })
   }
@@ -69,15 +78,19 @@ export class AddProductPageComponent {
   createProduct() {
 
     // Fake sellerId
-    const sellerId = 1;
+    const sellerId = this._userService.getUser()?.userId;
 
     if(!this.createProductFg.valid || this.productImage == null) {
       this.createProductFg.markAllAsTouched();
       return;
     }
 
+
+    if(!this.user)
+      return;
+
     // Récupération d'un formData
-    const productData = this._mapper.mapProductToAdd(this.createProductFg, this.productImage, sellerId);
+    const productData = this._mapper.mapProductToAdd(this.createProductFg, this.productImage, this.user.userId);
 
     // Dispatch
     this._store.dispatch(addProductAction({product: {
