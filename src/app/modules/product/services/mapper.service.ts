@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { IGetSellerProductsDto, ISummarizeProductDto } from '../model/product.dto';
+import { IDesactivateProductResponseDto, IGetSellerProductsDto, ISummarizeProductDto } from '../model/product.dto';
 import { GetSellerProducts, SummarizeProduct } from '../model/product.model';
 
 @Injectable({

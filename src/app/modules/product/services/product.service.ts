@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IAddProductResponseDto, IGetSellerProductsDto } from '../model/product.dto';
+import { IAddProductResponseDto, IDesactivateProductDto, IDesactivateProductResponseDto, IGetSellerProductsDto } from '../model/product.dto';
 import { map, Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import apiUrl from '../../../../misc/api.url';
@@ -25,5 +25,10 @@ export class ProductService {
     console.log(`[ProductService] - getSellerProducts - api ${url}`);
     return this._http.get<IGetSellerProductsDto>(url).pipe(
       map(dto=>this._mapper.mapToGetSellerProducts(dto)));
+  }
+
+  desactivateProduct(desactivateProductDto: IDesactivateProductDto): Observable<IDesactivateProductResponseDto> {
+    console.log(`[ProductService] - desactivateProduct - seller id: ${desactivateProductDto}`);
+    return this._http.put<IDesactivateProductResponseDto>(apiUrl.desactivateProduct.url, desactivateProductDto);
   }
 }

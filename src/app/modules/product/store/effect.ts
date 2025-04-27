@@ -48,4 +48,22 @@ export class ProductEffect {
     )
   );
 
+  desactivateProduct$ = createEffect(()=>
+    this._action$.pipe(
+      ofType(productAction.desactivateProduct),
+      mergeMap(({productToDesactivate})=>
+        this._productService.desactivateProduct(productToDesactivate).pipe(
+          switchMap(result=>[
+            productAction.desactivateProductComplete({desactivateProduct: {
+              isLoading: false,
+              isSuccess: true,
+              desactivateProduct: { isProductActif: result.isProductActif, productId: result.productId, sellerId: result.sellerId}
+            }}),
+            shareAction.displayMessageAction({message:{isOnError: false, title: 'Désactivation du produit' , message: result.responseMessage}})
+          ])
+        )
+      )
+    )
+  )
+
 }

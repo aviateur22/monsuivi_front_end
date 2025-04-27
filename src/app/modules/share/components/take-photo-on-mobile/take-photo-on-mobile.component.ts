@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { ImageService } from '../../service/image.service';
 
 @Component({
   selector: 'app-take-photo-on-mobile',
@@ -21,7 +22,9 @@ export class TakePhotoOnMobileComponent {
   // Si sur un téléphone
   isOnMobile: boolean = false;
 
-  loadPhoto(event:Event) {
+  constructor(private _imageService: ImageService){}
+
+  async loadPhoto(event:Event) {
     console.log(`[TakePhotoOnMobileComponent] - loadPhoto`);
     this.isFileSelected = false;
     this.fileTitle = '';
@@ -30,7 +33,10 @@ export class TakePhotoOnMobileComponent {
       console.log(`[TakePhotoOnMobileComponent] - loadPhoto: pas de photo`);
       return;
     }
-    const file = input.files[0];
+
+    // Compression de la photo
+    const file = await this._imageService.compressImage(input.files[0], 1024, 0.7);
+
     this.selectedFileEmitter.emit(file);
 
     this.fileTitle = file.name;

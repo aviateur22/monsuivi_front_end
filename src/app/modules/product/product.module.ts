@@ -22,13 +22,15 @@ import { ToastModule } from 'primeng/toast';
 import { SummarizeProductComponent } from './components/summarize-product/summarize-product.component';
 import { ProductsPageComponent } from './pages/products-page/products-page.component';
 import { StatusPipe } from './pipe/status.pipe';
+import { FilterBarComponent } from './components/filter-bar/filter-bar.component';
 
 @NgModule({
   declarations: [
     CreatProductComponent,
     AddProductPageComponent,
     SummarizeProductComponent,
-    ProductsPageComponent
+    ProductsPageComponent,
+    FilterBarComponent
   ],
   imports: [
     CommonModule,

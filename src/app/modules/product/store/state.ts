@@ -1,8 +1,8 @@
-import { IAddProductDto } from "../model/product.dto";
-import { IAddProductAction, ISellerProducts } from "./model";
+import { IAddProductAction, IDesactivateProductAction, ISellerProducts } from "./model";
 
 export interface IProductState {
   addProduct: IAddProductAction,
   selectImage: File | null,
-  sellerProducts: ISellerProducts
+  sellerProducts: ISellerProducts,
+  desactivateProduct: IDesactivateProductAction
 }

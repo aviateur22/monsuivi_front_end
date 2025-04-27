@@ -21,10 +21,21 @@ export class SummarizeProduct {
 }
 
 /**
- *
+ * Récupération des produits d'un vendeurs
  */
 export class GetSellerProducts {
   constructor(
     public readonly responseMessage: string,
     public readonly products: SummarizeProduct[]){}
+}
+
+/**
+ * Produit Désactivé
+ */
+export class DesactivateProduct {
+  constructor(
+    public readonly sellerId: string,
+    public readonly productId: string,
+    public readonly isProductActif: boolean,
+  ){}
 }

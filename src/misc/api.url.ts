@@ -9,5 +9,8 @@ export default {
   },
   streamImage: {
     url: `${environment.api_base}/products/image/{imagePath}`
+  },
+  desactivateProduct: {
+    url: `${environment.api_base}/products/desactivate`
   }
 }

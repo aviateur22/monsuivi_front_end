@@ -1,6 +1,7 @@
 import { createReducer, on } from "@ngrx/store";
 import { IProductState } from "./state";
 import * as productAction from "./action";
+import { DesactivateProduct } from "../model/product.model";
 
 export const initialProductState: IProductState = {
   addProduct: {
@@ -13,7 +14,13 @@ export const initialProductState: IProductState = {
     isLoading: false,
     isSuccess: false,
     summarizeProducts: []
+  },
+  desactivateProduct: {
+    isLoading: false,
+    isSuccess: false,
+    desactivateProduct: null
   }
+
 }
 
 export const reducers = createReducer(
@@ -40,6 +47,23 @@ export const reducers = createReducer(
       isLoading: false,
       isSuccess: products.isSuccess,
       summarizeProducts: products.summarizeProducts
+    }
+  })),
+  on(productAction.desactivateProduct, (state)=>({...state, desactivateProduct: {
+    isLoading: true,
+    isSuccess: false,
+    desactivateProduct: null
+  }
+  })),
+  on(productAction.desactivateProductComplete, (state, {desactivateProduct})=>({
+    ...state, desactivateProduct: {
+      ...desactivateProduct, isLoading: false, isSuccess: true
+    },
+    sellerProducts: {
+      isLoading: false,
+      summarizeProducts: state.sellerProducts.summarizeProducts
+        .filter(product=>product.productId != desactivateProduct.desactivateProduct?.productId),
+      isSuccess: true
     }
   }))
 )

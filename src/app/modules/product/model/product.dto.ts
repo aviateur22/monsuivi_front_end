@@ -63,3 +63,17 @@ export interface IGetSellerProductsDto {
   sellerProducts: ISummarizeProductDto[],
   responseMessage: string
 }
+
+export interface IDesactivateProductDto {
+  productId: string,
+  sellerId: string,
+}
+
+export interface IDesactivateProductResponseDto extends IResponseMessage {
+  productId: string,
+  sellerId: string,
+  isProductActif: boolean
+}
+
+
+
