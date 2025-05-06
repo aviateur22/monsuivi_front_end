@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { IAddProductResponseDto, IDesactivateProductDto, IDesactivateProductResponseDto, IGetSellerProductsDto } from '../model/product.dto';
+import { IAddProductResponseDto, IDesactivateProductDto, IDesactivateProductResponseDto, IGetProductDetailDto, IGetProductDetailResponseDto, IGetSellerProductsDto, IProductUpdateDto, IProductUpdateResponseDto } from '../model/product.dto';
 import { map, Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import apiUrl from '../../../../misc/api.url';
 import { ISellerProducts } from '../store/model';
-import { GetSellerProducts, SummarizeProduct } from '../model/product.model';
+import { GetSellerProducts, ProductDetail, SummarizeProduct } from '../model/product.model';
 import { MapperService } from './mapper.service';
 
 @Injectable({
@@ -30,5 +30,20 @@ export class ProductService {
   desactivateProduct(desactivateProductDto: IDesactivateProductDto): Observable<IDesactivateProductResponseDto> {
     console.log(`[ProductService] - desactivateProduct - seller id: ${desactivateProductDto}`);
     return this._http.put<IDesactivateProductResponseDto>(apiUrl.desactivateProduct.url, desactivateProductDto);
+  }
+
+  getProductDetail(productDetail: IGetProductDetailDto):Observable<IGetProductDetailResponseDto> {
+    console.log(`[ProductService] - getProductDetail - données: ${productDetail}`);
+    let url = apiUrl.getProductDetail.url
+    .replace('{productId}', productDetail.productId)
+    .replace('{sellerId}', productDetail.sellerId);
+    console.log(`[ProductService] - getProductDetail - url: ${url}`);
+
+    return this._http.get<IGetProductDetailResponseDto>(url);
+  }
+
+  productUpdate(productUpdateDto: IProductUpdateDto): Observable<IProductUpdateResponseDto> {
+    console.log(`[ProductService] - productUpdate - données: ${productUpdateDto}`);
+    return this._http.put<IProductUpdateResponseDto>(apiUrl.productUpdate.url, productUpdateDto);
   }
 }

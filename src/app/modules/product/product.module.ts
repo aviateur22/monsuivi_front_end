@@ -13,16 +13,20 @@ import { ProductEffect } from './store/effect';
 import { CreatProductComponent } from './components/creat-product/creat-product.component';
 import { AddProductPageComponent } from './pages/add-product-page/add-product-page.component';
 import { ShareModule } from '../share/share.module';
+import { SummarizeProductComponent } from './components/summarize-product/summarize-product.component';
+import { ProductsPageComponent } from './pages/products-page/products-page.component';
+import { StatusPipe } from './pipe/status.pipe';
+import { FilterBarComponent } from './components/filter-bar/filter-bar.component';
+import { DetailProductPageComponent } from './pages/detail-product-page/detail-product-page.component';
 
 import { MessageModule } from 'primeng/message';
 import { DropdownModule } from 'primeng/dropdown';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { ToastModule } from 'primeng/toast';
-import { SummarizeProductComponent } from './components/summarize-product/summarize-product.component';
-import { ProductsPageComponent } from './pages/products-page/products-page.component';
-import { StatusPipe } from './pipe/status.pipe';
-import { FilterBarComponent } from './components/filter-bar/filter-bar.component';
+import { CalendarModule } from 'primeng/calendar';
+import { DialogModule } from 'primeng/dialog';
+import { CardModule } from 'primeng/card';
+import { CheckboxModule } from 'primeng/checkbox';
 
 @NgModule({
   declarations: [
@@ -30,7 +34,8 @@ import { FilterBarComponent } from './components/filter-bar/filter-bar.component
     AddProductPageComponent,
     SummarizeProductComponent,
     ProductsPageComponent,
-    FilterBarComponent
+    FilterBarComponent,
+    DetailProductPageComponent
   ],
   imports: [
     CommonModule,
@@ -48,7 +53,13 @@ import { FilterBarComponent } from './components/filter-bar/filter-bar.component
     DropdownModule,
     ButtonModule,
     InputTextModule,
-    ToastModule
-]
+    DialogModule,
+    CardModule,
+    CalendarModule,
+    CheckboxModule
+  ],
+  exports: [
+    DetailProductPageComponent
+  ]
 })
 export class ProductModule { }

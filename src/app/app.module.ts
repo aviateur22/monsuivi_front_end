@@ -17,6 +17,8 @@ import { ProductModule } from "./modules/product/product.module";
 import { ShareModule } from "./modules/share/share.module";
 import { UserService } from "./users/service/user.service";
 
+import { ToastModule } from 'primeng/toast';
+
 export function initialize(userService: UserService) {
   return ()=>{
     userService.fakeUser();
@@ -33,6 +35,7 @@ export function initialize(userService: UserService) {
     ShareModule,
     AuthorizeModule,
     AppRoutingModule,
+    ToastModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([
       ProductEffect,

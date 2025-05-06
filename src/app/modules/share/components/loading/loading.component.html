@@ -1,0 +1,23 @@
+<!--Chargement liée au detail d'un produit-->
+<ng-container  *ngIf="isProductDetailLoading$ | async as isProductDetailLoading">
+  <!--Loading-->
+  <div class="fixed flex align-items-center justify-content-center top-0 left-0 w-full h-screen bg-black-alpha-70 z-2">
+    <p-progressSpinner></p-progressSpinner>
+  </div>
+</ng-container>
+
+<!--Chargement liée à l'ajout d'un produit-->
+<ng-container  *ngIf="isAddProductLoading$ | async as isAddProductLoading">
+  <!--Loading-->
+  <div class="fixed flex align-items-center justify-content-center top-0 left-0 w-full h-screen bg-black-alpha-70 z-2">
+    <p-progressSpinner></p-progressSpinner>
+  </div>
+</ng-container>
+
+<!--Chargement liée a la désactivation d'un produit-->
+<ng-container  *ngIf="isDesactivateProductLoading$ | async as isDesactivateProductLoading">
+  <!--Loading-->
+  <div class="fixed flex align-items-center justify-content-center top-0 left-0 w-full h-screen bg-black-alpha-70 z-2">
+    <p-progressSpinner></p-progressSpinner>
+  </div>
+</ng-container>

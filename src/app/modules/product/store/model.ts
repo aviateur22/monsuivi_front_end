@@ -1,5 +1,5 @@
 import { IDesactivateProductDto } from "../model/product.dto"
-import { DesactivateProduct, SummarizeProduct } from "../model/product.model"
+import { DesactivateProduct, ProductDetail, SummarizeProduct } from "../model/product.model"
 
 export interface IAddProductAction {
   addProduct: FormData | null,
@@ -17,4 +17,10 @@ export interface IDesactivateProductAction {
   desactivateProduct: DesactivateProduct | null,
   isLoading: boolean,
   isSuccess: boolean
+}
+
+export interface IProductDetailAction {
+  isLoading: boolean,
+  isPopupShow: boolean,
+  productDetail: ProductDetail | null
 }

@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { IDesactivateProductResponseDto, IGetSellerProductsDto, ISummarizeProductDto } from '../model/product.dto';
-import { GetSellerProducts, SummarizeProduct } from '../model/product.model';
+import { IDesactivateProductResponseDto, IGetProductDetailResponseDto, IGetSellerProductsDto, IProductUpdateResponseDto, ISummarizeProductDto } from '../model/product.dto';
+import { GetSellerProducts, ProductDetail, ProductStatus, SummarizeProduct } from '../model/product.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MapperService {
+
 
   constructor() { }
 
@@ -40,7 +42,10 @@ export class MapperService {
         dto.title,
         dto.productStatus.code,
         dto.productCategory.categoryName,
-        dto.imageToShow
+        dto.imageToShow,
+        null,
+        null
+
       );
       console.log(`[MapperService] - mapToSummarizeProduct - product ${product}`);
 
@@ -61,4 +66,71 @@ export class MapperService {
         summarizeProducts
       )
     }
-}
+
+    /**
+     * map un IGetProductDetailResponseDto en ProductDetail
+     * @param {IProductDetailResponseDto} dto
+     * @returns {ProductDetail}
+     */
+    mapToProductDetail(dto: IGetProductDetailResponseDto): ProductDetail {
+      return new ProductDetail(
+        dto.productId,
+        dto.productName,
+        dto.productSoldPrice,
+        dto.productPurchasePrice,
+        dto.photoImagePath,
+        dto.productBuyAt,
+        dto.productSoldAt,
+        dto.productStatus
+      )
+    }
+
+    /**
+     * Map une date en string ddMmYyyy
+     * @param {Date} originalDate Date a mapper en string
+     * @returns {string} Date au format dd/mm/Yyyy
+     */
+    mapDateToDdMmYyyy(originalDate: Date): string {
+
+    // Si pas de date de définie
+    if(originalDate === null)
+      return originalDate;
+
+    // regex pour tester les date au format  dd/mm/yyyy
+    const regex = /^([0-2][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+
+    // Si date déja au format dd/mm/yyyy
+    if(regex.test(originalDate.toString()))
+      return originalDate.toString();
+
+    // Récupération de la date au fomrat dd/mm/yyyy
+    const day = String(originalDate.getDate()).padStart(2, '0');
+    const month = String(originalDate.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const year = originalDate.getFullYear();
+
+
+    return `${day}/${month}/${year}`;
+    }
+
+    /**
+     * Map un boolean vers un statut de produit
+     * @param {boolean} value - Statue true or false
+     * @returns {string}
+     */
+    mapBooleanToProductStatus(value: boolean): string {
+      return value === true ? ProductStatus.SOLD : ProductStatus.FOR_SALE
+    }
+
+    /**
+     * map un status de produit vers un boolean
+     * Si statut ProductStatus.SOLD => true sinon false
+     * @param {string} status - Statut
+     * @returns {boolean}
+     */
+    mapProductStatusToBoolean(status: string | undefined): boolean {
+      if (status === undefined)
+        return false;
+
+      return status === ProductStatus.SOLD ? true : false;
+    }
+  }

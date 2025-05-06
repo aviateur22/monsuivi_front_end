@@ -1,7 +1,7 @@
 import { createReducer, on } from "@ngrx/store";
 import { IProductState } from "./state";
 import * as productAction from "./action";
-import { DesactivateProduct } from "../model/product.model";
+import { DesactivateProduct, ProductDetail } from "../model/product.model";
 
 export const initialProductState: IProductState = {
   addProduct: {
@@ -19,8 +19,12 @@ export const initialProductState: IProductState = {
     isLoading: false,
     isSuccess: false,
     desactivateProduct: null
+  },
+  productDetail: {
+    isLoading: false,
+    isPopupShow: false,
+    productDetail: null
   }
-
 }
 
 export const reducers = createReducer(
@@ -37,7 +41,11 @@ export const reducers = createReducer(
     isSuccess: product.isSuccess
 
   }
-})),
+  })),
+  on(productAction.addProductActionfailed,(state)=>({...state, addProduct: {...state.addProduct,
+    isLoading: false,
+    isSuccess: false
+  }})),
   on(productAction.selectImage, (state, {selectImage})=>({...state, selectImage: selectImage})),
   on(productAction.getSellerProductsAction, (state)=>({
     ...state, sellerProducts: {...state.sellerProducts, isLoading: true }
@@ -65,5 +73,83 @@ export const reducers = createReducer(
         .filter(product=>product.productId != desactivateProduct.desactivateProduct?.productId),
       isSuccess: true
     }
+  })),
+  on(productAction.desactivateProductFailed,(state)=>({...state, desactivateProduct: {...state.desactivateProduct, isLoading: false, isSuccess: false}})),
+  on(productAction.getProductDetailAction,(state)=>({
+    ...state, productDetail: {
+      ...state.productDetail,
+      isPopupShow: true,
+      isLoading: true
+    }
+  })),
+  on(productAction.getProductDetailCompleteAction, (state, {productDetail})=>({
+    ...state, productDetail: {
+      ...state.productDetail,
+      isLoading: false,
+      productDetail: productDetail
+    }})),
+  on(productAction.getProductDetailFailedAction,(state)=>({
+    ...state, productDetail: {
+      ...state.productDetail,
+      isLoading: false
+    }
+  })),
+  on(productAction.productDetailCloseAction,(state)=>({
+    ...state, productDetail: {
+      ...state.productDetail ,
+      isPopupShow: false,
+      productDetail: null,
+      isLoading: false
+    }
+  }
+  )),
+  on(productAction.productUpdateAction, (state)=>({
+    ...state, productDetail:  { ...state.productDetail,
+      isLoading: true
+    }
+  })),
+  on(productAction.productUpdateCompleteAction,(state, {productUpdate})=>({
+    ...state, productDetail: {
+      ...state.productDetail,
+      isLoading: false,
+      isPopupShow: false
+    },
+    sellerProducts : {
+      ...state.sellerProducts,
+      summarizeProducts: state.sellerProducts.summarizeProducts
+      .map(product=>product.productId === productUpdate.productId ?
+        { ...product,
+          productBuyDay: productUpdate.productBuyDay,
+          productStatuscode: productUpdate.productStatus,
+          productSoldDay: productUpdate.productSoldDay
+        }
+        : product
+      )}
+  })),
+  on(productAction.productUpdateFailedAction, (state)=>({
+    ...state, productDetail: {
+      ...state.productDetail,
+      isLoading: false
+    }
+  })),
+  on(productAction.productDetailDesactivateAction, (state)=>({
+    ...state, productDetail: {
+      ...state.productDetail, isLoading: true
+    }
+  })),
+  on(productAction.productDetailDesactivateCompleteAction, (state, {productDesactivate})=>({
+    ...state, productDetail: {
+      ...state.productDetail, isLoading: false , isPopupShow: false
+    },
+    sellerProducts: { ...state.sellerProducts,
+      summarizeProducts: state.sellerProducts.summarizeProducts
+      .filter(product=>product.productId != productDesactivate.productId),
+    isSuccess: true
+    }
+  })),
+  on(productAction.productDetailDesactivateFailedAction, (state)=>({
+    ...state, productDetail: { ...state.productDetail, isLoading: false, isPopupShow: false }
+
   }))
+
 )

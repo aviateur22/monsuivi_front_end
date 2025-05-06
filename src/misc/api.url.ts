@@ -12,5 +12,12 @@ export default {
   },
   desactivateProduct: {
     url: `${environment.api_base}/products/desactivate`
+  },
+  getProductDetail: {
+    url: `${environment.api_base}/products/{productId}/seller-id/{sellerId}`
+  },
+  productUpdate: {
+    url: `${environment.api_base}/products`
   }
+
 }

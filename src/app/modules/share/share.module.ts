@@ -15,12 +15,16 @@ import { MessageService } from 'primeng/api';
 import { NavComponent } from './components/nav/nav.component';
 import { RouterModule } from '@angular/router';
 import { TakePhotoOnMobileComponent } from './components/take-photo-on-mobile/take-photo-on-mobile.component';
+import { LoadingComponent } from './components/loading/loading.component';
+
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @NgModule({
   declarations: [
     AddFileComponent,
     NavComponent,
-    TakePhotoOnMobileComponent
+    TakePhotoOnMobileComponent,
+    LoadingComponent
   ],
   imports: [
     AngularCommonModule,
@@ -33,14 +37,16 @@ import { TakePhotoOnMobileComponent } from './components/take-photo-on-mobile/ta
     StoreModule.forFeature('shareState', shareReducer),
     EffectsModule.forFeature([
       ShareEffect
-    ])
+    ]),
+    ProgressSpinnerModule
   ],
   providers: [MessageService],
 exports: [
     AddFileComponent,
     TakePhotoOnMobileComponent,
     NavComponent,
-    SwipeLeftDirective
+    SwipeLeftDirective,
+    LoadingComponent
   ]
 })
 export class ShareModule { }

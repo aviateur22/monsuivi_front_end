@@ -16,7 +16,9 @@ export class SummarizeProduct {
     public readonly productName: string,
     public readonly productStatuscode: string,
     public readonly productCatgegoryLabel: string,
-    public readonly imagePath: string
+    public readonly imagePath: string,
+    public readonly productBuyDay: string | null,
+    public readonly productSoldDay: string | null,
   ){}
 }
 
@@ -38,4 +40,25 @@ export class DesactivateProduct {
     public readonly productId: string,
     public readonly isProductActif: boolean,
   ){}
+}
+
+export class ProductDetail {
+  constructor(
+    public readonly productId: string,
+    public readonly productName: string,
+    public readonly productSoldPrice: number,
+    public readonly productBuyPrice: number,
+    public readonly productImagePath: string,
+    public readonly productBuyDay: Date,
+    public readonly productSoldDay: Date,
+    public readonly productStatus: string
+  ){}
+}
+
+/**
+ * Status d'un produit
+ */
+export enum ProductStatus {
+  FOR_SALE = 'fs', // A vendre
+  SOLD = 'so' // vendu
 }

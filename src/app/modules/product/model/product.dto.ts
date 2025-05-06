@@ -64,6 +64,9 @@ export interface IGetSellerProductsDto {
   responseMessage: string
 }
 
+/**
+ * Désactivation d'un produit
+ */
 export interface IDesactivateProductDto {
   productId: string,
   sellerId: string,
@@ -73,6 +76,51 @@ export interface IDesactivateProductResponseDto extends IResponseMessage {
   productId: string,
   sellerId: string,
   isProductActif: boolean
+}
+
+/**
+ * Detail d'un produit
+ */
+export interface IGetProductDetailDto {
+  sellerId: string,
+  productId: string
+}
+
+export interface IGetProductDetailResponseDto {
+  sellerId: string,
+  productId: string,
+  productPurchasePrice: number,
+  productSoldPrice: number,
+  productName: string,
+  photoImagePath: string,
+  productBuyAt: Date,
+  productSoldAt: Date,
+  productStatus: string,
+  responseMessage: string
+}
+
+/**
+ * Mise a jour d'un produit
+ */
+export interface IProductUpdateDto {
+  sellerId: string,
+  productId: string,
+  productPurchasePrice: number,
+  productSoldPrice: number,
+  productBuyDay: string,
+  productSoldDay: string | null,
+  productStatus: string
+
+}
+
+export interface IProductUpdateResponseDto {
+  productId: string ,
+  productPurchasePrice: number,
+  productSoldPrice: number,
+  productBuyDay  : string,
+  productSoldDay: string | null,
+  responseMessage: string,
+  productStatus: string
 }
 
 

@@ -1,5 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { select, Store } from '@ngrx/store';
+import { IAppState } from '../../../../store/state';
+import * as selector from '../../../product/store/selector';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-add-file',
@@ -17,8 +21,23 @@ export class AddFileComponent {
   fileSelected: File|undefined;
   isFileSelected: boolean = false;
   isFileOfImageType = false;
-  previewFileFileBase64: string | ArrayBuffer | null ='';
+  previewFileFileBase64: string | null ='';
   fileTitle:  string = '';
+
+  // Ajout d'un produit en success
+  isAddProductSuccess$: Observable<boolean>;
+
+  constructor(private _store: Store<IAppState>) {
+    this.isAddProductSuccess$ = this._store.pipe(select(selector.selectIsAddProductSuccess));
+  }
+
+  ngOnInit() {
+    this.isAddProductSuccess$.subscribe(isAddproductSuccess=> {
+
+      if(isAddproductSuccess)
+        this.clearPreview();
+    })
+  }
 
   /**
    * Chargement du document
@@ -45,5 +64,15 @@ export class AddFileComponent {
         this.isFileSelected = true;
       }
     }
+  }
+
+  /**
+   * Suppression de l'image en preview
+   */
+  clearPreview() {
+    console.log(`[AddFileComponent] - clearPreview`);
+    this.previewFileFileBase64 = '';
+    this.fileTitle = '';
+    this.isFileSelected = false
   }
 }

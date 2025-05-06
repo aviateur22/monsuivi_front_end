@@ -1,6 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ImageService } from '../../service/image.service';
+import { select, Store } from '@ngrx/store';
+import { IAppState } from '../../../../store/state';
+import { Observable } from 'rxjs';
+import * as selector from '../../../product/store/selector';
 
 @Component({
   selector: 'app-take-photo-on-mobile',
@@ -22,7 +26,20 @@ export class TakePhotoOnMobileComponent {
   // Si sur un téléphone
   isOnMobile: boolean = false;
 
-  constructor(private _imageService: ImageService){}
+    // Ajout d'un produit en success
+    isAddProductSuccess$: Observable<boolean>;
+
+  constructor(private _imageService: ImageService, private _store: Store<IAppState>){
+    this.isAddProductSuccess$ = this._store.pipe(select(selector.selectIsAddProductSuccess));
+  }
+
+  ngOnInit() {
+    this.isAddProductSuccess$.subscribe(isAddproductSuccess=> {
+
+      if(isAddproductSuccess)
+        this.clearPreview();
+    })
+  }
 
   async loadPhoto(event:Event) {
     console.log(`[TakePhotoOnMobileComponent] - loadPhoto`);
@@ -48,4 +65,14 @@ export class TakePhotoOnMobileComponent {
     }
       this.isFileSelected = true
   }
+
+  /**
+   * Suppression de l'image en preview
+   */
+    clearPreview() {
+      console.log(`[TakePhotoOnMobileComponent] - clearPreview`);
+      this.previewFileFileBase64 = null;
+      this.fileTitle = '';
+      this.isFileSelected = false
+    }
 }

@@ -35,7 +35,6 @@ export class AddProductPageComponent {
 
   productImage: File | null = null;
   selectProductImage$: Observable<File | null>;
-  isLoading$: Observable<boolean>;
   isAddProductSuccess$: Observable<boolean>;
 
   // Utilisateur
@@ -47,7 +46,7 @@ export class AddProductPageComponent {
     private _mapper: MapperService,
     private _store: Store<IAppState>){
     this.selectProductImage$ = this._store.pipe(select(productSelector.selectImageSelector));
-    this.isLoading$ = this._store.pipe(select(productSelector.selectIsLoading));
+
     this.isAddProductSuccess$= this._store.pipe(select(productSelector.selectIsAddProductSuccess));
   }
 
