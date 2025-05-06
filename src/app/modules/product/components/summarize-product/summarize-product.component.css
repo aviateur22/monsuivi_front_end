@@ -83,11 +83,11 @@ div img {
 }
 
 .product--to--sell{
-  background-color: red;
+  background-color: green;
 }
 
 .product--sell {
-  background-color: green;
+  background-color: red;
 }
 
 @media screen and (min-width: 1024px) {
