@@ -21,7 +21,7 @@ export class ProductService {
 
   getSellerProducts(sellerId: string): Observable<GetSellerProducts> {
     console.log(`[ProductService] - getSellerProducts -seller id: ${sellerId}`);
-    const url = apiUrl.getSellerProducts.url.replace('{userId}', sellerId)
+    const url = apiUrl.getSellerProducts.url.replace('{sellerId}', sellerId)
     console.log(`[ProductService] - getSellerProducts - api ${url}`);
     return this._http.get<IGetSellerProductsDto>(url).pipe(
       map(dto=>this._mapper.mapToGetSellerProducts(dto)));

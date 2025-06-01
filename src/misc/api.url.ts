@@ -5,7 +5,7 @@ export default {
     url: `${environment.api_base}/products`
   },
   getSellerProducts: {
-    url:`${environment.api_base}/products/seller/{userId}`
+    url:`${environment.api_base}/products/seller/{sellerId}`
   },
   streamImage: {
     url: `${environment.api_base}/products/image/{imagePath}`
@@ -18,6 +18,24 @@ export default {
   },
   productUpdate: {
     url: `${environment.api_base}/products`
+  },
+  getSoldAndBuyProductQuantityByCategoryAndMonth: {
+    url: `${environment.api_base}/charts/product-quantity-by-category-and-month/seller/{sellerId}/month/{month}/year/{year}`
+  },
+  getSoldAndBuyProductPriceByCategoryAndMonth: {
+    url: `${environment.api_base}/charts/product-price-by-category-and-month/seller/{sellerId}/month/{month}/year/{year}`
+  },
+  getSoldAndBuyProductPriceByCategoryAndYear: {
+    url: `${environment.api_base}/charts/product-price-by-category-and-year/seller/{sellerId}/year/{year}`
+  },
+  getSoldAndBuyProductQuantityByCategoryAndYear: {
+    url: `${environment.api_base}/charts/product-quantity-by-category-and-year/seller/{sellerId}/year/{year}`
+  },
+  getSoldAndBuyProductQuantityByYear: {
+    url: `${environment.api_base}/charts/product-quantity-by-year/seller/{sellerId}/year/{year}`
+  },
+  getSoldAndBuyProductPriceByYear: {
+    url: `${environment.api_base}/charts/product-price-by-year/seller/{sellerId}/year/{year}`
   }
 
 }

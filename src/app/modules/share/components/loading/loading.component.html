@@ -21,3 +21,11 @@
     <p-progressSpinner></p-progressSpinner>
   </div>
 </ng-container>
+
+<!--Chargement liée au chargement des données graphique du mois en cours -->
+<ng-container  *ngIf="isActualStatisticalMonthLoading$ | async as isActualStatisticalMonthLoading">
+  <!--Loading-->
+  <div class="fixed flex align-items-center justify-content-center top-0 left-0 w-full h-screen bg-black-alpha-70 z-2">
+    <p-progressSpinner></p-progressSpinner>
+  </div>
+</ng-container>

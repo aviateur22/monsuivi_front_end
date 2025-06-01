@@ -18,6 +18,14 @@ export default {
     url: 'choix-graphique-statistique',
     title: `${environment.main_page_title} | Graphique des achats et ventes`
   },
+  actualMonthGraphic: {
+    url: 'graphique/mois-en-cours',
+    title: `${environment.main_page_title} | Graphique - mois en cours`
+  },
+  actualYearGraphic: {
+    url: 'graphique/année-en-cours',
+    title: `${environment.main_page_title} | Graphique - année en cours`
+  },
   soldAndBuyProductQuantityByCategoryForOneMonth: {
     url: 'quantite-achat-vente-produit-par-categorie-mois',
     title: `${environment.main_page_title} | Graphique des achats et ventes`

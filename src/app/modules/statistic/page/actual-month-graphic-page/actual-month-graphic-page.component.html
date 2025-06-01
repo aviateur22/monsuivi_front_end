@@ -1,0 +1,22 @@
+<app-main-container>
+  <div class="w-full">
+    <header class="py-6 flex w-full justify-content-center">
+      <h2 class="text-center">Statistique du mois</h2>
+    </header>
+    <div class="flex flex-column w-full align-items-center justify-content-center
+    md:flex-row md:justify-content-between md:flex-wrap md:gap-1 md:row-gap-1 md:p-1">
+    <!-- Données prix vente par catégorie et mois -->
+    <app-doughnut-chart class="md:w-5 h-28rem" [dataObservable$]="buyProductPriceByCategoryAndMonth$" dataSymbol="€"></app-doughnut-chart>
+
+    <!-- Données prix achat par catégorie et mois-->
+    <app-doughnut-chart class="md:w-5  h-28rem" [dataObservable$]="soldProductPriceByCategoryAndMonth$" dataSymbol="€"></app-doughnut-chart>
+
+    <!-- Données quantité vente par catégorie et mois -->
+    <app-doughnut-chart class="md:w-5  h-28rem" [dataObservable$]="soldProductQuantityByCategoryAndMonth$"></app-doughnut-chart>
+
+    <!-- Données quantité achat par catégorie et mois-->
+    <app-doughnut-chart class="md:w-5  h-28rem" [dataObservable$]="buyProductQuantityByCategoryAndMonth$"></app-doughnut-chart>
+
+    </div>
+  </div>
+</app-main-container>
