@@ -36,6 +36,12 @@ export default {
   },
   getSoldAndBuyProductPriceByYear: {
     url: `${environment.api_base}/charts/product-price-by-year/seller/{sellerId}/year/{year}`
+  },
+  getSoldAndBuyProductQuantityByMonth: {
+    url: `${environment.api_base}/charts/product-quantity-by-month/seller/{sellerId}/month/{month}/year/{year}`
+  },
+  getSoldAndBuyProductPriceByMonth: {
+    url: `${environment.api_base}/charts/product-price-by-month/seller/{sellerId}/month/{month}/year/{year}`
   }
 
 }

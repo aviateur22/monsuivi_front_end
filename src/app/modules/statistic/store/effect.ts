@@ -33,10 +33,12 @@ export class StatisticalEffect {
       mergeMap(({sellerId, month, year})=>
         forkJoin({
           prices: this._statisticService.getSoldAndBuyProductPriceByCategoryAndMonth(sellerId, month, year),
-          quantities:this._statisticService.getSoldAndBuyProductQuantityByCategoryAndMonth(sellerId, month, year)
+          quantities:this._statisticService.getSoldAndBuyProductQuantityByCategoryAndMonth(sellerId, month, year),
+          totalPrices: this._statisticService.getSoldAndBuyProductPriceByMonth(sellerId, month, year),
+          totalQuantities: this._statisticService.getSoldAndBuyProductQuantityByMonth(sellerId, month, year)
         }).pipe(
-          switchMap(({prices, quantities})=>[
-            statisticAction.getActualMonthDataActionComplete({prices: prices, quantities: quantities}),
+          switchMap(({prices, quantities,totalPrices, totalQuantities})=>[
+            statisticAction.getActualMonthDataActionComplete({prices: prices, quantities: quantities, totalPrices: totalPrices, totalQuantities: totalQuantities}),
             shareAction.displayMessageAction({message:{isOnError: false, title: 'Données mois en cours' , message: ""}})
           ]),
           catchError(error=> of(

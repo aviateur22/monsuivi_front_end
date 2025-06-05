@@ -5,6 +5,13 @@
     </header>
     <div class="flex flex-column w-full align-items-center justify-content-center
     md:flex-row md:justify-content-between md:flex-wrap md:gap-1 md:row-gap-1 md:p-1">
+
+    <!-- Données prix vente/achat tout catégorie confondue -->
+    <app-stacked-bar-chart class="md:w-5 h-28rem" [dataObservable$]="soldAndBuyProductPriceByMonth$" dataSymbol="€"></app-stacked-bar-chart>
+
+    <!-- Données quantité vente/achat tout catégorie confondue -->
+    <app-stacked-bar-chart class="md:w-5 h-28rem" [dataObservable$]="soldAndBuyProductQuantityByMonth$"  [yStepSize]=1></app-stacked-bar-chart>
+
     <!-- Données prix vente par catégorie et mois -->
     <app-doughnut-chart class="md:w-5 h-28rem" [dataObservable$]="buyProductPriceByCategoryAndMonth$" dataSymbol="€"></app-doughnut-chart>
 

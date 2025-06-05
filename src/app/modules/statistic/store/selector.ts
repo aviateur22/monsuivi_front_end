@@ -7,4 +7,6 @@ export const selectBuyProductQuantityByCategoryAndMonth = createSelector(selecto
 export const selectSoldProductQuantityByCategoryAndMonth = createSelector(selector, (state)=>state.actualMonthDataAction.soldProductQuantityByCategoryAndMonth);
 export const selectBuyProductPriceByCategoryAndMonth = createSelector(selector, (state)=>state.actualMonthDataAction.buyProductPriceByCategoryAndMonth);
 export const selectSoldProductPriceByCategoryAndMonth = createSelector(selector, (state)=>state.actualMonthDataAction.soldProductPriceByCategoryAndMonth);
+export const selectSoldAndBuyProductPriceByMonth = createSelector(selector, (state)=>state.actualMonthDataAction.soldAndBuyProductPriceByMonth);
+export const selectSoldAndBuyProductQuantityByMonth = createSelector(selector, (state)=>state.actualMonthDataAction.soldAndBuyProductQuantityByMonth);
 export const selectIsActualMonthDataLoading = createSelector(selector, (state)=>state.actualMonthDataAction.isLoading);

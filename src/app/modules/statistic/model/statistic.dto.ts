@@ -46,3 +46,17 @@ export interface ISoldAndBuyProductQuantityByYearDto<T> {
 export interface ISoldAndBuyProductPriceByYearDto<T> {
   stackedBarChartProductPrice: IStackedBarDataDto<T>
 }
+
+/**
+ * Prix total achat et vente pour un mois toutz catégorie  confondue
+ */
+export interface ISoldAndBuyProductPriceByMonthDto<T> {
+  stackedBarChartDataProductPrice: IStackedBarDataDto<T>
+}
+
+/**
+ * Quantité achat et vente pour un mois toute catégorie  confondue
+ */
+export interface ISoldAndBuyProductQuantityByMonthDto<T> {
+  stackedBarChartDataProductQuantity: IStackedBarDataDto<T>
+}

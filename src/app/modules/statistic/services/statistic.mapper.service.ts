@@ -2,8 +2,8 @@ import { Injectable } from "@angular/core";
 import { IDoughnutDataDto } from "../model/doughnut.dto";
 import { DoughnutData, DoughnutDataset, StackedBarData, StackedBarDataset } from "../model/graphic.model";
 import { IStackedBarDataDto } from "../model/stacked-bar.dto";
-import { ISoldAndBuyProductPriceByCategoryAndMonthDto, ISoldAndBuyProductQuantityByCategoryAndMonthDto } from "../model/statistic.dto";
-import { SoldAndBuyProductPriceByCategoryAndMonth, SoldAndBuyProductQuantityByCategoryAndMonth } from "../model/statistic.model";
+import { ISoldAndBuyProductPriceByCategoryAndMonthDto, ISoldAndBuyProductPriceByMonthDto, ISoldAndBuyProductQuantityByCategoryAndMonthDto, ISoldAndBuyProductQuantityByMonthDto } from "../model/statistic.dto";
+import { SoldAndBuyProductPriceByCategoryAndMonth, SoldAndBuyProductPriceByMonth, SoldAndBuyProductQuantityByCategoryAndMonth, SoldAndBuyProductQuantityByMonth } from "../model/statistic.model";
 
 @Injectable({
   providedIn: "root"
@@ -57,6 +57,8 @@ export class StatisticMapperService {
    * @returns {StackedBarData}
    */
   mapToStackedBarData<T>(dto: IStackedBarDataDto<T>): StackedBarData<T> {
+     console.log(`[StatisticMapperService] - [mapToStackedBarData]`);
+     console.log(dto)
 
     // Labels du graphique de type StackedBar
     let labels = dto.data.data.axisLabels;
@@ -99,4 +101,32 @@ export class StatisticMapperService {
       this.mapToDoughnutDataModel(dto.doughnutChartDataProductBuy)
     );
   }
+
+  /**
+   * Map un ISoldAndBuyProductPriceByMonthDto vers un model SoldAndBuyProductPriceByMonth
+   * @param {ISoldAndBuyProductPriceByMonthDto} dto
+   * @returns {SoldAndBuyProductPriceByMonth}
+   */
+  mapToSoldAndBuyProductPriceByMonth<T>(dto: ISoldAndBuyProductPriceByMonthDto<T>): SoldAndBuyProductPriceByMonth<T> {
+    console.log(`[StatisticMapperService] - [mapToSoldAndBuyProductPriceByMonth]`);
+    console.log(dto)
+    console.log(dto.stackedBarChartDataProductPrice)
+
+    return new SoldAndBuyProductPriceByMonth(
+      this.mapToStackedBarData(dto.stackedBarChartDataProductPrice)
+    )
+  }
+
+  /**
+   * Map un ISoldAndBuyProductPriceByMonthDto vers un model SoldAndBuyProductPriceByMonth
+   * @param {ISoldAndBuyProductPriceByMonthDto} dto
+   * @returns {SoldAndBuyProductPriceByMonth}
+   */
+  mapToSoldAndBuyProductQuantityByMonth<T>(dto: ISoldAndBuyProductQuantityByMonthDto<T>): SoldAndBuyProductQuantityByMonth<T> {
+    return new SoldAndBuyProductQuantityByMonth(
+      this.mapToStackedBarData(dto.stackedBarChartDataProductQuantity)
+    )
+  }
+
+
 }

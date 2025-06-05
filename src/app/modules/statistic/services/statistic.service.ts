@@ -1,9 +1,9 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { map, Observable } from "rxjs";
-import { ISoldAndBuyProductPriceByCategoryAndMonthDto, ISoldAndBuyProductQuantityByCategoryAndMonthDto } from "../model/statistic.dto";
+import { ISoldAndBuyProductPriceByCategoryAndMonthDto, ISoldAndBuyProductPriceByMonthDto, ISoldAndBuyProductQuantityByCategoryAndMonthDto, ISoldAndBuyProductQuantityByMonthDto } from "../model/statistic.dto";
 import apiUrl from "../../../../misc/api.url";
-import { SoldAndBuyProductPriceByCategoryAndMonth, SoldAndBuyProductQuantityByCategoryAndMonth } from "../model/statistic.model";
+import { SoldAndBuyProductPriceByCategoryAndMonth, SoldAndBuyProductPriceByMonth, SoldAndBuyProductQuantityByCategoryAndMonth, SoldAndBuyProductQuantityByMonth } from "../model/statistic.model";
 import { StatisticMapperService } from "./statistic.mapper.service";
 
 @Injectable({
@@ -14,7 +14,7 @@ export class StatisticService {
   constructor(private _http: HttpClient, private _mapper: StatisticMapperService){}
 
   /**
-   * Récupération des données
+   * Récupération des quantités de vente et achat par catégorie et pour un mois
    * @param {string} sellerId
    * @param {number} month
    * @param {number} year
@@ -50,4 +50,43 @@ export class StatisticService {
     map(res=> this._mapper.mapToSoldAndBuyProductPriceByCategoryAndMonth(res))
    );
  }
+
+ /**
+  * Récupération des données prix vente et achat toutes catégorie confondue pour 1 mois
+  * @param {string} sellerId
+  * @param {number} month
+  * @param {number} year
+  * @returns {Observable<SoldAndBuyProductPriceByMonth<number>>}
+  */
+ getSoldAndBuyProductPriceByMonth(sellerId: string, month: number, year: number): Observable<SoldAndBuyProductPriceByMonth<number>> {
+  console.log(`[StatisticService] - getSoldAndBuyProductPriceByMonth`);
+   let url = apiUrl.getSoldAndBuyProductPriceByMonth.url
+   .replace('{sellerId}', sellerId)
+   .replace('{month}', month.toString())
+   .replace('{year}', year.toString())
+
+   return this._http.get<ISoldAndBuyProductPriceByMonthDto<number>>(url).pipe(
+    map(res=> this._mapper.mapToSoldAndBuyProductPriceByMonth(res))
+   );
+ }
+
+ /**
+  * Récupération des quantités vente et achat toutes catégorie confondue pour 1 mois
+  * @param {string} sellerId
+  * @param {number} month
+  * @param {number} year
+  * @returns {Observable<SoldAndBuyProductQuantityByMonth<number>>}
+  */
+  getSoldAndBuyProductQuantityByMonth(sellerId: string, month: number, year: number): Observable<SoldAndBuyProductQuantityByMonth<number>> {
+    console.log(`[StatisticService] - getSoldAndBuyProductQuantityByMonth`);
+    let url = apiUrl.getSoldAndBuyProductQuantityByMonth.url
+    .replace('{sellerId}', sellerId)
+    .replace('{month}', month.toString())
+    .replace('{year}', year.toString())
+
+   return this._http.get<ISoldAndBuyProductQuantityByMonthDto<number>>(url).pipe(
+    map(res=> this._mapper.mapToSoldAndBuyProductQuantityByMonth(res))
+   );
+ }
+
 }

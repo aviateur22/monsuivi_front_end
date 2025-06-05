@@ -9,7 +9,9 @@ export const initialStatisticState: IStatisticState = {
     buyProductPriceByCategoryAndMonth: null,
     soldProductPriceByCategoryAndMonth: null,
     buyProductQuantityByCategoryAndMonth: null,
-    soldProductQuantityByCategoryAndMonth: null
+    soldProductQuantityByCategoryAndMonth: null,
+    soldAndBuyProductPriceByMonth: null,
+    soldAndBuyProductQuantityByMonth: null
   }
 }
 
@@ -18,7 +20,7 @@ export const reducers = createReducer(
   on(statisticAction.getActualMonthDataAction, (state)=>({...state, actualMonthDataAction: {
     ...state.actualMonthDataAction, isLoading: true
   }})),
-  on(statisticAction.getActualMonthDataActionComplete, (state, {prices, quantities})=>({
+  on(statisticAction.getActualMonthDataActionComplete, (state, {prices, quantities, totalPrices, totalQuantities})=>({
     ...state, actualMonthDataAction: {
       ...state.actualMonthDataAction,
       isLoading: false,
@@ -26,7 +28,10 @@ export const reducers = createReducer(
       buyProductPriceByCategoryAndMonth: prices.doughnutChartDataProductBuy,
       soldProductPriceByCategoryAndMonth: prices.doughnutChartDataProductSold,
       buyProductQuantityByCategoryAndMonth: quantities.doughnutChartDataProductBuy,
-      soldProductQuantityByCategoryAndMonth: quantities.doughnutChartDataProductSold
+      soldProductQuantityByCategoryAndMonth: quantities.doughnutChartDataProductSold,
+      soldAndBuyProductPriceByMonth: totalPrices.stackedBarChartProductPrice,
+      soldAndBuyProductQuantityByMonth: totalQuantities.stackedBarChartProductQunatity
+
     }
   })),
   on(statisticAction.getActualMonthDataActionFailed, (state)=>({

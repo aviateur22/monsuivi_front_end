@@ -26,6 +26,7 @@ export class DoughnutChartComponent implements OnInit {
   constructor(private cd: ChangeDetectorRef) {}
 
   ngOnInit() {
+    // Récupération des symbole pour ajout si nécessaire
     const dataSymbol = this.dataSymbol;
 
     this.dataObservable$.subscribe(result=>{

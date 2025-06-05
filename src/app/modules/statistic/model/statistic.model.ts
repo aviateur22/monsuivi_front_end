@@ -57,3 +57,21 @@ export class SoldAndBuyProductPriceByYear<T> {
     public readonly  stackedBarChartProductPrice: StackedBarData<T>
   ) {}
 }
+
+/**
+ * Quantité vente et achat pour un mois
+ */
+export class SoldAndBuyProductQuantityByMonth<T> {
+  constructor(
+    public readonly  stackedBarChartProductQunatity: StackedBarData<T>,
+  ) {}
+}
+
+/**
+ * Prix total vente et achat pour 1 mois
+ */
+export class SoldAndBuyProductPriceByMonth<T> {
+  constructor(
+    public readonly  stackedBarChartProductPrice: StackedBarData<T>
+  ) {}
+}
