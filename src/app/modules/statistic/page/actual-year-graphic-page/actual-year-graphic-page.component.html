@@ -1,23 +1,18 @@
 <app-main-container>
   <div class="w-full">
     <header class="py-6 flex w-full justify-content-center">
-      <h2 class="text-center">Statistique de l'année</h2>
+      <h2 class="text-center">Statistique année en cours</h2>
     </header>
     <div class="flex flex-column w-full align-items-center justify-content-center
-    md:flex-row md:justify-content-between md:flex-wrap">
-    <!-- Données vente par catégorie et année en cours-->
-    <app-doughnut-chart></app-doughnut-chart>
+    md:flex-row md:justify-content-center md:flex-wrap md:gap-1 md:row-gap-1 md:p-1">
 
-    <!-- Données achat par catégorie et année en cours-->
-    <app-doughnut-chart></app-doughnut-chart>
+      <!-- Données prix vente/achat tout catégorie confondue -->
+      <app-stacked-bar-chart class="md:w-5 h-28rem" [dataObservable$]="soldAndBuyProductPriceByYear$" dataSymbol="€"></app-stacked-bar-chart>
 
-
-    <!-- Données prix achat / vente année en cours-->
-    <app-doughnut-chart></app-doughnut-chart>
-
-    <!-- Données quantité achat / vente année en cours-->
-    <app-doughnut-chart></app-doughnut-chart>
+      <!-- Données quantité vente/achat tout catégorie confondue -->
+      <app-stacked-bar-chart class="md:w-5 h-28rem" [dataObservable$]="soldAndBuyProductQuantityByYear$"  [yStepSize]=1></app-stacked-bar-chart>
 
     </div>
   </div>
 </app-main-container>
+

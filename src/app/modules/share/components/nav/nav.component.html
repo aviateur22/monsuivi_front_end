@@ -1,5 +1,7 @@
 <nav>
+  <!--Nav horizontal-->
   <div class="w-full flex align-content-between justify-content-center border-bottom-1">
+    <div class="flex">
       <!--LOGO - APP-->
       <div class="p-4 navbar-logo">
         <button (click)="displayMenuOverlay()" class="text-3xl font-bold appearance-none">Cbasic</button>
@@ -18,6 +20,7 @@
           <a class="link" [routerLink]=graphicalStatistic routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Données stat</a>
         </li>
       </ul>
+    </div>
   </div>
 </nav>
 

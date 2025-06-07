@@ -10,3 +10,11 @@ export interface IActualMonthDataAction {
   soldAndBuyProductPriceByMonth: StackedBarData<number> | null,
   soldAndBuyProductQuantityByMonth: StackedBarData<number> | null
 }
+
+export interface IActualYearDataAction {
+  isLoading: boolean,
+  isSuccess: boolean,
+  soldAndBuyProductPriceByYear: StackedBarData<number> | null,
+  soldAndBuyProductQuantityByYear: StackedBarData<number> | null
+}
+

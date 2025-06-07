@@ -23,7 +23,6 @@ export class MapperService {
         const formData: FormData = new FormData();
         formData.append('productName', data.get('productName')?.value);
         formData.append('productPurchasePrice', data.get('productPurchasePrice')?.value);
-        formData.append('productDesiredSoldPrice', data.get('productDesiredSoldPrice')?.value);
         formData.append('productCategory', data.get('productCategory')?.value.code);
         formData.append('sellerId', sellerId.toString());
         formData.append('uploadProductImage', selectProductImage);

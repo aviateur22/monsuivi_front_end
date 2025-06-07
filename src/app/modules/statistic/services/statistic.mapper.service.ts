@@ -2,8 +2,8 @@ import { Injectable } from "@angular/core";
 import { IDoughnutDataDto } from "../model/doughnut.dto";
 import { DoughnutData, DoughnutDataset, StackedBarData, StackedBarDataset } from "../model/graphic.model";
 import { IStackedBarDataDto } from "../model/stacked-bar.dto";
-import { ISoldAndBuyProductPriceByCategoryAndMonthDto, ISoldAndBuyProductPriceByMonthDto, ISoldAndBuyProductQuantityByCategoryAndMonthDto, ISoldAndBuyProductQuantityByMonthDto } from "../model/statistic.dto";
-import { SoldAndBuyProductPriceByCategoryAndMonth, SoldAndBuyProductPriceByMonth, SoldAndBuyProductQuantityByCategoryAndMonth, SoldAndBuyProductQuantityByMonth } from "../model/statistic.model";
+import { ISoldAndBuyProductPriceByCategoryAndMonthDto, ISoldAndBuyProductPriceByMonthDto, ISoldAndBuyProductPriceByYearDto, ISoldAndBuyProductQuantityByCategoryAndMonthDto, ISoldAndBuyProductQuantityByMonthDto, ISoldAndBuyProductQuantityByYearDto } from "../model/statistic.dto";
+import { SoldAndBuyProductPriceByCategoryAndMonth, SoldAndBuyProductPriceByMonth, SoldAndBuyProductPriceByYear, SoldAndBuyProductQuantityByCategoryAndMonth, SoldAndBuyProductQuantityByMonth, SoldAndBuyProductQuantityByYear } from "../model/statistic.model";
 
 @Injectable({
   providedIn: "root"
@@ -114,7 +114,7 @@ export class StatisticMapperService {
 
     return new SoldAndBuyProductPriceByMonth(
       this.mapToStackedBarData(dto.stackedBarChartDataProductPrice)
-    )
+    );
   }
 
   /**
@@ -125,8 +125,30 @@ export class StatisticMapperService {
   mapToSoldAndBuyProductQuantityByMonth<T>(dto: ISoldAndBuyProductQuantityByMonthDto<T>): SoldAndBuyProductQuantityByMonth<T> {
     return new SoldAndBuyProductQuantityByMonth(
       this.mapToStackedBarData(dto.stackedBarChartDataProductQuantity)
-    )
+    );
   }
 
+  /**
+   *  Map un ISoldAndBuyProductPriceByYearDto vers un model mapToSoldAndBuyProductPriceByYear
+   * @param {ISoldAndBuyProductPriceByYearDto} dto
+   * @returns {SoldAndBuyProductPriceByYear}
+   */
+    mapToSoldAndBuyProductPriceByYear<T>(dto: ISoldAndBuyProductPriceByYearDto<T>): SoldAndBuyProductPriceByYear<T> {
+    return new SoldAndBuyProductPriceByYear(
+      this.mapToStackedBarData(dto.stackedBarChartProductPrice)
+    );
+  }
+
+
+  /**
+   * Map un ISoldAndBuyProductPriceByYearDto vers un model mapToSoldAndBuyProductPriceByYear
+   * @param {ISoldAndBuyProductPriceByYearDto} dto
+   * @returns {SoldAndBuyProductPriceByYear}
+   */
+    mapToSoldAndBuyProductQuantityByYear<T>(dto: ISoldAndBuyProductQuantityByYearDto<T>): SoldAndBuyProductQuantityByYear<T> {
+    return new SoldAndBuyProductQuantityByYear(
+      this.mapToStackedBarData(dto.stackedBarChartDataProductQuantity)
+    );
+  }
 
 }

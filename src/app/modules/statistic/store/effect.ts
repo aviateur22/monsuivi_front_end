@@ -49,5 +49,27 @@ export class StatisticalEffect {
         )
       )
     )
-  )
+  );
+
+    getActualYearDataActions$ = createEffect(()=>
+    this._action$.pipe(
+      ofType(statisticAction.getActualYearDataAction),
+      mergeMap(({sellerId, year})=>
+        forkJoin({
+          totalPrices: this._statisticService.getSoldAndBuyProductPriceByYear(sellerId, year),
+          totalQuantities: this._statisticService.getSoldAndBuyProductQuantityByYear(sellerId, year)
+        }).pipe(
+          switchMap(({ totalPrices, totalQuantities })=>[
+            statisticAction.getActualYearDataActionComplete({ totalPrices: totalPrices, totalQuantities: totalQuantities }),
+            shareAction.displayMessageAction({message:{isOnError: false, title: 'Données année en cours' , message: ""}})
+          ]),
+          catchError(error=> of(
+            statisticAction.getActualMonthDataActionFailed(),
+            shareAction.displayMessageAction({
+            message: {title: 'Données année en cours', message: error.error.error, isOnError: true}
+          })))
+        )
+      )
+    )
+  );
 }

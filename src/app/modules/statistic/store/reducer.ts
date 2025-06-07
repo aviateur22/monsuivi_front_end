@@ -3,6 +3,9 @@ import { IStatisticState } from "./state";
 import * as statisticAction from "./action";
 
 export const initialStatisticState: IStatisticState = {
+  /**
+   * Mois en cours
+   */
   actualMonthDataAction: {
     isLoading: false,
     isSuccess: false,
@@ -12,6 +15,16 @@ export const initialStatisticState: IStatisticState = {
     soldProductQuantityByCategoryAndMonth: null,
     soldAndBuyProductPriceByMonth: null,
     soldAndBuyProductQuantityByMonth: null
+  },
+
+  /**
+   * Année en cours
+   */
+  actualYearDataAction: {
+    isLoading: false,
+    isSuccess: false,
+    soldAndBuyProductPriceByYear: null,
+    soldAndBuyProductQuantityByYear: null
   }
 }
 
@@ -37,6 +50,23 @@ export const reducers = createReducer(
   on(statisticAction.getActualMonthDataActionFailed, (state)=>({
     ...state, actualMonthDataAction: {
       ...state.actualMonthDataAction, isLoading: false
+    }
+  })),
+    on(statisticAction.getActualYearDataAction, (state)=>({...state, actualYearDataAction: {
+    ...state.actualYearDataAction, isLoading: true
+  }})),
+   on(statisticAction.getActualYearDataActionComplete, (state, { totalPrices, totalQuantities })=>({
+    ...state, actualYearDataAction: {
+      ...state.actualYearDataAction,
+      isLoading: false,
+      isSuccess: true,
+      soldAndBuyProductPriceByYear: totalPrices.stackedBarChartProductPrice,
+      soldAndBuyProductQuantityByYear: totalQuantities.stackedBarChartProductQuantity
+    }
+  })),
+    on(statisticAction.getActualYearDataActionFailed, (state)=>({
+    ...state, actualYearDataAction: {
+      ...state.actualYearDataAction, isLoading: false
     }
   }))
 )

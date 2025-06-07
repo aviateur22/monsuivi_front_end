@@ -22,7 +22,6 @@ export class AddProductPageComponent {
     selectedImage:[null, Validators.required],
     productName: ['', Validators.required],
     productPurchasePrice: ['', [Validators.required, validateNumber]],
-    productDesiredSoldPrice: ['', [Validators.required, validateNumber]],
     productCategory: ['', Validators.required]
   })
 

@@ -1,5 +1,6 @@
-import { IActualMonthDataAction } from "./model";
+import { IActualMonthDataAction, IActualYearDataAction } from "./model";
 
 export interface IStatisticState {
-  actualMonthDataAction: IActualMonthDataAction
+  actualMonthDataAction: IActualMonthDataAction,
+  actualYearDataAction: IActualYearDataAction,
 }

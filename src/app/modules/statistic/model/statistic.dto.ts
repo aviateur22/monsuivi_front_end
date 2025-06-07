@@ -37,7 +37,7 @@ export interface ISoldAndBuyProductQuantityByCategoryAndYearDto<T> {
  * Quantité vente et achat par année
  */
 export interface ISoldAndBuyProductQuantityByYearDto<T> {
-  stackedBarChartProductPrice: IStackedBarDataDto<T>
+  stackedBarChartDataProductQuantity: IStackedBarDataDto<T>
 }
 
 /**

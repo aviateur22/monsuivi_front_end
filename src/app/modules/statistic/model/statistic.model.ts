@@ -45,7 +45,7 @@ export class SoldAndBuyProductQuantityByCategoryAndYear<T> {
  */
 export class SoldAndBuyProductQuantityByYear<T> {
   constructor(
-    public readonly  stackedBarChartProductPrice: StackedBarData<T>,
+    public readonly  stackedBarChartProductQuantity: StackedBarData<T>,
   ) {}
 }
 
