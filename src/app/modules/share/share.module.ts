@@ -16,6 +16,7 @@ import { NavComponent } from './components/nav/nav.component';
 import { RouterModule } from '@angular/router';
 import { TakePhotoOnMobileComponent } from './components/take-photo-on-mobile/take-photo-on-mobile.component';
 import { LoadingComponent } from './components/loading/loading.component';
+import { MainContainerComponent } from './components/main-container/main-container.component';
 
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
@@ -24,7 +25,8 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     AddFileComponent,
     NavComponent,
     TakePhotoOnMobileComponent,
-    LoadingComponent
+    LoadingComponent,
+    MainContainerComponent
   ],
   imports: [
     AngularCommonModule,
@@ -46,7 +48,8 @@ exports: [
     TakePhotoOnMobileComponent,
     NavComponent,
     SwipeLeftDirective,
-    LoadingComponent
+    LoadingComponent,
+    MainContainerComponent
   ]
 })
 export class ShareModule { }

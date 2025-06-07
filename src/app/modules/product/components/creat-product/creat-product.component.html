@@ -35,30 +35,6 @@
     </div>
   </div>
 
-  <!--productDesiredSoldPrice-->
-  <div class="flex flex-column pb-4">
-    <label class="text-sm text-color-secondary" for="productDesiredSoldPrice">Prix de vente souhaité</label>
-    <input pInputText formControlName="productDesiredSoldPrice" id="productDesiredSoldPrice" type="number" placeholder="Prix de vente souhaité">
-
-    <!--Message d'erreur-->
-    <div class="min-h-0">
-      <ng-container *ngIf="fg.get('productDesiredSoldPrice')?.invalid && (fg.get('productDesiredSoldPrice')?.dirty || fg.get('productDesiredSoldPrice')?.touched)">
-
-        <!--message d'erreur -->
-        <p-message  class="p-message" severity="error" text="Le prix de vente souhaité est obligatoire"
-          *ngIf="fg.get('productDesiredSoldPrice')?.hasError?.('required')">
-        </p-message>
-
-        <!--message d'erreur -->
-        <p-message  class="p-message" severity="error" text="Le prix d'achat à un format invalide"
-          *ngIf="fg.get('productDesiredSoldPrice')?.hasError?.('validateNumber')">
-        </p-message>
-
-
-      </ng-container>
-    </div>
-  </div>
-
   <!--productCategory-->
   <div class="flex flex-column pb-4">
     <label class="text-sm text-color-secondary" for="productCategory">Catégory du produit</label>
@@ -76,16 +52,8 @@
     </div>
   </div>
 
-    <ng-container *ngIf="isOnMobile; else selectImage">
-      <!--Photo a prendre avec un mobile-->
-      <app-take-photo-on-mobile [fg]="fg" (selectedFileEmitter)="selectImageEmit($event)" inputFileFormControlName="selectedImage"></app-take-photo-on-mobile>
-    </ng-container>
-
-    <ng-template #selectImage>
-      <!--Image-->
-      <app-add-file [fg]="fg" (selectedFileEmitter)="selectImageEmit($event)" inputFileFormControlName="selectedImage"></app-add-file>
-    </ng-template>
-
+  <!--Photo a prendre avec un mobile-->
+  <app-take-photo-on-mobile [fg]="fg" (selectedFileEmitter)="selectImageEmit($event)" inputFileFormControlName="selectedImage"></app-take-photo-on-mobile>
 
 
 </div>

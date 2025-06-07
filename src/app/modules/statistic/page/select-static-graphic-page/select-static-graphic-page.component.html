@@ -1,0 +1,15 @@
+<app-main-container>
+  <div class="flex flex-column w-full h-full justify-content-center align-items-center">
+    <header class="py-6 flex w-full justify-content-center">
+      <h2 class="text-center">Sélectionner la période souhaitée</h2>
+    </header>
+    <div class="flex flex-column w-full justify-content-center h-full align-items-center
+    md:flex-row md:flex-row md:flex-wrap">
+      <!-- Button mois en cours-->
+      <app-select-button buttonLabel={{actualMonth}} buttonExplanation="Mois en cours" (dataToDisplayEmitter)="displayActualMonthGraphic()"></app-select-button>
+
+      <!-- Button année en cours-->
+      <app-select-button buttonLabel={{year}} buttonExplanation="Année en cours" (dataToDisplayEmitter)="displayActualYearGraphic()"></app-select-button>
+    </div>
+  </div>
+</app-main-container>

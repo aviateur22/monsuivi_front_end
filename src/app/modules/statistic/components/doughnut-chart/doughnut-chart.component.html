@@ -1,0 +1,8 @@
+<div class="flex flex-column p-4 shadow-1 w-full h-full	justify-content-between">
+  <!--Description du graphique-->
+    <h3>{{graphDescription}}</h3>
+    <!-- Graphique -->
+    <div class="card flex justify-content-center">
+        <p-chart type="doughnut" [data]="data" [options]="options" class="w-full md:w-[30rem]" />
+    </div>
+</div>

@@ -10,7 +10,6 @@ import { Observable } from 'rxjs';
 import { validateNumber } from '../../validators/input.validator';
 import { IProductCategoryIhmDto } from '../../model/product.dto';
 import { UserService } from '../../../../users/service/user.service';
-import { MobileDeviceService } from '../../../../mobile_device/service/mobile-device.service';
 
 @Component({
   selector: 'app-add-product-page',
@@ -23,7 +22,6 @@ export class AddProductPageComponent {
     selectedImage:[null, Validators.required],
     productName: ['', Validators.required],
     productPurchasePrice: ['', [Validators.required, validateNumber]],
-    productDesiredSoldPrice: ['', [Validators.required, validateNumber]],
     productCategory: ['', Validators.required]
   })
 

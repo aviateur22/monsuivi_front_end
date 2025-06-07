@@ -1,10 +1,10 @@
 <div  class="flex flex-column pb-4" [formGroup]="fg" >
   <div>
-    <label class="text-sm text-color-secondary" [for]="inputFileFormControlName">Prendre une photo</label>
+    <label class="text-sm text-color-secondary" [for]="inputFileFormControlName">Image du produit</label>
 
     <!--Button container prendre une photo-->
     <div class=" pt-4 flex justify-content-center">
-      <p-button [outlined]="true" severity="info" label="Prendre une photo" (click)="inputPhoto.click()"/>
+      <p-button [outlined]="true" severity="info" label="Ajouter une photo" (click)="inputPhoto.click()"/>
     </div>
 
       <!-- Prise de photo -->
@@ -14,7 +14,6 @@
       [id]="inputFileFormControlName"
       accept="image/*"
       type="file"
-      capture="environment"
       (change)="loadPhoto($event)"
       style="display:none;" />
 

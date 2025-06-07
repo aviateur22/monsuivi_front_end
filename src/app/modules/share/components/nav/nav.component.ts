@@ -11,6 +11,7 @@ export class NavComponent {
   addProductLink: string = pagesInformations.addProduct.url;
   homeLink: string = pagesInformations.home.url;
   sellerProducts = pagesInformations.sellerProducts.url;
+  graphicalStatistic =  pagesInformations.selectStatisticalGraphic.url;
 
   isMenuVisible:boolean = false;
 

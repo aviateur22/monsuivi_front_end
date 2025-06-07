@@ -18,3 +18,7 @@
   max-width: 1024px;
 }
 
+:root {
+  /* Hauteur navbar*/
+  --nav_height: 89px;
+}

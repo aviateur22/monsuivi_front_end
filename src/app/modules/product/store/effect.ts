@@ -38,7 +38,7 @@ export class ProductEffect {
         this._productService.getSellerProducts(sellerId).pipe(
           switchMap(result=>[
             productAction.getSellerProductsActionComplete({products: { isLoading:false, isSuccess: true, summarizeProducts: result.products}}),
-            shareAction.displayMessageAction({message:{isOnError: false, title: 'Vos propduits' , message: result.responseMessage}})
+            shareAction.displayMessageAction({message:{isOnError: false, title: 'Vos produits' , message: result.responseMessage}})
           ]),
           catchError(error=> of(
             productAction.getSellerProductsActionComplete({products: { isLoading:false, isSuccess: false, summarizeProducts: []}}),

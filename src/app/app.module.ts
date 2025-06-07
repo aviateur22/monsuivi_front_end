@@ -18,6 +18,7 @@ import { ShareModule } from "./modules/share/share.module";
 import { UserService } from "./users/service/user.service";
 
 import { ToastModule } from 'primeng/toast';
+import { StatisticModule } from "./modules/statistic/statistic.module";
 
 export function initialize(userService: UserService) {
   return ()=>{
@@ -35,6 +36,7 @@ export function initialize(userService: UserService) {
     ShareModule,
     AuthorizeModule,
     AppRoutingModule,
+    StatisticModule,
     ToastModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([
