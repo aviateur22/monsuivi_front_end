@@ -6,6 +6,7 @@ import { provideHttpClient } from "@angular/common/http";
 import { EffectsModule } from "@ngrx/effects";
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { StoreModule } from "@ngrx/store";
+import Lara from '@primeng/themes/lara';
 
 import { reducers } from "./store/state";
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -19,6 +20,8 @@ import { UserService } from "./users/service/user.service";
 
 import { ToastModule } from 'primeng/toast';
 import { StatisticModule } from "./modules/statistic/statistic.module";
+import { provideAnimationsAsync } from "@angular/platform-browser/animations/async";
+import { providePrimeNG } from "primeng/config";
 
 export function initialize(userService: UserService) {
   return ()=>{
@@ -61,7 +64,13 @@ export function initialize(userService: UserService) {
       useFactory: initialize,
       deps: [UserService],
       multi: true
-    }
+    },
+    provideAnimationsAsync(),
+    providePrimeNG({
+      theme: {
+        preset: Lara
+      }
+    })
   ],
   bootstrap: [AppComponent]
 })

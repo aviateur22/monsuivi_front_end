@@ -17,7 +17,7 @@ import { SummarizeProductComponent } from './components/summarize-product/summar
 import { ProductsPageComponent } from './pages/products-page/products-page.component';
 import { StatusPipe } from './pipe/status.pipe';
 import { FilterBarComponent } from './components/filter-bar/filter-bar.component';
-import { DetailProductPageComponent } from './pages/detail-product-page/detail-product-page.component';
+import { DetailProductComponent } from './components/detail-product/detail-product-page.component';
 
 import { MessageModule } from 'primeng/message';
 import { DropdownModule } from 'primeng/dropdown';
@@ -27,6 +27,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { DialogModule } from 'primeng/dialog';
 import { CardModule } from 'primeng/card';
 import { CheckboxModule } from 'primeng/checkbox';
+import { FilterProductsComponent } from './components/filter-products/filter-products.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { CheckboxModule } from 'primeng/checkbox';
     SummarizeProductComponent,
     ProductsPageComponent,
     FilterBarComponent,
-    DetailProductPageComponent
+    DetailProductComponent,
+    FilterProductsComponent
   ],
   imports: [
     CommonModule,
@@ -59,7 +61,7 @@ import { CheckboxModule } from 'primeng/checkbox';
     CheckboxModule
   ],
   exports: [
-    DetailProductPageComponent
+    DetailProductComponent
   ]
 })
 export class ProductModule { }
