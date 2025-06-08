@@ -1,7 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { IAppState } from '../../../../store/state';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { ProductDetail } from '../../model/product.model';
 import * as productSelector from '../../store/selector';
 import * as productAction from '../../store/action'
@@ -28,13 +28,17 @@ import { animate, style, transition, trigger } from '@angular/animations';
     ])
   ]
 })
-export class DetailProductPageComponent {
+export class DetailProductComponent implements OnInit, OnDestroy {
+  //
+  private destroy$ = new Subject<void>();
+
   /**
    * Donnée sur le produit
    */
   productDetail$: Observable<ProductDetail | null>;
   isProductDetailPopupVisible$: Observable<boolean>;
   isProductDetailLoading$: Observable<boolean>;
+
 
   /**
    * Données du produit a modifier
@@ -55,59 +59,89 @@ export class DetailProductPageComponent {
   // Utilisateur
   user = this._userService.getUser();
 
+  private productDetail: ProductDetail | null = null;
+
   constructor(private _store: Store<IAppState>, private _fb: FormBuilder, private _mapper: MapperService, private _userService: UserService) {
     this.productDetail$ = this._store.pipe(select(productSelector.productDetail));
     this.isProductDetailPopupVisible$ = this._store.pipe(select(productSelector.isProductDetailPopupVisible));
     this.isProductDetailLoading$ = this._store.pipe(select(productSelector.isProductDetailLoading));
   }
 
+  ngOnDestroy(): void {
+     this.destroy$.next();
+     this.destroy$.complete();
+  }
+
   ngOnInit() {
     // Réchargement utilisateur
     this._userService.loadUserFromStorage();
 
-    // Detail du produit
-    this.productDetail$.subscribe(productDetail=>{
-      this.updateProductFg.patchValue({
-        productName: productDetail?.productName,
-        productId: productDetail?.productId,
-        productPurchasePrice: productDetail?.productBuyPrice,
-        productSoldPrice: productDetail?.productSoldPrice,
-        productSoldDate: productDetail?.productSoldDay,
-        productBuyDate: productDetail?.productBuyDay,
-        productStatus: this._mapper.mapProductStatusToBoolean(productDetail?.productStatus)
-      });
 
-      if(productDetail)
-        this.imageUrl = apiUrl.streamImage.url.replace('{imagePath}', productDetail.productImagePath);
+    // Detail du produit
+    this.productDetail$
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(productDetail=>{
+      this.productDetail = productDetail;
+      this.updateFormData();
     });
+
+
 
     // Abonement sur la mise à jour de la checkbox
     this.subscribeToCheckboxProductSold();
   }
 
+  updateFormData(): void {
+      // Chargement du FG
+      this.updateProductFg.patchValue({
+        productName: this.productDetail?.productName,
+        productId: this.productDetail?.productId,
+        productPurchasePrice: this.productDetail?.productBuyPrice,
+        productSoldPrice: this.productDetail?.productSoldPrice,
+        productSoldDate: this.productDetail?.productSoldDay,
+        productBuyDate: this.productDetail?.productBuyDay,
+        productStatus: this._mapper.mapProductStatusToBoolean(this.productDetail?.productStatus)
+      });
+
+      if(this.productDetail)
+        this.imageUrl = apiUrl.streamImage.url.replace('{imagePath}', this.productDetail.productImagePath);
+  }
+
+
   /**
    * Check la checkbox produit vendu
    */
   subscribeToCheckboxProductSold() {
-    this.updateProductFg.get('productStatus')?.valueChanges.subscribe(isProductSold=>{
-      if(isProductSold) {
-       this.updateProductFg.get('productSoldDate')?.enable();
-       this.updateProductFg.get('productSoldPrice')?.enable();
+    this.updateProductFg.get('productStatus')?.valueChanges
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(isCheckboxCheck => {
+      if(!this.productDetail)
+        return;
 
-       this.updateProductFg.patchValue({
-         productSoldDate: this._mapper.mapDateToDdMmYyyy(new Date())
-       });
+      // Récupération des valeur initiale
+      const initialSoldPrice: number = this.productDetail.productSoldPrice;
+      const initialSoldDate: Date = this.productDetail.productSoldDay  ;
 
+      console.log(initialSoldDate);
+      if(isCheckboxCheck) {
+        this.updateProductFg.get('productSoldDate')?.enable();
+        this.updateProductFg.get('productSoldPrice')?.enable();
+
+        this.updateProductFg.patchValue({
+          productSoldDate: initialSoldDate !== null ? initialSoldDate : this._mapper.mapDateToDdMmYyyy(new Date()),
+          productSoldPrice: initialSoldPrice !== null ? initialSoldPrice : 0
+        });
+        return;
       }
-      else {
-         this.updateProductFg.get('productSoldDate')?.disable();
-         this.updateProductFg.get('productSoldPrice')?.disable();
 
-         this.updateProductFg.patchValue({
-           productSoldDate: null,
-           productSoldPrice: 0
-         });
-       }
+      this.updateProductFg.get('productSoldDate')?.disable();
+      this.updateProductFg.get('productSoldPrice')?.disable();
+
+      this.updateProductFg.patchValue({
+        productSoldDate: null,
+        productSoldPrice: 0
+      });
+
      })
 
   }

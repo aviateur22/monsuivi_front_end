@@ -1,18 +1,22 @@
-<div class="flex h-screen w-full bg-white">
-  <div class="flex w-full h-screen justify-content-center">
-    <div class="flex m-width-1024 w-full flex-column">
+<app-main-container>
+  <div class="w-full">
+    <!--Filtre-->
+    <app-filter-bar></app-filter-bar>
+    <!--Liste des produits-->
+    <div class="w-full h-full
+      md:p-5">
       <!--Titre-->
       <header class="py-6 flex w-full justify-content-center">
        <h2>Votre liste de produits</h2>
       </header>
 
      <!--Liste des produits-->
-       <main class="w-full flex flex-column align-items-center justify-content-center"
+      <main class="w-full flex flex-column align-items-center justify-content-center"
          *ngIf="sellerProducts$ | async as products" [@listAnimation]="products.length">
          <li class="w-full" *ngFor="let product of products; let index = index; let isLast = last">
            <app-summarize-product class="w-full flex justify-content-center" [product]="product"></app-summarize-product>
         </li>
-       </main>
+      </main>
     </div>
   </div>
-</div>
+</app-main-container>
