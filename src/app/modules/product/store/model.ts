@@ -1,4 +1,3 @@
-import { IDesactivateProductDto } from "../model/product.dto"
 import { DesactivateProduct, ProductDetail, SummarizeProduct } from "../model/product.model"
 
 export interface IAddProductAction {

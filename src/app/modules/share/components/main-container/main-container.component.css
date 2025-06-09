@@ -1,7 +1,3 @@
-.back--color {
-  background-color: #fffdfd;
-}
-
 .back--height {
   min-height: calc(100vh - var(--nav_height));
 }

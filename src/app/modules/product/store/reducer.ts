@@ -150,6 +150,26 @@ export const reducers = createReducer(
   on(productAction.productDetailDesactivateFailedAction, (state)=>({
     ...state, productDetail: { ...state.productDetail, isLoading: false, isPopupShow: false }
 
+  })),
+  on(productAction.filterSellerProductsAction, (state)=> ({
+    ...state, sellerProducts: {
+      ...state.sellerProducts, isLoading: true
+    }
+  })),
+  on(productAction.filterSellerProductsCompleteAction, (state, {products})=>({
+    ...state, sellerProducts: {
+      ...state.sellerProducts,
+      isLoading: false,
+      isSuccess: true,
+      summarizeProducts: products.summarizeProducts
+    }
+  })),
+  on(productAction.filterSellerProductsFailedAction, (state)=>({
+    ...state, sellerProducts : {
+      ...state.sellerProducts,
+      isLoading: false,
+      isSuccess: false
+    }
   }))
 
 )

@@ -5,6 +5,7 @@ import { IAppState } from '../../../../store/state';
 import { selectImage } from '../../store/action';
 import { IProductCategoryIhmDto } from '../../model/product.dto';
 import { MobileDeviceService } from '../../../../mobile_device/service/mobile-device.service';
+import { ProductService } from '../../services/product.service';
 
 @Component({
   selector: 'app-creat-product',
@@ -14,17 +15,23 @@ import { MobileDeviceService } from '../../../../mobile_device/service/mobile-de
 export class CreatProductComponent {
 
   @Input() fg!: FormGroup;
-  @Input() productCategories! :  IProductCategoryIhmDto[] | undefined
   seletcProductCategory: IProductCategoryIhmDto | undefined; // Produit sélectionné
+  productCategories: IProductCategoryIhmDto[] = [];
 
   // Si support sur un téléphone iu tablette
   isOnMobile: boolean = false;
 
-  constructor( private _store: Store<IAppState>, private _mobileDeviceService: MobileDeviceService) {}
+  constructor(
+    private _store: Store<IAppState>,
+    private _mobileDeviceService: MobileDeviceService,
+    private _productService: ProductService) {}
 
 
   ngOnInit() {
     this.isOnMobile = this._mobileDeviceService.isOnMobileDevice();
+    this._productService.getProductCategories().subscribe(res=>{
+      this.productCategories = res;
+    });
   }
   /**
    *

@@ -1,7 +1,7 @@
 import { createAction, props } from "@ngrx/store";
 import { IAddProductAction, IDesactivateProductAction, ISellerProducts } from "./model";
 import { DesactivateProduct, ProductDetail } from "../model/product.model";
-import { IDesactivateProductDto, IGetProductDetailDto, IProductUpdateDto, IProductUpdateResponseDto } from "../model/product.dto";
+import { IDesactivateProductDto, IFilterProductInputsDto, IGetProductDetailDto, IProductUpdateDto, IProductUpdateResponseDto } from "../model/product.dto";
 
 export const addProductAction = createAction('[Product add product] add product', props<{ product: IAddProductAction }>());
 export const addProductActionComplete = createAction('[Product add product complete] add product complete', props<{ product: IAddProductAction }>());
@@ -22,5 +22,8 @@ export const productUpdateFailedAction = createAction('[Update product failed] u
 export const productDetailDesactivateAction=createAction('[Detail product desactivate] detail product desactivate', props<{ productToDesactivate: IDesactivateProductDto }>());
 export const productDetailDesactivateCompleteAction = createAction('[Detail product desactivate complete] detail product desactivate complete', props<{productDesactivate: DesactivateProduct }>());
 export const productDetailDesactivateFailedAction = createAction('[Detail product desactivate failed] detail product desactivate failed');
+export const filterSellerProductsAction = createAction('[Filter seller products] filter seller products', props<{filterInputs: IFilterProductInputsDto}>());
+export const filterSellerProductsCompleteAction = createAction('[Filter seller products complete] filter seller products complete', props<{ products: ISellerProducts }>());
+export const filterSellerProductsFailedAction = createAction('[Filter seller products failed] filter seller products failed');
 
 

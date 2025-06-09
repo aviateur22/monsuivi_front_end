@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { IAddProductResponseDto, IDesactivateProductDto, IDesactivateProductResponseDto, IGetProductDetailDto, IGetProductDetailResponseDto, IGetSellerProductsDto, IProductUpdateDto, IProductUpdateResponseDto } from '../model/product.dto';
-import { map, Observable } from 'rxjs';
+import { IAddProductResponseDto, IDesactivateProductDto, IDesactivateProductResponseDto, IFilterProductInputsDto, IGetProductDetailDto, IGetProductDetailResponseDto, IGetSellerProductsDto, IProductCategoryIhmDto, IProductUpdateDto, IProductUpdateResponseDto } from '../model/product.dto';
+import { map, Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import apiUrl from '../../../../misc/api.url';
 import { ISellerProducts } from '../store/model';
@@ -14,6 +14,13 @@ export class ProductService {
 
   constructor(private _http: HttpClient, private _mapper: MapperService) { }
 
+  getProductCategories(): Observable<IProductCategoryIhmDto[]> {
+    return of([
+        {name: 'Livres', code: 'bk'},
+        { name: 'Jeux', code: 'ga'},
+        { name: 'Vétements', code: 'cl'}
+      ]);
+  }
   addProduct(addProductDto: FormData): Observable<IAddProductResponseDto> {
     console.log(`[ProductService] - addProduct`);
     return this._http.post<IAddProductResponseDto>(apiUrl.addProduct.url, addProductDto);
@@ -45,5 +52,13 @@ export class ProductService {
   productUpdate(productUpdateDto: IProductUpdateDto): Observable<IProductUpdateResponseDto> {
     console.log(`[ProductService] - productUpdate - données: ${productUpdateDto}`);
     return this._http.put<IProductUpdateResponseDto>(apiUrl.productUpdate.url, productUpdateDto);
+  }
+
+  filterSellerProducts(dto: IFilterProductInputsDto): Observable<GetSellerProducts> {
+    console.log(`[ProductService] - filterSellerProduct -seller id: ${dto.sellerId}`);
+    const url = apiUrl.filterSellerProducts.url
+     .replace('{sellerId}', dto.sellerId);
+    return this._http.get<IGetSellerProductsDto>(url).pipe(
+      map(dto=>this._mapper.mapToGetSellerProducts(dto)));
   }
 }

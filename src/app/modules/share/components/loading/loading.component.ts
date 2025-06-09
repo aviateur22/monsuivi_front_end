@@ -18,6 +18,9 @@ export class LoadingComponent {
   // Chargement en cours de la creation d'un produit
   isAddProductLoading$: Observable<boolean>;
 
+  // Chargement des produits d'un vendeur
+  isSellerProductsLoading$: Observable<boolean>;
+
   // En cours de désactivation d'un produit depuis la liste
   isDesactivateProductLoading$: Observable<boolean>;
 
@@ -29,5 +32,6 @@ export class LoadingComponent {
     this.isAddProductLoading$ = this._store.pipe(select(productSelector.selectIsAddProductLoading));
     this.isDesactivateProductLoading$ = this._store.pipe(select(productSelector.isDesactivateProductLoading));
     this.isActualStatisticalMonthLoading$ = this._store.pipe(select(statisticalSelector.selectIsActualMonthDataLoading));
+    this.isSellerProductsLoading$ = this._store.pipe(select(productSelector.selectIsGetSellerProductsLoading));
   }
 }
