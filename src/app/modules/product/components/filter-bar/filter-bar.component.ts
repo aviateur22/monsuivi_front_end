@@ -62,6 +62,10 @@ export class FilterBarComponent implements OnInit {
     this._productsFilterVisibilityService.hideProductsFilter();
   }
 
+  /**
+   *
+   * @returns Filtrage des produits
+   */
   fiterProducts(): void {
     // Si filtrage pas valide
     if(!filterProductsFieldsValidator(this.filterProductsFG)) {
@@ -78,6 +82,11 @@ export class FilterBarComponent implements OnInit {
     this._store.dispatch(filterSellerProductsAction({
       filterInputs: this._mapper.mapToIFilterProductInputsDto(this.filterProductsFG, sellerId)
     }));
+
+
+    // Masque le filtre sur petit écran
+    if(!this._productsFilterVisibilityService.hasFilterBarTobeDisplayed())
+      this._productsFilterVisibilityService.hideProductsFilter();
   }
 
   resteFilter(): void {
@@ -85,6 +94,16 @@ export class FilterBarComponent implements OnInit {
       filterByName: [''],
       productCategory:  [''],
       dateRegisterSelect: ['']
-    })
+    });
+
+    // Fake sellerId
+    const sellerId = this._userService.getUser()?.userId;
+
+     if(!sellerId)
+      throw new Error("IDentifiant non définit");
+
+    this._store.dispatch(filterSellerProductsAction({
+      filterInputs: this._mapper.mapToIFilterProductInputsDto(this.filterProductsFG, sellerId)
+    }));
   }
 }

@@ -55,10 +55,10 @@ export class ProductService {
   }
 
   filterSellerProducts(dto: IFilterProductInputsDto): Observable<GetSellerProducts> {
-    console.log(`[ProductService] - filterSellerProduct -seller id: ${dto.sellerId}`);
+    console.log(`[ProductService] - filterSellerProduct -dto: ${dto.filterByCategoryCode}`);
     const url = apiUrl.filterSellerProducts.url
      .replace('{sellerId}', dto.sellerId);
-    return this._http.get<IGetSellerProductsDto>(url).pipe(
-      map(dto=>this._mapper.mapToGetSellerProducts(dto)));
+    return this._http.post<IGetSellerProductsDto>(url, dto).pipe(
+      map(res => this._mapper.mapToGetSellerProducts(res)));
   }
 }

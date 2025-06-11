@@ -129,7 +129,7 @@ export interface IProductUpdateResponseDto {
 export interface IFilterProductInputsDto {
   sellerId: string,
   filterByName: string,
-  filterByCategory: string,
+  filterByCategoryCode: string,
   filterByRegisterPeriod: number
 }
 

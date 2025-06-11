@@ -16,9 +16,16 @@
      <!--Liste des produits-->
       <main class="w-full flex flex-column align-items-center justify-content-center"
          *ngIf="sellerProducts$ | async as products" [@listAnimation]="products.length">
-         <li class="w-full" *ngFor="let product of products; let index = index; let isLast = last">
-           <app-summarize-product class="w-full flex justify-content-center" [product]="product"></app-summarize-product>
-        </li>
+        <!-- Affichage prosuit -->
+        <div class="w-full" *ngIf="products.length > 0; else emptyList">
+          <li class="w-full" *ngFor="let product of products; let index = index; let isLast = last">
+            <app-summarize-product class="w-full flex justify-content-center" [product]="product"></app-summarize-product>
+          </li>
+        </div>
+        <!-- Si liste de produit vide -->
+        <ng-template #emptyList>
+          <app-products-list-empty></app-products-list-empty>
+        </ng-template>
       </main>
     </div>
   </div>

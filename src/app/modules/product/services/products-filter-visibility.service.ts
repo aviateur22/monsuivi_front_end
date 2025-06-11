@@ -35,6 +35,7 @@ export class ProductsFilterVisibilityService {
    */
   displayProductsFilter(): void {
     this.isFilterProductsVisibleSubject.next(true);
+    this.isButtonFilterVisibleSubject.next(false);
   }
 
   /**
@@ -43,21 +44,32 @@ export class ProductsFilterVisibilityService {
    */
   hideProductsFilter(): void {
     this.isFilterProductsVisibleSubject.next(false);
+    this.isButtonFilterVisibleSubject.next(true);
   }
 
   /**
    * Gestion visibilité Filtre fonction de la largeur de l'écran
    */
   private checkWidth(): void {
-    if (window.innerWidth > 768) {
+    if(this.hasFilterBarTobeDisplayed()) {
+      // Affichage de la bare de filtrage
       this.isClosedButtonFilterVisibleSubject.next(false);
       this.isButtonFilterVisibleSubject.next(false);
       this.isFilterProductsVisibleSubject.next(true);
-    } else {
+      return;
+    }
+
       this.isClosedButtonFilterVisibleSubject.next(true);
       this.isButtonFilterVisibleSubject.next(true);
       this.isFilterProductsVisibleSubject.next(false)
-    }
+
+  }
+
+  /**
+   * Détermine si la bar de filtrage doit être cachée
+   */
+  hasFilterBarTobeDisplayed() {
+    return (window.innerWidth > 768)
   }
 
 

@@ -29,6 +29,7 @@ import { CardModule } from 'primeng/card';
 import { CheckboxModule } from 'primeng/checkbox';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { PopoverModule } from 'primeng/popover';
+import { ProductsListEmptyComponent } from './components/products-list-empty/products-list-empty.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { PopoverModule } from 'primeng/popover';
     SummarizeProductComponent,
     ProductsPageComponent,
     FilterBarComponent,
-    DetailProductComponent
+    DetailProductComponent,
+    ProductsListEmptyComponent
   ],
   imports: [
     CommonModule,

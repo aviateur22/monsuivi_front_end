@@ -142,11 +142,16 @@ export class MapperService {
       const filterByProductNameValue = filterProductsFG.get('filterByName')?.value;
       const filterByCategoryValue = filterProductsFG.get('productCategory')?.value;
       const filterByPeriodeValue = filterProductsFG.get('dateRegisterSelect')?.value;
+      let categoryCode = null;
 
+      if(filterByCategoryValue !== null && filterByCategoryValue !== undefined)
+        categoryCode = filterByCategoryValue.code;
+
+      console.log(categoryCode)
       return {
         sellerId: sellerId,
         filterByName: filterByProductNameValue,
-        filterByCategory: filterByCategoryValue,
+        filterByCategoryCode: categoryCode,
         filterByRegisterPeriod: filterByPeriodeValue
       };
     }
