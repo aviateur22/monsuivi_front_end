@@ -7,7 +7,7 @@ import { filterProductsFieldsValidator } from '../../validators/filterFields.val
 import { UserService } from '../../../../users/service/user.service';
 import { IAppState } from '../../../../store/state';
 import { Store } from '@ngrx/store';
-import { filterSellerProductsAction } from '../../store/action';
+import { filterSellerProductsAction , getSellerProductsAction} from '../../store/action';
 import { MapperService } from '../../services/mapper.service';
 
 @Component({
@@ -54,9 +54,11 @@ export class FilterBarComponent implements OnInit {
     });
 
     this._productsFilterVisibilityService.isClosedButtonFilterVisible$.subscribe(isVisible=>{
+      console.log('bouton closed', isVisible);
       this.isClosedButtonFilterVisible = isVisible;
     });
   }
+
 
   closedFilterProducts(): void {
     this._productsFilterVisibilityService.hideProductsFilter();
@@ -102,8 +104,8 @@ export class FilterBarComponent implements OnInit {
      if(!sellerId)
       throw new Error("IDentifiant non définit");
 
-    this._store.dispatch(filterSellerProductsAction({
-      filterInputs: this._mapper.mapToIFilterProductInputsDto(this.filterProductsFG, sellerId)
+    this._store.dispatch(getSellerProductsAction({
+     sellerId: sellerId
     }));
   }
 }

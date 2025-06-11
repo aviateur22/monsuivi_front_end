@@ -26,7 +26,7 @@ export class ProductsFilterVisibilityService {
       debounceTime(200),
       startWith(null)
     )
-    .subscribe(()=>this.checkWidth())
+    .subscribe(()=>this.checkVisibilityFilterByWidth())
   }
 
   /**
@@ -35,7 +35,7 @@ export class ProductsFilterVisibilityService {
    */
   displayProductsFilter(): void {
     this.isFilterProductsVisibleSubject.next(true);
-    this.isButtonFilterVisibleSubject.next(false);
+    this.isButtonFilterVisibleSubject.next(true);
   }
 
   /**
@@ -50,7 +50,7 @@ export class ProductsFilterVisibilityService {
   /**
    * Gestion visibilité Filtre fonction de la largeur de l'écran
    */
-  private checkWidth(): void {
+  private checkVisibilityFilterByWidth(): void {
     if(this.hasFilterBarTobeDisplayed()) {
       // Affichage de la bare de filtrage
       this.isClosedButtonFilterVisibleSubject.next(false);

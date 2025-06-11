@@ -17,8 +17,9 @@
       <main class="w-full flex flex-column align-items-center justify-content-center"
          *ngIf="sellerProducts$ | async as products" [@listAnimation]="products.length">
         <!-- Affichage prosuit -->
-        <div class="w-full" *ngIf="products.length > 0; else emptyList">
-          <li class="w-full" *ngFor="let product of products; let index = index; let isLast = last">
+        <div class="w-full flex flex-column
+            lg:flex-row lg:flex-wrap lg:gap-5 lg:justify-content-center" *ngIf="products.length > 0; else emptyList">
+          <li class="w-full lg:w-5" *ngFor="let product of products; let index = index; let isLast = last">
             <app-summarize-product class="w-full flex justify-content-center" [product]="product"></app-summarize-product>
           </li>
         </div>
