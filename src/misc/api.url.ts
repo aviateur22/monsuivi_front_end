@@ -7,6 +7,9 @@ export default {
   getSellerProducts: {
     url:`${environment.api_base}/products/seller/{sellerId}`
   },
+  filterSellerProducts: {
+    url:`${environment.api_base}/products/seller/{sellerId}/filter`
+  },
   streamImage: {
     url: `${environment.api_base}/products/image/{imagePath}`
   },

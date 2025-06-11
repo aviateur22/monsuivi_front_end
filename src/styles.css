@@ -9,6 +9,12 @@
   font-family: 'raleway', 'arial', sans-serif;
 }
 
+/* Couleur arriere plan */
+.back--color {
+  background-color: #fffdfd;
+}
+
+
 /* Postion des toast messages sur petit ecran */
 .p-toast {
   max-width: calc(100vw - 40px);

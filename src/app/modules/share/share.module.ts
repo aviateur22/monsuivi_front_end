@@ -17,7 +17,6 @@ import { RouterModule } from '@angular/router';
 import { TakePhotoOnMobileComponent } from './components/take-photo-on-mobile/take-photo-on-mobile.component';
 import { LoadingComponent } from './components/loading/loading.component';
 import { MainContainerComponent } from './components/main-container/main-container.component';
-
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @NgModule({

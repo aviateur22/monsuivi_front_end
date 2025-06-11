@@ -20,14 +20,16 @@ import { FilterBarComponent } from './components/filter-bar/filter-bar.component
 import { DetailProductComponent } from './components/detail-product/detail-product-page.component';
 
 import { MessageModule } from 'primeng/message';
-import { DropdownModule } from 'primeng/dropdown';
+import { Select, SelectModule } from 'primeng/select';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { CalendarModule } from 'primeng/calendar';
 import { DialogModule } from 'primeng/dialog';
 import { CardModule } from 'primeng/card';
 import { CheckboxModule } from 'primeng/checkbox';
-import { FilterProductsComponent } from './components/filter-products/filter-products.component';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { PopoverModule } from 'primeng/popover';
+import { ProductsListEmptyComponent } from './components/products-list-empty/products-list-empty.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,7 @@ import { FilterProductsComponent } from './components/filter-products/filter-pro
     ProductsPageComponent,
     FilterBarComponent,
     DetailProductComponent,
-    FilterProductsComponent
+    ProductsListEmptyComponent
   ],
   imports: [
     CommonModule,
@@ -52,13 +54,15 @@ import { FilterProductsComponent } from './components/filter-products/filter-pro
       ProductEffect
     ]),
     MessageModule,
-    DropdownModule,
+    Select,
     ButtonModule,
     InputTextModule,
     DialogModule,
     CardModule,
     CalendarModule,
-    CheckboxModule
+    CheckboxModule,
+    SelectButtonModule,
+    PopoverModule
   ],
   exports: [
     DetailProductComponent

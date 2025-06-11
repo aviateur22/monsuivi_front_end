@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { IDesactivateProductResponseDto, IGetProductDetailResponseDto, IGetSellerProductsDto, IProductUpdateResponseDto, ISummarizeProductDto } from '../model/product.dto';
+import { IDesactivateProductResponseDto, IFilterProductInputsDto, IGetProductDetailResponseDto, IGetSellerProductsDto, IProductUpdateResponseDto, ISummarizeProductDto } from '../model/product.dto';
 import { GetSellerProducts, ProductDetail, ProductStatus, SummarizeProduct } from '../model/product.model';
 import { Observable } from 'rxjs';
 
@@ -131,5 +131,28 @@ export class MapperService {
         return false;
 
       return status === ProductStatus.SOLD ? true : false;
+    }
+
+    /**
+     * Map un formGroup vers IFilterProductInputsDto
+     * @param {FormGroup} filterProductsFG
+     * @returns { IFilterProductInputsDto }
+     */
+    mapToIFilterProductInputsDto(filterProductsFG: FormGroup, sellerId: string): IFilterProductInputsDto {
+      const filterByProductNameValue = filterProductsFG.get('filterByName')?.value;
+      const filterByCategoryValue = filterProductsFG.get('productCategory')?.value;
+      const filterByPeriodeValue = filterProductsFG.get('dateRegisterSelect')?.value;
+      let categoryCode = null;
+
+      if(filterByCategoryValue !== null && filterByCategoryValue !== undefined)
+        categoryCode = filterByCategoryValue.code;
+
+      console.log(categoryCode)
+      return {
+        sellerId: sellerId,
+        filterByName: filterByProductNameValue,
+        filterByCategoryCode: categoryCode,
+        filterByRegisterPeriod: filterByPeriodeValue
+      };
     }
   }

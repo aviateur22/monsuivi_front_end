@@ -8,6 +8,7 @@ import * as productSelector from '../../store/selector';
 import { SummarizeProduct } from '../../model/product.model';
 import { UserService } from '../../../../users/service/user.service';
 import { animate, query, stagger, style, transition, trigger } from '@angular/animations';
+import { ProductsFilterVisibilityService } from '../../services/products-filter-visibility.service';
 
 @Component({
   selector: 'app-products-page',
@@ -30,9 +31,15 @@ export class ProductsPageComponent {
     isLoading$: Observable<boolean>;
     sellerProducts$: Observable<SummarizeProduct[]>;
     user = this._userService.getUser();
+    isFilterVisible: boolean = false;
+    isButtonFilterVisible: boolean = true;
 
 
-    constructor(private _store: Store<IAppState>, private _userService: UserService) {
+
+    constructor(
+      private _productsFilterVisibilityService: ProductsFilterVisibilityService,
+      private _store: Store<IAppState>,
+      private _userService: UserService) {
       this.isLoading$ = this._store.pipe(select(productSelector.selectIsGetSellerProductsLoading));
       this.sellerProducts$ =this._store.pipe(select(productSelector.selectGetSellerProducts));
     }
@@ -45,6 +52,19 @@ export class ProductsPageComponent {
       if(this.user)
         this._store.dispatch(getSellerProductsAction({sellerId:this.user.userId}));
 
+      this._productsFilterVisibilityService.isButtonFilterVisible$.subscribe(isVisible=>{
+        this.isButtonFilterVisible = isVisible
+      });
+
+      this._productsFilterVisibilityService.isFilterProductsVisible$.subscribe(isVisible=>{
+        this.isFilterVisible = isVisible;
+      });
     }
 
+    /**
+     * Affichage du filtre
+     */
+    displayProductsFilter(): void {
+      this._productsFilterVisibilityService.displayProductsFilter();
+    }
 }

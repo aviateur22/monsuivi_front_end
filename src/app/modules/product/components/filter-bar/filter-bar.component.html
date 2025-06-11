@@ -1,1 +1,61 @@
-<p>filter-bar works!</p>
+<div class="sticky w-full top-0 left-0 shadow-2 border-round-bottom-sm back--color z-2 p-2">
+  <div class="flex flex-column-reverse overflow-y-scroll
+  md:overflow-y-auto">
+    <div class="md:p-5">
+      <form [formGroup]="filterProductsFG" class="w-ful" (submit)="fiterProducts()">
+        <!-- Affichage si aucune selection de filtre-->
+        <div class="w-full h-4rem">
+          <div class="w-full" *ngIf="filterProductsFG.errors?.['atLeastOneFieldAvailable']">
+            <p-message severity="error">Merci de selectionner au minium une option</p-message>
+          </div>
+        </div>
+        <div class="w-full flex flex-column
+          md:flex-wrap md:flex-row md:justify-content-between">
+          <!--Rercherche par description-->
+          <div class="flex flex-column p-2">
+            <label for="filterByName">
+              Recherche par nom de produit
+            </label>
+            <input
+            pInputText id="filterByName"
+            formControlName="filterByName"
+            aria-describedby="filter product by name"
+            placeholder="Nom du produit" />
+          </div>
+
+          <!--Rercherche par catégorie -->
+          <div class="flex flex-column p-2">
+            <label class="text-sm text-color-secondary" for="productCategory">Catégorie du produit</label>
+            <p-select
+
+            [options]="productCategories"
+            formControlName="productCategory"
+            optionLabel="name"
+
+            placeholder="Catégorie de produit" />
+          </div>
+
+          <!--Rercherche par durée de creation-->
+          <div class="flex flex-column  p-2">
+            <label for="filterByName">
+              Recherche de produit ajouté depuis moins de:
+            </label>
+            <div>
+              <p-selectbutton [options]="dateRegisterOptions" formControlName="dateRegisterSelect" [multiple]="false" optionLabel="name" optionValue="value" />
+            </div>
+          </div>
+          <div class="flex flex-column w-full justify-content-center align-items-center text-right p-3
+            md:w-8 md:flex-row">
+            <p-button  type="submit" severity="success" class="p-2 full--width--button" label="Filtrer les produits"/>
+            <div class="w-full p-2 md:w-6">
+              <p-button (onClick)="resteFilter()" label="Réinitialiser le filtre" class="full--width--button" variant="outlined" severity="danger" />
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="flex w-full justify-content-end">
+     <p-button *ngIf="isClosedButtonFilterVisible" (onClick)="closedFilterProducts()" icon="pi pi-times" [rounded]="true" severity="danger" [outlined]="true" />
+    </div>
+  </div>
+</div>

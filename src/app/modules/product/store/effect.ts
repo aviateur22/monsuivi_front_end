@@ -160,4 +160,25 @@ productDetailDesactivateProduct$ = createEffect(()=>
     )
   )
 );
+
+filterSelerProducts$ = createEffect(()=>
+  this._action$.pipe(
+    ofType(productAction.filterSellerProductsAction),
+    mergeMap(({filterInputs}) =>
+      this._productService.filterSellerProducts(filterInputs).pipe(
+        switchMap(result=>[
+          productAction.filterSellerProductsCompleteAction( { products:{ isLoading:false, isSuccess: true, summarizeProducts: result.products}}),
+          shareAction.displayMessageAction({
+          message: {title: 'Filtrage produits', message: result.responseMessage, isOnError: false}
+        })
+        ]),
+        catchError(error=> of(
+          productAction.filterSellerProductsFailedAction(),
+          shareAction.displayMessageAction({
+          message: {title: 'Filtrage produits', message: error.error.error, isOnError: true}
+        })
+      )
+  )
+  )
+)));
 }

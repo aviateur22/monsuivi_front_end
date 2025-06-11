@@ -1,19 +1,31 @@
 <app-main-container>
-  <div class="w-full">
+  <div class="relative w-full">
+    <!--Filtre-->
+    <app-filter-bar *ngIf="isFilterVisible"></app-filter-bar>
     <!--Liste des produits-->
     <div class="w-full h-full
       md:p-5">
       <!--Titre-->
-      <header class="py-6 flex w-full justify-content-center">
-       <h2>Votre liste de produits</h2>
+      <header class="py-6 flex w-full flex-column justify-content-center align-items-center p-3">
+        <div class="w-full flex justify-content-start pb-5">
+          <p-button (onClick)="displayProductsFilter()" *ngIf="isButtonFilterVisible" icon="pi pi-sliders-h" label="Filtre" variant="text" [raised]="true" severity="secondary" />
+        </div>
+       <h2 class="p-2">Votre liste de produits</h2>
       </header>
 
      <!--Liste des produits-->
       <main class="w-full flex flex-column align-items-center justify-content-center"
          *ngIf="sellerProducts$ | async as products" [@listAnimation]="products.length">
-         <li class="w-full" *ngFor="let product of products; let index = index; let isLast = last">
-           <app-summarize-product class="w-full flex justify-content-center" [product]="product"></app-summarize-product>
-        </li>
+        <!-- Affichage prosuit -->
+        <div class="w-full" *ngIf="products.length > 0; else emptyList">
+          <li class="w-full" *ngFor="let product of products; let index = index; let isLast = last">
+            <app-summarize-product class="w-full flex justify-content-center" [product]="product"></app-summarize-product>
+          </li>
+        </div>
+        <!-- Si liste de produit vide -->
+        <ng-template #emptyList>
+          <app-products-list-empty></app-products-list-empty>
+        </ng-template>
       </main>
     </div>
   </div>

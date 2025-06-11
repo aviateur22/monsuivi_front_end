@@ -123,5 +123,15 @@ export interface IProductUpdateResponseDto {
   productStatus: string
 }
 
+/**
+ * Données pour filtrer la liste des produits
+ */
+export interface IFilterProductInputsDto {
+  sellerId: string,
+  filterByName: string,
+  filterByCategoryCode: string,
+  filterByRegisterPeriod: number
+}
+
 
 
