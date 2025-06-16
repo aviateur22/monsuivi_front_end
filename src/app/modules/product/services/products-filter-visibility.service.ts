@@ -18,6 +18,16 @@ export class ProductsFilterVisibilityService {
   private isClosedButtonFilterVisibleSubject = new BehaviorSubject<boolean>(false);
   isClosedButtonFilterVisible$ = this.isButtonFilterVisibleSubject.asObservable();
 
+  /**
+   * Sur un mobile, l'apparaition d'un clavié vient perturber la taille de l'écran
+   * temporairement.
+   * Cela a pour conséquence de fermer le filtre lors du focus dune textbox qui se trouve dans
+   * le filtre.
+   * Pour remedier a ce probleme, un boolean isInputFocused est utilisé pour inhibé l'appel
+   * à la méthode checkVisibilityFilterByWidth()
+   */
+  isInputFocused: boolean = false;
+
   constructor() {
 
     // Gestion du resize
@@ -26,7 +36,10 @@ export class ProductsFilterVisibilityService {
       debounceTime(200),
       startWith(null)
     )
-    .subscribe(()=>this.checkVisibilityFilterByWidth())
+    .subscribe(()=>{
+      if(!this.isInputFocused)
+        this.checkVisibilityFilterByWidth();
+    })
   }
 
   /**
@@ -58,7 +71,6 @@ export class ProductsFilterVisibilityService {
       this.isFilterProductsVisibleSubject.next(true);
       return;
     }
-
       this.isClosedButtonFilterVisibleSubject.next(true);
       this.isButtonFilterVisibleSubject.next(true);
       this.isFilterProductsVisibleSubject.next(false)
@@ -71,6 +83,4 @@ export class ProductsFilterVisibilityService {
   hasFilterBarTobeDisplayed() {
     return (window.innerWidth > 768)
   }
-
-
 }

@@ -64,10 +64,6 @@ export class FilterBarComponent implements OnInit {
     this._productsFilterVisibilityService.hideProductsFilter();
   }
 
-  /**
-   *
-   * @returns Filtrage des produits
-   */
   fiterProducts(): void {
     // Si filtrage pas valide
     if(!filterProductsFieldsValidator(this.filterProductsFG)) {
@@ -107,5 +103,13 @@ export class FilterBarComponent implements OnInit {
     this._store.dispatch(getSellerProductsAction({
      sellerId: sellerId
     }));
+  }
+
+  inputFocus(): void {
+    this._productsFilterVisibilityService.isInputFocused = true;
+  }
+
+  inputLoseFocus(): void {
+    this._productsFilterVisibilityService.isInputFocused = false;
   }
 }

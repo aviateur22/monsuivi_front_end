@@ -17,21 +17,21 @@
               Recherche par nom de produit
             </label>
             <input
+            (focus)="inputFocus()"
+            (blur)="inputLoseFocus()"
             pInputText id="filterByName"
             formControlName="filterByName"
-            aria-describedby="filter product by name"
-            placeholder="Nom du produit" />
+            type="text"
+            placeholder="Nom du produit">
           </div>
 
           <!--Rercherche par catégorie -->
           <div class="flex flex-column p-2">
-            <label class="text-sm text-color-secondary" for="productCategory">Catégorie du produit</label>
+            <label class="text-color-secondary" for="productCategory">Catégorie du produit</label>
             <p-select
-
             [options]="productCategories"
             formControlName="productCategory"
             optionLabel="name"
-
             placeholder="Catégorie de produit" />
           </div>
 
