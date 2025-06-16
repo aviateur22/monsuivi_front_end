@@ -110,6 +110,11 @@ export class FilterBarComponent implements OnInit {
   }
 
   inputLoseFocus(): void {
-    this._productsFilterVisibilityService.isInputFocused = false;
+    // Ajout d'un délais
+    // Cela permets de ne pas masquer le filtre sur mobile avec le clavier virtuel
+    // lors du focusout de l'input
+    setTimeout(()=>{
+      this._productsFilterVisibilityService.isInputFocused = false;
+    }, 500)
   }
 }
