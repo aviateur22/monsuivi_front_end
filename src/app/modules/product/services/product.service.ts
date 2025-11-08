@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IAddProductResponseDto, IDesactivateProductDto, IDesactivateProductResponseDto, IFilterProductInputsDto, IGetProductDetailDto, IGetProductDetailResponseDto, IGetSellerProductsDto, IProductCategoryIhmDto, IProductUpdateDto, IProductUpdateResponseDto } from '../model/product.dto';
+import { IAddProductResponseDto, IDesactivateProductDto, IDesactivateProductResponseDto, IProductFilterValueDto, IFilterProductByMaxAgeDto, IGetProductDetailDto, IGetProductDetailResponseDto, IGetSellerProductsDto, IFilterProductByCategoryDto, IProductUpdateDto, IProductUpdateResponseDto } from '../model/product.dto';
 import { map, Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import apiUrl from '../../../../misc/api.url';
@@ -14,21 +14,35 @@ export class ProductService {
 
   constructor(private _http: HttpClient, private _mapper: MapperService) { }
 
-  getProductCategories(): Observable<IProductCategoryIhmDto[]> {
+  getProductCategories(): Observable<IFilterProductByCategoryDto[]> {
     return of([
-        {name: 'Livres', code: 'bk'},
+        { name: 'Livres', code: 'bk'},
         { name: 'Jeux', code: 'ga'},
         { name: 'Vétements', code: 'cl'}
       ]);
   }
+
+  getFilterProductByMaxAge(): Observable<IFilterProductByMaxAgeDto []> {
+    return of([
+          { maxAgeLabel: "1 semaine", maxAgeValue: 1 },
+          { maxAgeLabel: "1 mois", maxAgeValue: 2 },
+          { maxAgeLabel: "2 mois", maxAgeValue: 3 },
+          { maxAgeLabel: "3 mois", maxAgeValue: 4 }
+      ]);
+  }
+
+
   addProduct(addProductDto: FormData): Observable<IAddProductResponseDto> {
     console.log(`[ProductService] - addProduct`);
     return this._http.post<IAddProductResponseDto>(apiUrl.addProduct.url, addProductDto);
   }
 
-  getSellerProducts(sellerId: string): Observable<GetSellerProducts> {
+  getSellerProducts(sellerId: string, areSoldProductVisible: boolean): Observable<GetSellerProducts> {
     console.log(`[ProductService] - getSellerProducts -seller id: ${sellerId}`);
-    const url = apiUrl.getSellerProducts.url.replace('{sellerId}', sellerId)
+    const url = apiUrl.getSellerProducts.url
+      .replace('{sellerId}', sellerId)
+      .replace('{areSoldProductVisible}', areSoldProductVisible.toString());
+
     console.log(`[ProductService] - getSellerProducts - api ${url}`);
     return this._http.get<IGetSellerProductsDto>(url).pipe(
       map(dto=>this._mapper.mapToGetSellerProducts(dto)));
@@ -54,7 +68,7 @@ export class ProductService {
     return this._http.put<IProductUpdateResponseDto>(apiUrl.productUpdate.url, productUpdateDto);
   }
 
-  filterSellerProducts(dto: IFilterProductInputsDto): Observable<GetSellerProducts> {
+  filterSellerProducts(dto: IProductFilterValueDto): Observable<GetSellerProducts> {
     console.log(`[ProductService] - filterSellerProduct -dto: ${dto.filterByCategoryCode}`);
     const url = apiUrl.filterSellerProducts.url
      .replace('{sellerId}', dto.sellerId);

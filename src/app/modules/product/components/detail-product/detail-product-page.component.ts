@@ -1,4 +1,5 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 import { IAppState } from '../../../../store/state';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subject, takeUntil } from 'rxjs';
@@ -11,6 +12,10 @@ import apiUrl from '../../../../../misc/api.url';
 import { MapperService } from '../../services/mapper.service';
 import { UserService } from '../../../../users/service/user.service';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { ActivatedRoute, Router } from '@angular/router';
+import { IGetProductDetailDto } from '../../model/product.dto';
+import { getProductDetailAction } from '../../store/action';
+import pagesInformations from '../../../../../misc/pages-informations';
 
 @Component({
   selector: 'app-detail-product-page',
@@ -61,7 +66,14 @@ export class DetailProductComponent implements OnInit, OnDestroy {
 
   private productDetail: ProductDetail | null = null;
 
-  constructor(private _store: Store<IAppState>, private _fb: FormBuilder, private _mapper: MapperService, private _userService: UserService) {
+  constructor(
+    private _location: Location,
+    private _router: Router,
+    private _activedRoute: ActivatedRoute,
+    private _store: Store<IAppState>,
+    private _fb: FormBuilder,
+    private _mapper: MapperService,
+    private _userService: UserService) {
     this.productDetail$ = this._store.pipe(select(productSelector.productDetail));
     this.isProductDetailPopupVisible$ = this._store.pipe(select(productSelector.isProductDetailPopupVisible));
     this.isProductDetailLoading$ = this._store.pipe(select(productSelector.isProductDetailLoading));
@@ -85,6 +97,8 @@ export class DetailProductComponent implements OnInit, OnDestroy {
       this.updateFormData();
     });
 
+    // Chargement du produit
+    this.loadProductDetail(this._activedRoute.snapshot.paramMap.get('product-id'));
 
 
     // Abonement sur la mise à jour de la checkbox
@@ -150,7 +164,7 @@ export class DetailProductComponent implements OnInit, OnDestroy {
    * Fermeture de la popup
    */
   closeDetail() {
-    this._store.dispatch(productAction.productDetailCloseAction());
+    this._location.back();
   }
 
   /**
@@ -186,5 +200,18 @@ export class DetailProductComponent implements OnInit, OnDestroy {
       productId: this.updateProductFg.get('productId')?.value}
     }));
 
+  }
+
+  loadProductDetail(productId: string | null) {
+
+    if(!this.user || !productId)
+      throw new Error("Identitifant utilisateur ou produit manquant");
+
+    const detailProductDto: IGetProductDetailDto = {
+      sellerId: this.user.userId,
+      productId: productId
+    }
+
+    this._store.dispatch(getProductDetailAction({getProductDetail: detailProductDto}))
   }
 }

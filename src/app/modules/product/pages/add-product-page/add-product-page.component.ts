@@ -8,7 +8,7 @@ import { addProductAction } from '../../store/action';
 import * as productSelector from '../../store/selector';
 import { Observable } from 'rxjs';
 import { validateNumber } from '../../validators/input.validator';
-import { IProductCategoryIhmDto } from '../../model/product.dto';
+import { IFilterProductByCategoryDto } from '../../model/product.dto';
 import { UserService } from '../../../../users/service/user.service';
 
 @Component({
@@ -25,7 +25,7 @@ export class AddProductPageComponent {
     productCategory: ['', Validators.required]
   })
 
-  productCategories: IProductCategoryIhmDto[] = [
+  productCategories: IFilterProductByCategoryDto[] = [
     {name: 'Livres', code: 'bk'},
     { name: 'Jeux', code: 'ga'},
     { name: 'Vétements', code: 'cl'}

@@ -23,3 +23,14 @@ export interface IProductDetailAction {
   isPopupShow: boolean,
   productDetail: ProductDetail | null
 }
+
+/**
+ * Données renseignées dans le filtre
+ */
+export interface IFilterProduct {
+  productName: string,
+  productCategory: boolean,
+  productMaxAge: ProductDetail | null
+}
+
+

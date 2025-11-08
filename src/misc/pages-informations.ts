@@ -14,6 +14,10 @@ export default {
     url: 'mes-produits',
     title: `${environment.main_page_title} | Mes produits`
   },
+  detailProduct: {
+    url: 'produit/:product-id/detail',
+    title: `${environment.main_page_title} | Mon produit`
+  },
   selectStatisticalGraphic: {
     url: 'choix-graphique-statistique',
     title: `${environment.main_page_title} | Graphique des achats et ventes`

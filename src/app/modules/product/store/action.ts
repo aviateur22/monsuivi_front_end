@@ -1,13 +1,13 @@
 import { createAction, props } from "@ngrx/store";
 import { IAddProductAction, IDesactivateProductAction, ISellerProducts } from "./model";
 import { DesactivateProduct, ProductDetail } from "../model/product.model";
-import { IDesactivateProductDto, IFilterProductInputsDto, IGetProductDetailDto, IProductUpdateDto, IProductUpdateResponseDto } from "../model/product.dto";
+import { IDesactivateProductDto, IProductFilterValueDto, IGetProductDetailDto, IProductUpdateDto, IProductUpdateResponseDto } from "../model/product.dto";
 
 export const addProductAction = createAction('[Product add product] add product', props<{ product: IAddProductAction }>());
 export const addProductActionComplete = createAction('[Product add product complete] add product complete', props<{ product: IAddProductAction }>());
 export const addProductActionfailed = createAction('[Product add product failed] add product failed');
 export const selectImage = createAction('[Product select selectImage] select selectImage', props<{ selectImage: File }>());
-export const getSellerProductsAction = createAction('[Get seller products] get seller products', props<{ sellerId: string }>())
+export const getSellerProductsAction = createAction('[Get seller products] get seller products', props<{ sellerId: string, areSoldProductVisible: boolean }>())
 export const getSellerProductsActionComplete = createAction('[Get seller products complete] get seller product complete', props<{ products: ISellerProducts }>());
 export const desactivateProduct = createAction('[Desactivate product] desactivate product', props<{ productToDesactivate: IDesactivateProductDto }>());
 export const desactivateProductComplete = createAction('[Desactivate product success] desactivate product success', props<{ desactivateProduct: IDesactivateProductAction }>());
@@ -22,8 +22,9 @@ export const productUpdateFailedAction = createAction('[Update product failed] u
 export const productDetailDesactivateAction=createAction('[Detail product desactivate] detail product desactivate', props<{ productToDesactivate: IDesactivateProductDto }>());
 export const productDetailDesactivateCompleteAction = createAction('[Detail product desactivate complete] detail product desactivate complete', props<{productDesactivate: DesactivateProduct }>());
 export const productDetailDesactivateFailedAction = createAction('[Detail product desactivate failed] detail product desactivate failed');
-export const filterSellerProductsAction = createAction('[Filter seller products] filter seller products', props<{filterInputs: IFilterProductInputsDto}>());
+export const filterSellerProductsAction = createAction('[Filter seller products] filter seller products', props<{productFilterValue: IProductFilterValueDto}>());
 export const filterSellerProductsCompleteAction = createAction('[Filter seller products complete] filter seller products complete', props<{ products: ISellerProducts }>());
 export const filterSellerProductsFailedAction = createAction('[Filter seller products failed] filter seller products failed');
-
+export const clearButtonfilterVisibilityAction = createAction('[clear Button filter Visibility Action] clear Button filter Visibility Action', props<{ isFilterClearButtonVisible: boolean }>());
+export const updateProductFilterValueAction = createAction('[update Product Filter Value Action] update Product Filter Value Action', props<{filterValue: IProductFilterValueDto}>());
 

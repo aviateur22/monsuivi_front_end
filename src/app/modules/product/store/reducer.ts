@@ -24,6 +24,14 @@ export const initialProductState: IProductState = {
     isLoading: false,
     isPopupShow: false,
     productDetail: null
+  },
+  isMobileClearButtonVisible: false,
+  productFilterValue: {
+    filterByCategoryCode: '',
+    filterByName: '',
+    filterByRegisterPeriod: 0,
+    sellerId: '',
+    areSoldProductVisible: false
   }
 }
 
@@ -56,6 +64,9 @@ export const reducers = createReducer(
       isSuccess: products.isSuccess,
       summarizeProducts: products.summarizeProducts
     }
+  })),
+  on(productAction.clearButtonfilterVisibilityAction, (state, {isFilterClearButtonVisible})=>({
+    ...state, isMobileClearButtonVisible: isFilterClearButtonVisible
   })),
   on(productAction.desactivateProduct, (state)=>({...state, desactivateProduct: {
     isLoading: true,
@@ -112,7 +123,7 @@ export const reducers = createReducer(
     ...state, productDetail: {
       ...state.productDetail,
       isLoading: false,
-      isPopupShow: false
+      isPopupShow: true
     },
     sellerProducts : {
       ...state.sellerProducts,
@@ -162,6 +173,15 @@ export const reducers = createReducer(
       isLoading: false,
       isSuccess: true,
       summarizeProducts: products.summarizeProducts
+    }
+  })),
+  on(productAction.updateProductFilterValueAction, (state, {filterValue}) => ({
+    ...state, productFilterValue: {
+      filterByCategoryCode: filterValue.filterByCategoryCode,
+      filterByName: filterValue.filterByName,
+      filterByRegisterPeriod: filterValue.filterByRegisterPeriod,
+      sellerId: filterValue.sellerId,
+      areSoldProductVisible: filterValue.areSoldProductVisible
     }
   })),
   on(productAction.filterSellerProductsFailedAction, (state)=>({

@@ -6,17 +6,17 @@ import { BehaviorSubject, debounceTime, fromEvent, startWith } from 'rxjs';
 })
 export class ProductsFilterVisibilityService {
 
-  // Visibilité du filtre
+  // Visibilité du composant filtre
   private isFilterProductsVisibleSubject = new BehaviorSubject<boolean>(true);
   isFilterProductsVisible$ = this.isFilterProductsVisibleSubject.asObservable();
 
-  // Visibilité button affichage filtre
+  // Visibilité button affichage filtre sur ecran mobile
   private isButtonFilterVisibleSubject = new BehaviorSubject<boolean>(false);
   isButtonFilterVisible$ = this.isButtonFilterVisibleSubject.asObservable();
 
-  // Visibilité du button fermer du filtre
+  // Visibilité du button fermer du filtre qui est présent sur le composant Filtre
   private isClosedButtonFilterVisibleSubject = new BehaviorSubject<boolean>(false);
-  isClosedButtonFilterVisible$ = this.isButtonFilterVisibleSubject.asObservable();
+  isClosedButtonFilterVisible$ = this.isClosedButtonFilterVisibleSubject.asObservable();
 
   /**
    * Sur un mobile, l'apparaition d'un clavié vient perturber la taille de l'écran
@@ -48,7 +48,7 @@ export class ProductsFilterVisibilityService {
    */
   displayProductsFilter(): void {
     this.isFilterProductsVisibleSubject.next(true);
-    this.isButtonFilterVisibleSubject.next(true);
+    this.isButtonFilterVisibleSubject.next(false);
   }
 
   /**

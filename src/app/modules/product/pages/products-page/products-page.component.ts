@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { IAppState } from '../../../../store/state';
 import { select, Store } from '@ngrx/store';
 
@@ -28,6 +28,7 @@ import { ProductsFilterVisibilityService } from '../../services/products-filter-
   ]
 })
 export class ProductsPageComponent {
+    private destroy$ = new Subject<void>();
     isLoading$: Observable<boolean>;
     sellerProducts$: Observable<SummarizeProduct[]>;
     user = this._userService.getUser();
@@ -41,7 +42,7 @@ export class ProductsPageComponent {
       private _store: Store<IAppState>,
       private _userService: UserService) {
       this.isLoading$ = this._store.pipe(select(productSelector.selectIsGetSellerProductsLoading));
-      this.sellerProducts$ =this._store.pipe(select(productSelector.selectGetSellerProducts));
+      this.sellerProducts$ = this._store.pipe(select(productSelector.selectGetSellerProducts));
     }
 
     ngOnInit() {
@@ -49,8 +50,19 @@ export class ProductsPageComponent {
       this._userService.loadUserFromStorage();
 
       // Dispatch récupération des données client
-      if(this.user)
-        this._store.dispatch(getSellerProductsAction({sellerId:this.user.userId}));
+      let productsQuantity;
+      this.sellerProducts$.pipe( takeUntil(this.destroy$)).subscribe(products => {
+        productsQuantity = products.length;
+      });
+
+      let areSoldProductVisible = false;
+      this._store.pipe(select(productSelector.filterProductValueSelector)).pipe(takeUntil(this.destroy$)).subscribe(filterValue => {
+        areSoldProductVisible = filterValue.areSoldProductVisible;
+      });
+
+      if(this.user && productsQuantity === 0)
+        this._store.dispatch(getSellerProductsAction({ sellerId: this.user!.userId, areSoldProductVisible }));
+
 
       this._productsFilterVisibilityService.isButtonFilterVisible$.subscribe(isVisible=>{
         this.isButtonFilterVisible = isVisible

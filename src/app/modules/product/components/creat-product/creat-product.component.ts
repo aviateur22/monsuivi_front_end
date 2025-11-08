@@ -3,7 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { IAppState } from '../../../../store/state';
 import { selectImage } from '../../store/action';
-import { IProductCategoryIhmDto } from '../../model/product.dto';
+import { IFilterProductByCategoryDto } from '../../model/product.dto';
 import { MobileDeviceService } from '../../../../mobile_device/service/mobile-device.service';
 import { ProductService } from '../../services/product.service';
 
@@ -15,8 +15,8 @@ import { ProductService } from '../../services/product.service';
 export class CreatProductComponent {
 
   @Input() fg!: FormGroup;
-  seletcProductCategory: IProductCategoryIhmDto | undefined; // Produit sélectionné
-  productCategories: IProductCategoryIhmDto[] = [];
+  seletcProductCategory: IFilterProductByCategoryDto | undefined; // Produit sélectionné
+  productCategories: IFilterProductByCategoryDto[] = [];
 
   // Si support sur un téléphone iu tablette
   isOnMobile: boolean = false;

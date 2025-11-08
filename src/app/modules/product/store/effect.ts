@@ -34,8 +34,8 @@ export class ProductEffect {
   getSellerProducts$ = createEffect(()=>
     this._action$.pipe(
       ofType(productAction.getSellerProductsAction),
-      mergeMap(({sellerId}) =>
-        this._productService.getSellerProducts(sellerId).pipe(
+      mergeMap(({sellerId, areSoldProductVisible}) =>
+        this._productService.getSellerProducts(sellerId, areSoldProductVisible).pipe(
           switchMap(result=>[
             productAction.getSellerProductsActionComplete({products: { isLoading:false, isSuccess: true, summarizeProducts: result.products}}),
             shareAction.displayMessageAction({message:{isOnError: false, title: 'Vos produits' , message: result.responseMessage}})
@@ -164,10 +164,12 @@ productDetailDesactivateProduct$ = createEffect(()=>
 filterSelerProducts$ = createEffect(()=>
   this._action$.pipe(
     ofType(productAction.filterSellerProductsAction),
-    mergeMap(({filterInputs}) =>
+    mergeMap(({productFilterValue: filterInputs}) =>
       this._productService.filterSellerProducts(filterInputs).pipe(
         switchMap(result=>[
           productAction.filterSellerProductsCompleteAction( { products:{ isLoading:false, isSuccess: true, summarizeProducts: result.products}}),
+          productAction.clearButtonfilterVisibilityAction({isFilterClearButtonVisible: true}),
+          productAction.updateProductFilterValueAction({filterValue: filterInputs}),
           shareAction.displayMessageAction({
           message: {title: 'Filtrage produits', message: result.responseMessage, isOnError: false}
         })

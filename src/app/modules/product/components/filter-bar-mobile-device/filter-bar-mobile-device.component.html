@@ -1,0 +1,8 @@
+<!-- Button pour afficher les filtres des produits pour les mobiles -->
+<div *ngIf="isButtonFilterVisible" class="fixed bottom-0 z-2 w-full flex flex-column align-items-center justify-content-center p-2 pb-2">
+    <!-- Bouton afficher le filtre -->
+    <p-button class="m-1 --primary --width" (onClick)="displayProductsFilter()"  icon="pi pi-sliders-h" label="Afficher sélection filtres" variant="text" [raised]="true" severity="success" />
+
+    <!-- Bouton supprimer les filtres -->
+    <p-button class="m-1 --secondary --width" (onClick)="clearFilter()" *ngIf="isClearFilterButtonVisible$ | async" icon="pi pi-times" label="Supprimer sélection filtre" variant="text" [raised]="true" severity="danger" />
+  </div>
