@@ -1,10 +1,6 @@
 {
   "name": "monsuivi",
-<<<<<<< HEAD
   "version": "1.0.0",
-=======
-  "version": "1.0.1",
->>>>>>> develop
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
