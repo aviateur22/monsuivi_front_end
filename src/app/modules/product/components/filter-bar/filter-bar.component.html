@@ -11,27 +11,35 @@
         </div>
         <div class="w-full flex flex-column
           md:flex-wrap md:flex-row md:justify-content-between">
+          <!-- Filtre affichage des produits vendus -->
+          <div class="p-2">
+            <p-checkbox formControlName="areSoldProductVisible" [binary]="true" inputId="soldProduct" />
+            <label for="soldProduct" class="ml-2">Afficher les produits vendus</label>
+          </div>
+
+
           <!--Rercherche par description-->
           <div class="flex flex-column p-2">
             <label for="filterByName">
               Recherche par nom de produit
             </label>
             <input
+            (focus)="inputFocus()"
+            (blur)="inputLoseFocus()"
             pInputText id="filterByName"
             formControlName="filterByName"
-            aria-describedby="filter product by name"
-            placeholder="Nom du produit" />
+            type="text"
+            placeholder="Nom du produit">
           </div>
+
 
           <!--Rercherche par catégorie -->
           <div class="flex flex-column p-2">
-            <label class="text-sm text-color-secondary" for="productCategory">Catégorie du produit</label>
+            <label class="text-color-secondary" for="productCategory">Catégorie du produit</label>
             <p-select
-
-            [options]="productCategories"
+            [options]="productFilterByCategories"
             formControlName="productCategory"
             optionLabel="name"
-
             placeholder="Catégorie de produit" />
           </div>
 
@@ -41,7 +49,7 @@
               Recherche de produit ajouté depuis moins de:
             </label>
             <div>
-              <p-selectbutton [options]="dateRegisterOptions" formControlName="dateRegisterSelect" [multiple]="false" optionLabel="name" optionValue="value" />
+              <p-selectbutton [options]="productFilterByMaxAges" formControlName="dateRegisterSelect" [multiple]="false" optionLabel="maxAgeLabel" optionValue="maxAgeValue" />
             </div>
           </div>
           <div class="flex flex-column w-full justify-content-center align-items-center text-right p-3

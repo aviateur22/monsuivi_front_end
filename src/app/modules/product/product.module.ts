@@ -30,6 +30,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { PopoverModule } from 'primeng/popover';
 import { ProductsListEmptyComponent } from './components/products-list-empty/products-list-empty.component';
+import { FilterBarMobileDeviceComponent } from './components/filter-bar-mobile-device/filter-bar-mobile-device.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { ProductsListEmptyComponent } from './components/products-list-empty/pro
     ProductsPageComponent,
     FilterBarComponent,
     DetailProductComponent,
-    ProductsListEmptyComponent
+    ProductsListEmptyComponent,
+    FilterBarMobileDeviceComponent
   ],
   imports: [
     CommonModule,

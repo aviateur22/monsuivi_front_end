@@ -1,13 +1,5 @@
 import { IResponseMessage } from "../../share/model/share.dto"
 
-/**
- * Format de la categorie produit utilisé pour la selection dans IHM
- * @see AddProductPageComponent
- */
-export interface IProductCategoryIhmDto {
-  name: string,
-  code: string
-}
 
 /**
  * Données pour déposé un nouveau produit
@@ -126,12 +118,26 @@ export interface IProductUpdateResponseDto {
 /**
  * Données pour filtrer la liste des produits
  */
-export interface IFilterProductInputsDto {
+export interface IProductFilterValueDto {
   sellerId: string,
   filterByName: string,
   filterByCategoryCode: string,
   filterByRegisterPeriod: number
+  areSoldProductVisible: boolean
 }
 
+/**
+ * Données pour filtrer la liste des produits par date maximum d'ajout
+ */
+export interface IFilterProductByMaxAgeDto {
+  maxAgeLabel: string,
+  maxAgeValue: number
+}
 
-
+/**
+ * Données pour filtrer la liste des produits par catégory de produit
+ */
+export interface IFilterProductByCategoryDto {
+  name: string,
+  code: string
+}

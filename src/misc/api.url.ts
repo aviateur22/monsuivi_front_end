@@ -5,7 +5,7 @@ export default {
     url: `${environment.api_base}/products`
   },
   getSellerProducts: {
-    url:`${environment.api_base}/products/seller/{sellerId}`
+    url:`${environment.api_base}/products/seller/{sellerId}/sold-product-visibility/{areSoldProductVisible}`
   },
   filterSellerProducts: {
     url:`${environment.api_base}/products/seller/{sellerId}/filter`

@@ -7,6 +7,8 @@ import { desactivateProduct } from '../../store/action';
 import { UserService } from '../../../../users/service/user.service';
 import { IGetProductDetailDto } from '../../model/product.dto';
 import { getProductDetailAction } from '../../store/action';
+import { Router } from '@angular/router';
+import pagesInformations from '../../../../../misc/pages-informations';
 
 @Component({
   selector: 'app-summarize-product',
@@ -21,7 +23,10 @@ export class SummarizeProductComponent {
 
   user = this._userService.getUser();
 
-  constructor(private _store: Store<IAppState>,  private _userService: UserService){}
+  constructor(
+    private _router: Router,
+    private _store: Store<IAppState>,
+    private _userService: UserService){}
 
   ngOnChanges() {
     if (this.product) {
@@ -52,17 +57,17 @@ export class SummarizeProductComponent {
    * Affichage detail d'un produit
    */
   showProductDetail() {
-    console.log("[SummarizeProductComponent]" + "[showProductDetail]");
+    this._router.navigate([pagesInformations.detailProduct.url.replace(":product-id", this.product.productId)]);
 
-    if(!this.user)
-      throw new Error("");
+    // if(!this.user)
+    //   throw new Error("");
 
-    const detailProductDto: IGetProductDetailDto = {
-      sellerId: this.user.userId,
-      productId: this.product.productId
-    }
+    // const detailProductDto: IGetProductDetailDto = {
+    //   sellerId: this.user.userId,
+    //   productId: this.product.productId
+    // }
 
-    console.log(`[SummarizeProductComponent] [showProductDetail] - idseller ${this.user.userId} - idproduct ${ this.product.productId}`);
-    this._store.dispatch(getProductDetailAction({getProductDetail: detailProductDto}))
+    // console.log(`[SummarizeProductComponent] [showProductDetail] - idseller ${this.user.userId} - idproduct ${ this.product.productId}`);
+    // this._store.dispatch(getProductDetailAction({getProductDetail: detailProductDto}))
   }
 }

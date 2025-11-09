@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { IProductCategoryIhmDto } from '../../model/product.dto';
+import { IFilterProductByCategoryDto, IFilterProductByMaxAgeDto } from '../../model/product.dto';
 import { ProductsFilterVisibilityService } from '../../services/products-filter-visibility.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ProductService } from '../../services/product.service';
 import { filterProductsFieldsValidator } from '../../validators/filterFields.validator';
 import { UserService } from '../../../../users/service/user.service';
 import { IAppState } from '../../../../store/state';
-import { Store } from '@ngrx/store';
-import { filterSellerProductsAction , getSellerProductsAction} from '../../store/action';
+import { select, Store } from '@ngrx/store';
+import { filterSellerProductsAction , getSellerProductsAction, updateProductFilterValueAction, clearButtonfilterVisibilityAction} from '../../store/action';
+import { filterProductValueSelector } from '../../store/selector';
 import { MapperService } from '../../services/mapper.service';
 
 @Component({
@@ -17,16 +18,13 @@ import { MapperService } from '../../services/mapper.service';
 })
 export class FilterBarComponent implements OnInit {
   isClosedButtonFilterVisible: boolean = true;
-  productCategories! :  IProductCategoryIhmDto[] | undefined;
 
-   user = this._userService.getUser();
+  //Données du filtre
+  productFilterByCategories! :  IFilterProductByCategoryDto[] | undefined;
+  productFilterByMaxAges: IFilterProductByMaxAgeDto[] | undefined;
 
-  dateRegisterOptions: any[] = [
-    { name: "1 semaine", value: 1 },
-    { name: "1 mois", value: 2 },
-    { name: "2 mois", value: 3 },
-    { name: "3 mois", value: 4 }
-  ]
+  user = this._userService.getUser();
+
 
   /**
    * Données du produit a modifier
@@ -34,7 +32,8 @@ export class FilterBarComponent implements OnInit {
     filterProductsFG: FormGroup = this._fb.group({
       filterByName: [''],
       productCategory:  [''],
-      dateRegisterSelect: ['']
+      dateRegisterSelect: [''],
+      areSoldProductVisible: ['']
     });
 
   constructor(
@@ -50,13 +49,25 @@ export class FilterBarComponent implements OnInit {
     this._userService.loadUserFromStorage();
 
     this._productService.getProductCategories().subscribe(res=>{
-      this.productCategories = res;
+      this.productFilterByCategories = res;
+    });
+
+     this._productService.getFilterProductByMaxAge().subscribe(res=>{
+      this.productFilterByMaxAges = res;
     });
 
     this._productsFilterVisibilityService.isClosedButtonFilterVisible$.subscribe(isVisible=>{
-      console.log('bouton closed', isVisible);
       this.isClosedButtonFilterVisible = isVisible;
     });
+
+    this._store.pipe(select(filterProductValueSelector)).subscribe(value => {
+      this.filterProductsFG.patchValue({
+        filterByName: value.filterByName ?? '',
+        productCategory: this.productFilterByCategories!.find(c => c.code === value.filterByCategoryCode),
+        dateRegisterSelect: value.filterByRegisterPeriod ?? '',
+        areSoldProductVisible: value.areSoldProductVisible
+      });
+    })
   }
 
 
@@ -64,10 +75,6 @@ export class FilterBarComponent implements OnInit {
     this._productsFilterVisibilityService.hideProductsFilter();
   }
 
-  /**
-   *
-   * @returns Filtrage des produits
-   */
   fiterProducts(): void {
     // Si filtrage pas valide
     if(!filterProductsFieldsValidator(this.filterProductsFG)) {
@@ -82,7 +89,7 @@ export class FilterBarComponent implements OnInit {
       throw new Error("IDentifiant non définit");
 
     this._store.dispatch(filterSellerProductsAction({
-      filterInputs: this._mapper.mapToIFilterProductInputsDto(this.filterProductsFG, sellerId)
+      productFilterValue: this._mapper.mapToIFilterProductInputsDto(this.filterProductsFG, sellerId)
     }));
 
 
@@ -95,7 +102,8 @@ export class FilterBarComponent implements OnInit {
     this.filterProductsFG = this._fb.group({
       filterByName: [''],
       productCategory:  [''],
-      dateRegisterSelect: ['']
+      dateRegisterSelect: [''],
+      areSoldProductVisible: [false]
     });
 
     // Fake sellerId
@@ -105,7 +113,33 @@ export class FilterBarComponent implements OnInit {
       throw new Error("IDentifiant non définit");
 
     this._store.dispatch(getSellerProductsAction({
-     sellerId: sellerId
+     sellerId: sellerId,
+     areSoldProductVisible: false
     }));
+
+    // Vide le contenu du filtre
+    this._store.dispatch(updateProductFilterValueAction({filterValue: {
+      filterByCategoryCode: '',
+      filterByName: '',
+      filterByRegisterPeriod: 0,
+      sellerId: '',
+      areSoldProductVisible: false
+    }}));
+
+    // Suppression du button suppression du filtre pour le mobile
+    this._store.dispatch(clearButtonfilterVisibilityAction({isFilterClearButtonVisible: false}));
+  }
+
+  inputFocus(): void {
+    this._productsFilterVisibilityService.isInputFocused = true;
+  }
+
+  inputLoseFocus(): void {
+    // Ajout d'un délais
+    // Cela permets de ne pas masquer le filtre sur mobile avec le clavier virtuel
+    // lors du focusout de l'input
+    setTimeout(()=>{
+      this._productsFilterVisibilityService.isInputFocused = false;
+    }, 500)
   }
 }

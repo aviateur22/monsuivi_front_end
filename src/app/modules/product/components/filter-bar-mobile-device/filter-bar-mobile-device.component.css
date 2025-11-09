@@ -1,0 +1,20 @@
+
+:host ::ng-deep .--primary button{
+  z-index: 2;
+  background-color: #22C55E;
+  color: white;
+  width: 100%;
+}
+
+:host ::ng-deep .--secondary button {
+  z-index: 2;
+  border: 1px solid red;
+  background-color: white;
+  width: 100%;
+
+}
+
+p-button {
+  width: 100%;
+  max-width: 500px;
+}

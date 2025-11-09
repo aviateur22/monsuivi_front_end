@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { IDesactivateProductResponseDto, IFilterProductInputsDto, IGetProductDetailResponseDto, IGetSellerProductsDto, IProductUpdateResponseDto, ISummarizeProductDto } from '../model/product.dto';
+import { IDesactivateProductResponseDto, IProductFilterValueDto, IGetProductDetailResponseDto, IGetSellerProductsDto, IProductUpdateResponseDto, ISummarizeProductDto } from '../model/product.dto';
 import { GetSellerProducts, ProductDetail, ProductStatus, SummarizeProduct } from '../model/product.model';
 import { Observable } from 'rxjs';
 
@@ -46,7 +46,6 @@ export class MapperService {
         null
 
       );
-      console.log(`[MapperService] - mapToSummarizeProduct - product ${product}`);
 
       return product;
     }
@@ -58,8 +57,6 @@ export class MapperService {
      */
     mapToGetSellerProducts(dto: IGetSellerProductsDto): GetSellerProducts {
       var summarizeProducts = dto.sellerProducts.map(product=>this.mapToSummarizeProduct(product));
-
-      console.log(`[MapperService] - mapToGetSellerProducts - products ${summarizeProducts}`);
       return new GetSellerProducts(
         dto.responseMessage,
         summarizeProducts
@@ -136,23 +133,24 @@ export class MapperService {
     /**
      * Map un formGroup vers IFilterProductInputsDto
      * @param {FormGroup} filterProductsFG
-     * @returns { IFilterProductInputsDto }
+     * @returns { IProductFilterValueDto }
      */
-    mapToIFilterProductInputsDto(filterProductsFG: FormGroup, sellerId: string): IFilterProductInputsDto {
+    mapToIFilterProductInputsDto(filterProductsFG: FormGroup, sellerId: string): IProductFilterValueDto {
       const filterByProductNameValue = filterProductsFG.get('filterByName')?.value;
       const filterByCategoryValue = filterProductsFG.get('productCategory')?.value;
       const filterByPeriodeValue = filterProductsFG.get('dateRegisterSelect')?.value;
+      const areSoldProductVisible = filterProductsFG.get('areSoldProductVisible')?.value;
       let categoryCode = null;
 
       if(filterByCategoryValue !== null && filterByCategoryValue !== undefined)
         categoryCode = filterByCategoryValue.code;
 
-      console.log(categoryCode)
       return {
         sellerId: sellerId,
         filterByName: filterByProductNameValue,
         filterByCategoryCode: categoryCode,
-        filterByRegisterPeriod: filterByPeriodeValue
+        filterByRegisterPeriod: filterByPeriodeValue,
+        areSoldProductVisible
       };
     }
   }

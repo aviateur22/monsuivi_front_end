@@ -1,6 +1,6 @@
 {
   "name": "monsuivi",
-  "version": "1.0.0-RC8",
+  "version": "1.0.0-RC16",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

@@ -12,4 +12,6 @@ export const isDesactivateProductLoading = createSelector(selector,(state)=>stat
 export const isProductDetailPopupVisible = createSelector(selector, (state)=>state.productDetail.isPopupShow);
 export const isProductDetailLoading = createSelector(selector, (state)=>state.productDetail.isLoading);
 export const productDetail = createSelector(selector, (state)=>state.productDetail.productDetail);
+export const clearButtonFilterVisibility = createSelector(selector, (state)=>state.isMobileClearButtonVisible);
+export const filterProductValueSelector = createSelector(selector, (state)=>state.productFilterValue);
 
