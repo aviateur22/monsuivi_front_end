@@ -2,9 +2,10 @@ import { APP_INITIALIZER, NgModule, isDevMode } from "@angular/core";
 import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app-routing.module";
 import { BrowserModule } from "@angular/platform-browser";
-import { provideHttpClient } from "@angular/common/http";
+import { provideHttpClient, withInterceptors } from "@angular/common/http";
 import { EffectsModule } from "@ngrx/effects";
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { httpInterceptor } from "./interceptor/http.interceptor";
 import { StoreModule } from "@ngrx/store";
 import Lara from '@primeng/themes/lara';
 
@@ -58,7 +59,7 @@ export function initialize(userService: UserService) {
     })
   ],
   providers: [
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([httpInterceptor])),
     {
       provide: APP_INITIALIZER,
       useFactory: initialize,

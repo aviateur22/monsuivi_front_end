@@ -6,6 +6,14 @@ export default {
     url: '',
     title:  `${environment.main_page_title} | Bienvenue`
   },
+  login: {
+    url: 'auth/connexion',
+    title:  `${environment.main_page_title} | Connexion`
+  },
+  register: {
+    url: 'auth/inscription',
+    title:  `${environment.main_page_title} | Inscription`
+  },
   addProduct: {
     url: 'ajout-nouveau-produit',
     title:  `${environment.main_page_title} | Ajout produit`
