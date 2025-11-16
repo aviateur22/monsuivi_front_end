@@ -1,7 +1,7 @@
 <app-main-container>
   <div class="relative w-full">
     <!--Filtre-->
-    <app-filter-bar *ngIf="isFilterVisible"></app-filter-bar>
+    <app-filter-bar *ngIf="isFilterVisible | async "></app-filter-bar>
     <!-- Button affichage Filtre -->
     <app-filter-bar-mobile-device></app-filter-bar-mobile-device>
 

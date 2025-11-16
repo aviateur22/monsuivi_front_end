@@ -20,7 +20,7 @@ import { FilterBarComponent } from './components/filter-bar/filter-bar.component
 import { DetailProductComponent } from './components/detail-product/detail-product-page.component';
 
 import { MessageModule } from 'primeng/message';
-import { Select, SelectModule } from 'primeng/select';
+import { Select } from 'primeng/select';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { CalendarModule } from 'primeng/calendar';

@@ -2,39 +2,50 @@ import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { IAppState } from '../../../../store/state';
 import { getActualYearDataAction } from './../../store/action';
-import { UserService } from '../../../../users/service/user.service';
-import { Observable, of } from 'rxjs';
+import { take } from 'rxjs';
 import { StackedBarData } from '../../model/graphic.model';
 import { StatisticalDateService } from '../../services/statistical.date.service';
 import * as statisticalSelector from './../../store/selector';
+import { ActifSeller } from '../../../auth/models/actif-seller';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-actual-year-graphic-page',
   templateUrl: './actual-year-graphic-page.component.html',
   styleUrl: './actual-year-graphic-page.component.css'
 })
-export class ActualYearGraphicPageComponent implements OnInit {
+export class ActualYearGraphicPageComponent extends ActifSeller implements OnInit {
 
-  soldAndBuyProductPriceByYear$ : Observable<StackedBarData<number> | null> = of(null);
-  soldAndBuyProductQuantityByYear$ : Observable<StackedBarData<number> | null> = of(null);
+  soldAndBuyProductPriceByYear$ = this._store.pipe(select(statisticalSelector.selectSoldAndBuyProductPriceByYear));
+  soldAndBuyProductQuantityByYear$ = this._store.pipe(select(statisticalSelector.selectSoldAndBuyProductQuantityByYear));
 
-  // Utilisateur
-  user = this._userService.getUser();
-
-  constructor(private _store: Store<IAppState>, private _userService: UserService, private _statiscalDateService: StatisticalDateService) {}
+  constructor(
+    protected override _store: Store<IAppState>,
+    protected override _router: Router,
+    private _statiscalDateService: StatisticalDateService) {
+      super(_store, _router);
+    }
 
   ngOnInit(): void {
-      this.soldAndBuyProductPriceByYear$ = this._store.pipe(select(statisticalSelector.selectSoldAndBuyProductPriceByYear));
-      this.soldAndBuyProductQuantityByYear$ = this._store.pipe(select(statisticalSelector.selectSoldAndBuyProductQuantityByYear));
+    this.getGraphicalData();
+  }
 
-    if(!this.user)
-      return;
+  /**
+   * Récupération des données de l'année
+   */
+  getGraphicalData() {
+    this.isSellerAuthentified()
+    .pipe(take(1))
+    .subscribe(sellerId => {
 
-    this._store.dispatch(getActualYearDataAction({
-      sellerId: this.user.userId,
-      year: this._statiscalDateService.getActualYear()
-    }));
+      if(!sellerId)
+        return;
 
+      this._store.dispatch(getActualYearDataAction({
+        sellerId,
+        year: this._statiscalDateService.getActualYear()
+      }));
+    });
   }
 
 }

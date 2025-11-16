@@ -4,29 +4,27 @@ import apiUrl from '../../../../../misc/api.url';
 import { IAppState } from '../../../../store/state';
 import { Store } from '@ngrx/store';
 import { desactivateProduct } from '../../store/action';
-import { UserService } from '../../../../users/service/user.service';
-import { IGetProductDetailDto } from '../../model/product.dto';
-import { getProductDetailAction } from '../../store/action';
 import { Router } from '@angular/router';
 import pagesInformations from '../../../../../misc/pages-informations';
+import { ActifSeller } from '../../../auth/models/actif-seller';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-summarize-product',
   templateUrl: './summarize-product.component.html',
   styleUrl: './summarize-product.component.css'
 })
-export class SummarizeProductComponent {
+export class SummarizeProductComponent extends ActifSeller {
   @Input() product!: SummarizeProduct;
 
   //Path de l'image du produit à charger
   imageUrl: string = '';
 
-  user = this._userService.getUser();
-
   constructor(
-    private _router: Router,
-    private _store: Store<IAppState>,
-    private _userService: UserService){}
+    protected override _router: Router,
+    protected override _store: Store<IAppState>){
+      super(_store, _router);
+    }
 
   ngOnChanges() {
     if (this.product) {
@@ -34,23 +32,23 @@ export class SummarizeProductComponent {
     }
   }
 
-  ngOnInit() {
-    // Réchargement utilisateur
-    this._userService.loadUserFromStorage();
-  }
-
-
   /**
    * Désactivation du produit
    */
   desactivateProduct(event:MouseEvent) {
     event.stopPropagation();
     console.log("[SummarizeProductComponent]" + "[desactivateProduct]");
-    if(this.user)
+
+    this.isSellerAuthentified()
+    .pipe(take(1))
+    .subscribe(sellerId => {
+      if(!sellerId)
+        return;
       this._store.dispatch(desactivateProduct({productToDesactivate: {
-        sellerId: this.user.userId,
+        sellerId,
         productId: this.product.productId}
       }));
+    })
   }
 
   /**
@@ -58,16 +56,5 @@ export class SummarizeProductComponent {
    */
   showProductDetail() {
     this._router.navigate([pagesInformations.detailProduct.url.replace(":product-id", this.product.productId)]);
-
-    // if(!this.user)
-    //   throw new Error("");
-
-    // const detailProductDto: IGetProductDetailDto = {
-    //   sellerId: this.user.userId,
-    //   productId: this.product.productId
-    // }
-
-    // console.log(`[SummarizeProductComponent] [showProductDetail] - idseller ${this.user.userId} - idproduct ${ this.product.productId}`);
-    // this._store.dispatch(getProductDetailAction({getProductDetail: detailProductDto}))
   }
 }

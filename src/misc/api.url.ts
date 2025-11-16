@@ -4,6 +4,12 @@ export default {
   addProduct: {
     url: `${environment.api_base}/products`
   },
+  login:{
+    url: `${environment.api_base}/auth/login`
+  },
+  register: {
+    url: `${environment.api_base}/auth/register`
+  },
   getSellerProducts: {
     url:`${environment.api_base}/products/seller/{sellerId}/sold-product-visibility/{areSoldProductVisible}`
   },

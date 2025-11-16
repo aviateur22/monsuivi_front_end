@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { IAppState } from '../../../../store/state';
 import { select, Store } from '@ngrx/store';
-
 import { getSellerProductsAction } from '../../store/action';
 import * as productSelector from '../../store/selector';
 import { SummarizeProduct } from '../../model/product.model';
-import { UserService } from '../../../../users/service/user.service';
 import { animate, query, stagger, style, transition, trigger } from '@angular/animations';
 import { ProductsFilterVisibilityService } from '../../services/products-filter-visibility.service';
+import { ActifSeller } from '../../../auth/models/actif-seller';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-products-page',
@@ -27,49 +27,32 @@ import { ProductsFilterVisibilityService } from '../../services/products-filter-
     ])
   ]
 })
-export class ProductsPageComponent {
-    private destroy$ = new Subject<void>();
-    isLoading$: Observable<boolean>;
-    sellerProducts$: Observable<SummarizeProduct[]>;
-    user = this._userService.getUser();
-    isFilterVisible: boolean = false;
-    isButtonFilterVisible: boolean = true;
-
-
+export class ProductsPageComponent extends ActifSeller {
+    isLoading$: Observable<boolean> = this._store.pipe(select(productSelector.selectIsGetSellerProductsLoading));
+    sellerProducts$: Observable<SummarizeProduct[]> = this._store.pipe(select(productSelector.selectGetSellerProducts));
+    isFilterVisible: Observable<boolean> = this._productsFilterVisibilityService.isFilterProductsVisible$;
+    isButtonFilterVisible: Observable<boolean> = this._productsFilterVisibilityService.isButtonFilterVisible$;
 
     constructor(
       private _productsFilterVisibilityService: ProductsFilterVisibilityService,
-      private _store: Store<IAppState>,
-      private _userService: UserService) {
-      this.isLoading$ = this._store.pipe(select(productSelector.selectIsGetSellerProductsLoading));
-      this.sellerProducts$ = this._store.pipe(select(productSelector.selectGetSellerProducts));
+      protected override  _router: Router,
+      protected override _store: Store<IAppState>) {
+        super(_store, _router);
     }
 
     ngOnInit() {
-      // Réchargement utilisateur
-      this._userService.loadUserFromStorage();
+      this.displaySellerProducts();
+    }
 
-      // Dispatch récupération des données client
-      let productsQuantity;
-      this.sellerProducts$.pipe( takeUntil(this.destroy$)).subscribe(products => {
-        productsQuantity = products.length;
-      });
-
-      let areSoldProductVisible = false;
-      this._store.pipe(select(productSelector.filterProductValueSelector)).pipe(takeUntil(this.destroy$)).subscribe(filterValue => {
-        areSoldProductVisible = filterValue.areSoldProductVisible;
-      });
-
-      if(this.user && productsQuantity === 0)
-        this._store.dispatch(getSellerProductsAction({ sellerId: this.user!.userId, areSoldProductVisible }));
-
-
-      this._productsFilterVisibilityService.isButtonFilterVisible$.subscribe(isVisible=>{
-        this.isButtonFilterVisible = isVisible
-      });
-
-      this._productsFilterVisibilityService.isFilterProductsVisible$.subscribe(isVisible=>{
-        this.isFilterVisible = isVisible;
+    /**
+     * Affichage des produits
+     */
+    displaySellerProducts() {
+       this.isSellerAuthentified()
+       .pipe(take(1))
+        .subscribe(sellerId => {
+        if(sellerId)
+          this._store.dispatch(getSellerProductsAction({ sellerId, areSoldProductVisible: false }));
       });
     }
 

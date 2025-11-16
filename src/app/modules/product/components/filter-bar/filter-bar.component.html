@@ -36,11 +36,14 @@
           <!--Rercherche par catégorie -->
           <div class="flex flex-column p-2">
             <label class="text-color-secondary" for="productCategory">Catégorie du produit</label>
-            <p-select
-            [options]="productFilterByCategories"
-            formControlName="productCategory"
-            optionLabel="name"
-            placeholder="Catégorie de produit" />
+            <ng-container *ngIf="productFilterByCategories$ | async as productFilterByCategories">
+              <p-select
+              [options]="productFilterByCategories"
+              formControlName="productCategory"
+              optionLabel="name"
+              placeholder="Catégorie de produit" />
+
+            </ng-container>
           </div>
 
           <!--Rercherche par durée de creation-->
@@ -49,7 +52,9 @@
               Recherche de produit ajouté depuis moins de:
             </label>
             <div>
-              <p-selectbutton [options]="productFilterByMaxAges" formControlName="dateRegisterSelect" [multiple]="false" optionLabel="maxAgeLabel" optionValue="maxAgeValue" />
+              <ng-container *ngIf="productFilterByMaxAges$ | async as productFilterByMaxAges">
+                <p-selectbutton [options]="productFilterByMaxAges" formControlName="dateRegisterSelect" [multiple]="false" optionLabel="maxAgeLabel" optionValue="maxAgeValue" />
+              </ng-container>
             </div>
           </div>
           <div class="flex flex-column w-full justify-content-center align-items-center text-right p-3
@@ -63,7 +68,7 @@
       </form>
     </div>
     <div class="flex w-full justify-content-end">
-     <p-button *ngIf="isClosedButtonFilterVisible" (onClick)="closedFilterProducts()" icon="pi pi-times" [rounded]="true" severity="danger" [outlined]="true" />
+     <p-button *ngIf="isClosedButtonFilterVisible$ | async" (onClick)="closedFilterProducts()" icon="pi pi-times" [rounded]="true" severity="danger" [outlined]="true" />
     </div>
   </div>
 </div>

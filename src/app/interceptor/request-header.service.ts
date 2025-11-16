@@ -56,7 +56,9 @@ export class RequestHeaderService {
     * @returns La requete avec le header authorisation
     */
   private addAuthorizationHeader(request: HttpRequest<unknown>): HttpRequest<unknown>  {
-    const bearer = localStorage.getItem(APP_CONSTANTS.HEADER_AUTHORIZATION_BEARER);
+
+    const bearer = JSON.parse(localStorage.getItem(APP_CONSTANTS.HEADER_AUTHORIZATION_BEARER) ?? APP_CONSTANTS.MISSING_JWT);
+
     if (!bearer) return request;
 
       return request.clone({

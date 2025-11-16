@@ -1,4 +1,3 @@
-import { Title } from "@angular/platform-browser";
 import { environment } from "../environment/environment";
 
 export default {
@@ -13,6 +12,10 @@ export default {
   register: {
     url: 'auth/inscription',
     title:  `${environment.main_page_title} | Inscription`
+  },
+  logout: {
+    url: 'auth/deconnexion',
+    title: `${environment.main_page_title} | Quitter`
   },
   addProduct: {
     url: 'ajout-nouveau-produit',
