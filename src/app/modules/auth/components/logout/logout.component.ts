@@ -5,6 +5,7 @@ import pagesInformations from '../../../../../misc/pages-informations';
 import { Store } from '@ngrx/store';
 import { IAppState } from '../../../../store/state';
 import { logoutAction } from '../../store/action';
+import { displayMessageAction } from '../../../share/store/action';
 
 @Component({
   selector: 'app-logout',
@@ -22,6 +23,7 @@ export class LogoutComponent {
   logout() {
     this._sellerDervice.logout();
     this._store.dispatch(logoutAction());
+    this._store.dispatch(displayMessageAction({message: {title: '', message:'Au revoir', isOnError: false}}))
     this._router.navigate([pagesInformations.home.url]);
   }
 }

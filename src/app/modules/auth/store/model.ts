@@ -6,4 +6,9 @@ export interface ILogin {
   isSuccess: boolean
 }
 
+export interface IRegister {
+  isLoading: boolean,
+  isSuccess: boolean
+}
+
 

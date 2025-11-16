@@ -56,4 +56,26 @@ export class AuthEffect {
     ),
     { dispatch: false }
   );
+  register$ = createEffect(()=>
+    this._action$.pipe(
+      ofType(authAction.registerAction),
+      mergeMap(({registerInformation: { email, password, nickname }})=>
+        this._authService.register({ email, password, nickname }).pipe(
+          mergeMap(result => from([
+            authAction.registerActionComplete({ registerResponse : result }),
+            shareAction.displayMessageAction({message:{isOnError: false, title: '' , message: result.responseMessage}})
+          ])
+          .pipe(
+            tap(() => this._router.navigate([pagesInformations.login.url]))
+          )
+        ),
+        catchError(error=> of(
+          authAction.registerActionFailed(),
+          shareAction.displayMessageAction({
+          message: {title: '', message: error.error.error, isOnError: true}
+        })))
+        )
+      )
+    )
+  );
 }

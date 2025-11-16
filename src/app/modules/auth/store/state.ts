@@ -1,5 +1,6 @@
-import { ILogin } from "./model";
+import { ILogin, IRegister } from "./model";
 
 export interface IAuthState {
-  login: ILogin
+  login: ILogin,
+  register: IRegister
 }
