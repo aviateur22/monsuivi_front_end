@@ -15,6 +15,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IGetProductDetailDto } from '../../model/product.dto';
 import { getProductDetailAction } from '../../store/action';
 import { ActifSeller } from '../../../auth/models/actif-seller';
+import { ProductService } from '../../services/product.service';
 
 @Component({
   selector: 'app-detail-product-page',
@@ -63,6 +64,7 @@ export class DetailProductComponent extends ActifSeller implements OnInit {
   //private productDetail: ProductDetail | null = null;
 
   constructor(
+    private _productService: ProductService,
     private _location: Location,
     private _activedRoute: ActivatedRoute,
     private _fb: FormBuilder,
@@ -107,8 +109,10 @@ export class DetailProductComponent extends ActifSeller implements OnInit {
         productStatus: this._mapper.mapProductStatusToBoolean(productDetail.productStatus)
       });
 
-      this.imageUrl = apiUrl.streamImage.url.replace('{imagePath}', productDetail.productImagePath);
-
+      this._productService.streamProductImage(productDetail.productImagePath)
+      .subscribe(blob => {
+        this.imageUrl = URL.createObjectURL(blob);
+      });
   }
 
 

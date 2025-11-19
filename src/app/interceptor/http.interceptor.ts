@@ -10,7 +10,7 @@ export const httpInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
   const requestHeader = inject(RequestHeaderService);
 
-  // Clone the request with credentials and headers
+  // Clone la requête avec l'ajout des headers qui sont nécessaire
   const authReq = requestHeader.addHeaders(req);
 
   return next(authReq).pipe(

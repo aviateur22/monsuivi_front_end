@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ILoginDto } from '../../models/auth.dto';
-import { SellerService } from '../../service/seller.service';
 import { Store } from '@ngrx/store';
 import { loginAction } from '../../store/action';
 import { IAppState } from '../../../../store/state';
@@ -19,8 +18,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private _store: Store<IAppState>,
-    private _fb: FormBuilder,
-    private _userService: SellerService) {}
+    private _fb: FormBuilder) {}
 
   ngOnInit(): void {
 

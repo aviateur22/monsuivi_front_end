@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import pagesInformations from '../../../../../misc/pages-informations';
 import { ActifSeller } from '../../../auth/models/actif-seller';
 import { take } from 'rxjs';
+import { ProductService } from '../../services/product.service';
 
 @Component({
   selector: 'app-summarize-product',
@@ -21,6 +22,7 @@ export class SummarizeProductComponent extends ActifSeller {
   imageUrl: string = '';
 
   constructor(
+    private _productService: ProductService,
     protected override _router: Router,
     protected override _store: Store<IAppState>){
       super(_store, _router);
@@ -28,7 +30,10 @@ export class SummarizeProductComponent extends ActifSeller {
 
   ngOnChanges() {
     if (this.product) {
-      this.imageUrl = apiUrl.streamImage.url.replace('{imagePath}', this.product.imagePath);
+      this._productService.streamProductImage(this.product.imagePath)
+      .subscribe(blob => {
+        this.imageUrl = URL.createObjectURL(blob);
+      });
     }
   }
 

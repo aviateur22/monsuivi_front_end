@@ -7,6 +7,9 @@ export default {
   login:{
     url: `${environment.api_base}/auth/login`
   },
+  logout: {
+    url: `${environment.api_base}/auth/logout/{sellerId}`
+  },
   register: {
     url: `${environment.api_base}/auth/register`
   },

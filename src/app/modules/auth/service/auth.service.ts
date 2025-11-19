@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ILoginDto, ILoginResponseDto, IRegsiterDto, IRegsiterResponseDto } from '../models/auth.dto';
+import { ILoginDto, ILoginResponseDto, ILogoutMessageDto, IRegsiterDto, IRegsiterResponseDto } from '../models/auth.dto';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import apiUrl from '../../../../misc/api.url';
@@ -19,5 +19,8 @@ export class AuthService {
     return this._http.post<IRegsiterResponseDto>(apiUrl.register.url, dto);
   }
 
-
+  logout(sellerId: string): Observable<ILogoutMessageDto> {
+    const logoutUrl = apiUrl.logout.url.replace('{sellerId}', sellerId);
+    return this._http.post<ILogoutMessageDto>(logoutUrl, null);
+  }
 }

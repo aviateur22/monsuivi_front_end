@@ -20,3 +20,7 @@ export interface IRegsiterResponseDto {
    responseMessage: string
 }
 
+export interface ILogoutMessageDto {
+   responseMessage: string
+}
+

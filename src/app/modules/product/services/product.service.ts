@@ -75,4 +75,9 @@ export class ProductService {
     return this._http.post<IGetSellerProductsDto>(url, dto).pipe(
       map(res => this._mapper.mapToGetSellerProducts(res)));
   }
+
+  streamProductImage(imageName :string): Observable<Blob> {
+    const url = apiUrl.streamImage.url.replace('{imagePath}', imageName);
+    return this._http.get(url, { responseType: 'blob' });
+  }
 }

@@ -25,7 +25,7 @@ export class AuthEffect {
         this._authService.login({ email, password }).pipe(
           mergeMap(result=> from([
             authAction.loginActionComplete({ dto : result }),
-            authAction.persistActifSeller({
+            authAction.persistActifSellerInStorageAction({
             actifSeller: {
                 userId: result.id,
                 roles: result.roles
@@ -38,7 +38,7 @@ export class AuthEffect {
             tap(() => this._router.navigate([pagesInformations.sellerProducts.url]))
           )
         ),
-        catchError(error=> of(
+        catchError(error => of(
           authAction.loginActionFailed(),
           shareAction.displayMessageAction({
           message: {title: '', message: error.error.error, isOnError: true}
@@ -47,9 +47,9 @@ export class AuthEffect {
       )
     )
   );
-  persistSeller$ = createEffect(()=>
+  persistActifSellerInStorage$ = createEffect(()=>
     this._action$.pipe(
-      ofType(authAction.persistActifSeller),
+      ofType(authAction.persistActifSellerInStorageAction),
       tap(({ actifSeller, jwt }) => {
         this._sellerService.saveActifSeller(actifSeller, jwt);
       })
@@ -77,5 +77,33 @@ export class AuthEffect {
         )
       )
     )
+  );
+  logout$ = createEffect(() =>
+    this._action$.pipe(
+      ofType(authAction.logoutAction),
+      mergeMap(({sellerId}) =>
+        this._authService.logout(sellerId).pipe(
+          mergeMap(result => from([
+            authAction.deleteSellerFromStorageAction(),
+            shareAction.displayMessageAction({message:{isOnError: false, title: '' , message:  result.responseMessage }})
+          ]))
+        )
+      ),
+      catchError(error => of(
+        shareAction.displayMessageAction({
+          message: {title: '', message: 'Echec de deconnexion', isOnError: true}
+        })
+      ))
+    )
+  );
+  deleteSellerFromStorage$ = createEffect(()=>
+    this._action$.pipe(
+      ofType(authAction.deleteSellerFromStorageAction),
+      tap(() => {
+        this._sellerService.logout();
+        this._router.navigate([pagesInformations.home.url]);
+      })
+    ),
+    { dispatch: false }
   );
 }
