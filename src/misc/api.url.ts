@@ -14,7 +14,7 @@ export default {
     url: `${environment.api_base}/auth/register`
   },
   getSellerProducts: {
-    url:`${environment.api_base}/products/seller/{sellerId}/sold-product-visibility/{areSoldProductVisible}`
+    url:`${environment.api_base}/products/seller/{sellerId}/all-products`
   },
   filterSellerProducts: {
     url:`${environment.api_base}/products/seller/{sellerId}/filter`

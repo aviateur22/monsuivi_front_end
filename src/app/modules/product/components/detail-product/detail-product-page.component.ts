@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { IAppState } from '../../../../store/state';
 import { select, Store } from '@ngrx/store';
-import { takeUntil } from 'rxjs';
+import { map, Observable, of, startWith, takeUntil } from 'rxjs';
 import { ProductDetail } from '../../model/product.model';
 import * as productSelector from '../../store/selector';
 import * as productAction from '../../store/action'
@@ -55,11 +55,9 @@ export class DetailProductComponent extends ActifSeller implements OnInit {
       productStatus: ['', [Validators.required]]
     })
 
-  //Path de l'image du produit
-  imageUrl: string = '';
-
-  // Utilisateur
-
+   placeholder = "image/cbasic60.svg";
+    //Path de l'image du produit à charger
+    imageUrl$: Observable<string> = of('');
 
   //private productDetail: ProductDetail | null = null;
 
@@ -99,6 +97,7 @@ export class DetailProductComponent extends ActifSeller implements OnInit {
    * Mise a joiur du contenu du formulaire
    */
   updateFormData(productDetail: ProductDetail): void {
+      this.imageUrl$ = of('');
       this.updateProductFg.patchValue({
         productName: productDetail.productName,
         productId: productDetail.productId,
@@ -109,10 +108,12 @@ export class DetailProductComponent extends ActifSeller implements OnInit {
         productStatus: this._mapper.mapProductStatusToBoolean(productDetail.productStatus)
       });
 
-      this._productService.streamProductImage(productDetail.productImagePath)
-      .subscribe(blob => {
-        this.imageUrl = URL.createObjectURL(blob);
-      });
+      if(productDetail.productImagePath)
+       this.imageUrl$ = this._productService.streamProductImage(productDetail.productImagePath)
+        .pipe(
+          map(blob => URL.createObjectURL(blob)),
+          startWith(this.placeholder)
+        );
   }
 
 

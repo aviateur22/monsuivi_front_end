@@ -22,8 +22,7 @@ export class FilterProduct {
 
   clearFilter(sellerId: string) {
       this._store.dispatch(productActions.getSellerProductsAction({
-       sellerId,
-       areSoldProductVisible: false
+       sellerId
       }));
 
       // Vide le contenu du filtre

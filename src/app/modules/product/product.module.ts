@@ -31,6 +31,8 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { PopoverModule } from 'primeng/popover';
 import { ProductsListEmptyComponent } from './components/products-list-empty/products-list-empty.component';
 import { FilterBarMobileDeviceComponent } from './components/filter-bar-mobile-device/filter-bar-mobile-device.component';
+import { NgOptimizedImage } from '@angular/common';
+import { DesactivateProductPageComponent } from './pages/desactivate-product-page/desactivate-product-page.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,8 @@ import { FilterBarMobileDeviceComponent } from './components/filter-bar-mobile-d
     FilterBarComponent,
     DetailProductComponent,
     ProductsListEmptyComponent,
-    FilterBarMobileDeviceComponent
+    FilterBarMobileDeviceComponent,
+    DesactivateProductPageComponent
   ],
   imports: [
     CommonModule,
@@ -64,7 +67,8 @@ import { FilterBarMobileDeviceComponent } from './components/filter-bar-mobile-d
     CalendarModule,
     CheckboxModule,
     SelectButtonModule,
-    PopoverModule
+    PopoverModule,
+    NgOptimizedImage
   ],
   exports: [
     DetailProductComponent

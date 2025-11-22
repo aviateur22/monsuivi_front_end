@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { Observable, take } from 'rxjs';
+import { combineLatest, Observable, take } from 'rxjs';
 import { IAppState } from '../../../../store/state';
 import { select, Store } from '@ngrx/store';
-import { getSellerProductsAction } from '../../store/action';
+import { getSellerProductsAction, filterSellerProductsAction } from '../../store/action';
 import * as productSelector from '../../store/selector';
 import { SummarizeProduct } from '../../model/product.model';
 import { animate, query, stagger, style, transition, trigger } from '@angular/animations';
@@ -32,6 +32,8 @@ export class ProductsPageComponent extends ActifSeller {
     sellerProducts$: Observable<SummarizeProduct[]> = this._store.pipe(select(productSelector.selectGetSellerProducts));
     isFilterVisible: Observable<boolean> = this._productsFilterVisibilityService.isFilterProductsVisible$;
     isButtonFilterVisible: Observable<boolean> = this._productsFilterVisibilityService.isButtonFilterVisible$;
+    productQuantity$: Observable<number> =  this._store.pipe(select(productSelector.selectProductsQuantitySelector));
+    productFilterValue$ = this._store.pipe(select(productSelector.filterProductValueSelector));
 
     constructor(
       private _productsFilterVisibilityService: ProductsFilterVisibilityService,
@@ -48,11 +50,27 @@ export class ProductsPageComponent extends ActifSeller {
      * Affichage des produits
      */
     displaySellerProducts() {
-       this.isSellerAuthentified()
-       .pipe(take(1))
-        .subscribe(sellerId => {
-        if(sellerId)
-          this._store.dispatch(getSellerProductsAction({ sellerId, areSoldProductVisible: false }));
+
+      combineLatest([
+        this.isSellerAuthentified().pipe(take(1)),
+        this.productFilterValue$.pipe(take(1))
+      ]).subscribe(([sellerId, values]) => {
+
+        const filterIsActive =
+          values.areSoldProductVisible ||
+          values.filterByCategoryCode ||
+          values.filterByName ||
+          values.filterByRegisterPeriod;
+
+        if(sellerId && filterIsActive){
+          console.log("Le filre est actif - Filtrage des produits ");
+          return this._store.dispatch(filterSellerProductsAction({productFilterValue: values }));
+        }
+
+        if(sellerId) {
+          console.log("Produits non filtrés");
+          this._store.dispatch(getSellerProductsAction({ sellerId }));
+        }
       });
     }
 

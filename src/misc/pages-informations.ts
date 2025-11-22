@@ -25,6 +25,10 @@ export default {
     url: 'mes-produits',
     title: `${environment.main_page_title} | Mes produits`
   },
+  desactivateProducts: {
+    url: 'mes-produits-inactifs',
+    title: `${environment.main_page_title} | Mes produits inactifs`
+  },
   detailProduct: {
     url: 'produit/:product-id/detail',
     title: `${environment.main_page_title} | Mon produit`

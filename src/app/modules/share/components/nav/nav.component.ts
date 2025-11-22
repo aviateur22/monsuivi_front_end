@@ -20,6 +20,8 @@ export class NavComponent implements OnInit {
   loginLink = pagesInformations.login.url;
   registerLink = pagesInformations.register.url;
   logoutLink = pagesInformations.logout.url;
+  desactivateProductLink = pagesInformations.desactivateProducts.url;
+
   isMenuVisible:boolean = false;
 
   // Utilisateur

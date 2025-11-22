@@ -77,7 +77,7 @@ export class FilterBarComponent extends ActifSeller implements OnInit {
     this._productsFilterVisibilityService.hideProductsFilter();
   }
 
-  fiterProducts(): void {
+  filterProducts(): void {
     this.isSellerAuthentified()
     .pipe(take(1))
     .subscribe(sellerId => {

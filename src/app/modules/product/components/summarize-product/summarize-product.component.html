@@ -2,7 +2,19 @@
   <!--Affichage des données du produit-->
   <div swipeLeft class="card" >
     <div class="img__container">
-      <img [src]="imageUrl" alt="image du produit">
+      <img
+        *ngIf="imageUrl$ | async as url; else noImagePath"
+        [ngSrc]="url"
+        fill
+        [placeholder]="placeholder"
+        alt="image du produit">
+
+      <!-- Si pas de nom de l'image-->
+      <ng-template #noImagePath>
+        <img
+        [src]="placeholder"
+        alt="image du produit">
+      </ng-template>
     </div>
     <div class="header m-2">
       <!--Description-->

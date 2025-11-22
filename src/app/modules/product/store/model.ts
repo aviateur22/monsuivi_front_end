@@ -8,6 +8,7 @@ export interface IAddProductAction {
 
 export interface ISellerProducts {
   summarizeProducts: SummarizeProduct[],
+  productQuantity: number,
   isLoading: boolean,
   isSuccess: boolean
 }

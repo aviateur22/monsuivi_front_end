@@ -22,6 +22,9 @@
           <li routerLinkActive="active">
             <a class="link" [routerLink]=graphicalStatisticLink routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Données stat</a>
           </li>
+          <li routerLinkActive="active">
+            <a class="link" [routerLink]=desactivateProductLink routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Produits désactivés</a>
+          </li>
           <ng-container *ngIf="seller">
             <li class="px-2" routerLinkActive="active">
               <a class="link font-semibold logout" [routerLink]=logoutLink routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Déconnexion</a>
@@ -68,10 +71,12 @@
               <li class="py-2" routerLinkActive="active">
                 <a (click)="displayMenuOverlay()" class="link text-white" [routerLink]=graphicalStatisticLink routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Données stat</a>
               </li>
+              <li class="py-2" routerLinkActive="active">
+                <a (click)="displayMenuOverlay()" class="link text-white" [routerLink]=desactivateProductLink routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Produits désactivés</a>
+              </li>
               <ng-container *ngIf="seller">
               <li class="py-4" routerLinkActive="active">
                 <a (click)="displayMenuOverlay()" class="link font-semibold logout" [routerLink]=logoutLink routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Déconnexion</a>
-              </li>
             </ng-container>
             </ul>
           </ng-container>

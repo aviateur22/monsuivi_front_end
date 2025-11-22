@@ -7,7 +7,7 @@ import { desactivateProduct } from '../../store/action';
 import { Router } from '@angular/router';
 import pagesInformations from '../../../../../misc/pages-informations';
 import { ActifSeller } from '../../../auth/models/actif-seller';
-import { take } from 'rxjs';
+import { map, Observable, of, startWith, take } from 'rxjs';
 import { ProductService } from '../../services/product.service';
 
 @Component({
@@ -18,8 +18,10 @@ import { ProductService } from '../../services/product.service';
 export class SummarizeProductComponent extends ActifSeller {
   @Input() product!: SummarizeProduct;
 
+  placeholder = "image/cbasic60.svg";
   //Path de l'image du produit à charger
-  imageUrl: string = '';
+  imageUrl$: Observable<string> = of('');
+
 
   constructor(
     private _productService: ProductService,
@@ -29,11 +31,12 @@ export class SummarizeProductComponent extends ActifSeller {
     }
 
   ngOnChanges() {
-    if (this.product) {
-      this._productService.streamProductImage(this.product.imagePath)
-      .subscribe(blob => {
-        this.imageUrl = URL.createObjectURL(blob);
-      });
+  if (this.product && this.product.imagePath) {
+    this.imageUrl$ = this._productService.streamProductImage(this.product.imagePath)
+      .pipe(
+        map(blob => URL.createObjectURL(blob)),
+        startWith(this.placeholder)
+      );
     }
   }
 

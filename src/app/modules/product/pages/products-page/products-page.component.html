@@ -12,6 +12,23 @@
       <header class="py-6 flex w-full flex-column justify-content-center align-items-center p-3">
 
        <h2 class="p-2">Votre liste de produits</h2>
+       <div class="flex w-full justify-content-center">
+         <div *ngIf="productQuantity$ | async as productQuantity">
+          <div [ngClass]="{
+            'product--sold--visible': productFilterValue.areSoldProductVisible,
+            'product--sold--not--visible': !productFilterValue.areSoldProductVisible}"
+            class="flex justify-content-center align-items-center border-circle h-3rem w-3rem"
+            *ngIf="productFilterValue$ | async as productFilterValue; else noProductFilter">
+            <span> {{ productQuantity }}</span>
+          </div>
+          <!-- Données du filtrage non disponible-->
+          <ng-template #noProductFilter>
+            <div  class="flex justify-content-center align-items-center border-circle h-3rem w-3rem" *ngIf="productFilterValue$ | async as productFilterValue; else noProductFilter">
+              <span> {{ productQuantity }}</span>
+          </div>
+          </ng-template>
+         </div>
+       </div>
       </header>
 
      <!--Liste des produits-->

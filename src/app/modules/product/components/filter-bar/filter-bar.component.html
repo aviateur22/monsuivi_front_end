@@ -2,7 +2,7 @@
   <div class="flex flex-column-reverse overflow-y-scroll
   md:overflow-y-auto">
     <div class="md:p-5">
-      <form [formGroup]="filterProductsFG" class="w-ful" (submit)="fiterProducts()">
+      <form [formGroup]="filterProductsFG" class="w-ful" (submit)="filterProducts()">
         <!-- Affichage si aucune selection de filtre-->
         <div class="w-full h-4rem">
           <div class="w-full" *ngIf="filterProductsFG.errors?.['atLeastOneFieldAvailable']">

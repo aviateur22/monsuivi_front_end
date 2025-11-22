@@ -34,14 +34,23 @@ export class ProductEffect {
   getSellerProducts$ = createEffect(()=>
     this._action$.pipe(
       ofType(productAction.getSellerProductsAction),
-      mergeMap(({sellerId, areSoldProductVisible}) =>
-        this._productService.getSellerProducts(sellerId, areSoldProductVisible).pipe(
+      mergeMap(({ sellerId }) =>
+        this._productService.getSellerProducts(sellerId).pipe(
           switchMap(result=>[
-            productAction.getSellerProductsActionComplete({products: { isLoading:false, isSuccess: true, summarizeProducts: result.products}}),
-            shareAction.displayMessageAction({message:{isOnError: false, title: 'Vos produits' , message: result.responseMessage}})
+            productAction.getSellerProductsActionComplete({products: {
+              isLoading:false,
+              isSuccess: true,
+              summarizeProducts: result.products,
+              productQuantity: result.productQuantity }}),
+            shareAction.displayMessageAction({message:{isOnError: false, title: 'Vos produits' , message: result.responseMessage}}),
+
           ]),
           catchError(error=> of(
-            productAction.getSellerProductsActionComplete({products: { isLoading:false, isSuccess: false, summarizeProducts: []}}),
+            productAction.getSellerProductsActionComplete({products: {
+              isLoading:false,
+              isSuccess: false,
+              summarizeProducts: [],
+              productQuantity: 0 }}),
             shareAction.displayMessageAction({
             message: {title: 'Vos propduits', message: error.error.error, isOnError: true}
           })))
@@ -167,8 +176,13 @@ filterSelerProducts$ = createEffect(()=>
     mergeMap(({productFilterValue: filterInputs}) =>
       this._productService.filterSellerProducts(filterInputs).pipe(
         switchMap(result=>[
-          productAction.filterSellerProductsCompleteAction( { products:{ isLoading:false, isSuccess: true, summarizeProducts: result.products}}),
           productAction.clearButtonfilterVisibilityAction({isFilterClearButtonVisible: true}),
+          productAction.filterSellerProductsCompleteAction( { products:{
+            isLoading:false,
+             isSuccess: true,
+             summarizeProducts: result.products,
+             productQuantity: result.products.length
+            }}),
           productAction.updateProductFilterValueAction({filterValue: filterInputs}),
           shareAction.displayMessageAction({
           message: {title: 'Filtrage produits', message: result.responseMessage, isOnError: false}

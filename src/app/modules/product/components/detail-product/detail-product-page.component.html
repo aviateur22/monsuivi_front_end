@@ -7,7 +7,18 @@
           <div class="absolute flex right-0">
             <button class="closed--button" (click)="closeDetail()">X</button>
           </div>
-          <img class="w-full h-full" [src]=imageUrl alt="image representant l'article">
+          <img  class="w-full h-full"
+            *ngIf="imageUrl$ | async as url; else noImagePath"
+            [ngSrc]="url"
+            fill
+            [placeholder]="placeholder"
+            alt="image du produit">
+            <!-- Si pas de nom de l'image-->
+            <ng-template #noImagePath>
+              <img class="max-h-10rem no--img"
+              [src]="placeholder"
+              alt="image du produit">
+            </ng-template>
         </header>
         <main>
           <form [formGroup]="updateProductFg" class="w-full p-5">

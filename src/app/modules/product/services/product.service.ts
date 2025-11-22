@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IAddProductResponseDto, IDesactivateProductDto, IDesactivateProductResponseDto, IProductFilterValueDto, IFilterProductByMaxAgeDto, IGetProductDetailDto, IGetProductDetailResponseDto, IGetSellerProductsDto, IFilterProductByCategoryDto, IProductUpdateDto, IProductUpdateResponseDto } from '../model/product.dto';
 import { map, Observable, of } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import apiUrl from '../../../../misc/api.url';
 import { ISellerProducts } from '../store/model';
 import { GetSellerProducts, ProductDetail, SummarizeProduct } from '../model/product.model';
@@ -37,11 +37,10 @@ export class ProductService {
     return this._http.post<IAddProductResponseDto>(apiUrl.addProduct.url, addProductDto);
   }
 
-  getSellerProducts(sellerId: string, areSoldProductVisible: boolean): Observable<GetSellerProducts> {
+  getSellerProducts(sellerId: string): Observable<GetSellerProducts> {
     console.log(`[ProductService] - getSellerProducts -seller id: ${sellerId}`);
     const url = apiUrl.getSellerProducts.url
-      .replace('{sellerId}', sellerId)
-      .replace('{areSoldProductVisible}', areSoldProductVisible.toString());
+      .replace('{sellerId}', sellerId);
 
     console.log(`[ProductService] - getSellerProducts - api ${url}`);
     return this._http.get<IGetSellerProductsDto>(url).pipe(
@@ -70,14 +69,35 @@ export class ProductService {
 
   filterSellerProducts(dto: IProductFilterValueDto): Observable<GetSellerProducts> {
     console.log(`[ProductService] - filterSellerProduct -dto: ${dto.filterByCategoryCode}`);
+
+    let params = new HttpParams();
+
+    if (dto.filterByName != null) {
+      params = params.set('filterByName', dto.filterByName);
+    }
+
+    if (dto.filterByCategoryCode != null) {
+      params = params.set('filterByCategory', dto.filterByCategoryCode);
+    }
+
+    if (dto.filterByRegisterPeriod != null) {
+      params = params.set('filterByRegisterPeriod', dto.filterByRegisterPeriod);
+    }
+
+    if (dto.areSoldProductVisible != null) {
+      params = params.set('areSoldProductVisible', dto.areSoldProductVisible);
+    }
+
     const url = apiUrl.filterSellerProducts.url
      .replace('{sellerId}', dto.sellerId);
-    return this._http.post<IGetSellerProductsDto>(url, dto).pipe(
+
+    return this._http.get<IGetSellerProductsDto>(url, { params }).pipe(
       map(res => this._mapper.mapToGetSellerProducts(res)));
   }
 
   streamProductImage(imageName :string): Observable<Blob> {
     const url = apiUrl.streamImage.url.replace('{imagePath}', imageName);
+    console.log(url)
     return this._http.get(url, { responseType: 'blob' });
   }
 }
