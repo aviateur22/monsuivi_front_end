@@ -59,7 +59,8 @@ export class MapperService {
       var summarizeProducts = dto.sellerProducts.map(product=>this.mapToSummarizeProduct(product));
       return new GetSellerProducts(
         dto.responseMessage,
-        summarizeProducts
+        summarizeProducts,
+        dto.productQuantity
       )
     }
 

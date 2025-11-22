@@ -1,50 +1,97 @@
 <nav>
   <!--Nav horizontal-->
-  <div class="w-full flex align-content-between justify-content-center border-bottom-1">
+  <div class="w-full flex align-content-between justify-content-center">
     <div class="flex">
       <!--LOGO - APP-->
-      <div class="p-4 navbar-logo">
-        <button (click)="displayMenuOverlay()" class="text-3xl font-bold appearance-none">Cbasic</button>
+      <div (click)="displayMenuOverlay()" class="">
+        <img class="image--container" src="/icons/cbasic512.png" alt="image jaune avec un c">
       </div>
-      <ul class="hidden sm:p-4 sm:flex sm:w-full">
-        <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-          <a class="link" [routerLink]=homeLink routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Accueil</a>
-        </li>
-        <li routerLinkActive="active">
-          <a class="link" [routerLink]=addProductLink routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Ajout de produit</a>
-        </li>
-        <li routerLinkActive="active">
-          <a class="link" [routerLink]=sellerProducts routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Mes produits</a>
-        </li>
-        <li routerLinkActive="active">
-          <a class="link" [routerLink]=graphicalStatistic routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Données stat</a>
-        </li>
-      </ul>
+
+      <!--Menu si authentifié-->
+      <ng-container *ngIf="seller$ | async as seller; else login">
+        <ul class="hidden sm:p-4 sm:flex sm:w-full">
+          <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <a class="link" [routerLink]=homeLink routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Accueil</a>
+          </li>
+          <li routerLinkActive="active">
+            <a class="link" [routerLink]=addProductLink routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Ajout de produit</a>
+          </li>
+          <li routerLinkActive="active">
+            <a class="link" [routerLink]=sellerProducts routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Mes produits</a>
+          </li>
+          <li routerLinkActive="active">
+            <a class="link" [routerLink]=graphicalStatisticLink routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Données stat</a>
+          </li>
+          <li routerLinkActive="active">
+            <a class="link" [routerLink]=desactivateProductLink routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Produits désactivés</a>
+          </li>
+          <ng-container *ngIf="seller">
+            <li class="px-2" routerLinkActive="active">
+              <a class="link font-semibold logout" [routerLink]=logoutLink routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Déconnexion</a>
+            </li>
+          </ng-container>
+        </ul>
+      </ng-container>
+
+      <!--Menu connexion-->
+      <ng-template #login>
+        <ul class="hidden sm:p-4 sm:flex sm:w-full">
+          <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <a class="link" [routerLink]=loginLink routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Connexion</a>
+          </li>
+          <li routerLinkActive="active">
+            <a class="link" [routerLink]=registerLink routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Inscription</a>
+          </li>
+        </ul>
+      </ng-template>
+
     </div>
   </div>
 </nav>
 
-  <!--Menu vertical-->
+  <!--Menu vertical pour mobile-->
   <ng-container *ngIf="isMenuVisible">
     <nav class="inline sm:hidden flex overlay">
         <div class="w-full flex flex-column">
           <div class="flex w-12 p-2 justify-content-end">
             <p-button (onClick)="displayMenuOverlay()"  icon="pi pi-times" [rounded]="true" [text]="true" severity="danger"></p-button>
           </div>
-          <ul class="p-4 flex w-full flex-column">
-            <li class="py-2"  routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-              <a (click)="displayMenuOverlay()" class="link text-white" [routerLink]=homeLink routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Accueil</a>
-            </li>
-            <li class="py-2" routerLinkActive="active">
-              <a (click)="displayMenuOverlay()" class="link text-white" [routerLink]=addProductLink routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Ajout de produit</a>
-            </li>
-            <li class="py-2" routerLinkActive="active">
-              <a (click)="displayMenuOverlay()" class="link text-white" [routerLink]=sellerProducts routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Mes produits</a>
-            </li>
-            <li class="py-2" routerLinkActive="active">
-              <a (click)="displayMenuOverlay()" class="link text-white" [routerLink]=graphicalStatistic routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Données stat</a>
-            </li>
-          </ul>
+           <!--Menu si authentifié-->
+          <ng-container *ngIf="seller$ | async as seller; else login">
+            <ul class="p-4 flex w-full flex-column">
+              <li class="py-2"  routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <a (click)="displayMenuOverlay()" class="link text-white" [routerLink]=homeLink routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Accueil</a>
+              </li>
+              <li class="py-2" routerLinkActive="active">
+                <a (click)="displayMenuOverlay()" class="link text-white" [routerLink]=addProductLink routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Ajout de produit</a>
+              </li>
+              <li class="py-2" routerLinkActive="active">
+                <a (click)="displayMenuOverlay()" class="link text-white" [routerLink]=sellerProducts routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Mes produits</a>
+              </li>
+              <li class="py-2" routerLinkActive="active">
+                <a (click)="displayMenuOverlay()" class="link text-white" [routerLink]=graphicalStatisticLink routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Données stat</a>
+              </li>
+              <li class="py-2" routerLinkActive="active">
+                <a (click)="displayMenuOverlay()" class="link text-white" [routerLink]=desactivateProductLink routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Produits désactivés</a>
+              </li>
+              <ng-container *ngIf="seller">
+              <li class="py-4" routerLinkActive="active">
+                <a (click)="displayMenuOverlay()" class="link font-semibold logout" [routerLink]=logoutLink routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Déconnexion</a>
+            </ng-container>
+            </ul>
+          </ng-container>
+           <!--Menu connexion creation-->
+          <ng-template #login>
+           <ul class="p-4 flex w-full flex-column">
+              <li class="py-2" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <a (click)="displayMenuOverlay()" class="link  text-white" [routerLink]=loginLink routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Connexion</a>
+              </li>
+              <li class="py-2" routerLinkActive="active">
+                <a (click)="displayMenuOverlay()" class="link  text-white" [routerLink]=registerLink routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Inscription</a>
+              </li>
+            </ul>
+          </ng-template>
       </div>
+
     </nav>
   </ng-container>

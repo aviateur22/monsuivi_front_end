@@ -28,7 +28,9 @@ export class SummarizeProduct {
 export class GetSellerProducts {
   constructor(
     public readonly responseMessage: string,
-    public readonly products: SummarizeProduct[]){}
+    public readonly products: SummarizeProduct[],
+    public readonly productQuantity: number
+  ){}
 }
 
 /**

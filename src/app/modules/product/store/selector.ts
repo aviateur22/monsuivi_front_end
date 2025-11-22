@@ -7,6 +7,7 @@ export const selectImageSelector = createSelector(selector, (state)=>state.selec
 export const selectIsAddProductSuccess = createSelector(selector, (state)=>state.addProduct.isSuccess);
 export const selectIsAddProductLoading = createSelector(selector, (state)=>state.addProduct.isLoading);
 export const selectIsGetSellerProductsLoading = createSelector(selector,(state)=>state.sellerProducts.isLoading);
+export const selectProductsQuantitySelector = createSelector(selector,(state)=>state.sellerProducts.productQuantity);
 export const selectGetSellerProducts = createSelector(selector, (state)=>state.sellerProducts.summarizeProducts);
 export const isDesactivateProductLoading = createSelector(selector,(state)=>state.desactivateProduct.isLoading);
 export const isProductDetailPopupVisible = createSelector(selector, (state)=>state.productDetail.isPopupShow);

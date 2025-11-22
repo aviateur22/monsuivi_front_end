@@ -1,47 +1,57 @@
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { IAppState } from '../../../../store/state';
-import { UserService } from '../../../../users/service/user.service';
+import { SellerService } from '../../../auth/service/seller.service';
 import { getActualMonthDataAction } from '../../store/action';
 import { StatisticalDateService } from '../../services/statistical.date.service';
-import { Observable, of } from 'rxjs';
-import { DoughnutData, StackedBarData } from '../../model/graphic.model';
+import { take } from 'rxjs';
 import * as statisticalSelector from './../../store/selector';
+import { ActifSeller } from '../../../auth/models/actif-seller';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-actual-month-graphic-page',
   templateUrl: './actual-month-graphic-page.component.html',
   styleUrl: './actual-month-graphic-page.component.css'
 })
-export class ActualMonthGraphicPageComponent implements OnInit {
-  // Utilisateur
-  user = this._userService.getUser();
+export class ActualMonthGraphicPageComponent extends ActifSeller implements OnInit {
 
   // Données des graphique
-  buyProductQuantityByCategoryAndMonth$: Observable< DoughnutData<number> | null> = of(null);
-  soldProductQuantityByCategoryAndMonth$: Observable< DoughnutData<number> | null> = of(null);
-  buyProductPriceByCategoryAndMonth$: Observable< DoughnutData<number> | null> = of(null);
-  soldProductPriceByCategoryAndMonth$: Observable< DoughnutData<number> | null> = of(null);
-  soldAndBuyProductPriceByMonth$ : Observable<StackedBarData<number> | null> = of(null);
-  soldAndBuyProductQuantityByMonth$ : Observable<StackedBarData<number> | null> = of(null);
+  buyProductQuantityByCategoryAndMonth$ = this._store.pipe(select(statisticalSelector.selectBuyProductPriceByCategoryAndMonth));
+  soldProductQuantityByCategoryAndMonth$ = this._store.pipe(select(statisticalSelector.selectSoldProductPriceByCategoryAndMonth));
+  buyProductPriceByCategoryAndMonth$ = this._store.pipe(select(statisticalSelector.selectBuyProductQuantityByCategoryAndMonth));
+  soldProductPriceByCategoryAndMonth$ = this._store.pipe(select(statisticalSelector.selectSoldProductQuantityByCategoryAndMonth));
+  soldAndBuyProductPriceByMonth$ = this._store.pipe(select(statisticalSelector.selectSoldAndBuyProductPriceByMonth));
+  soldAndBuyProductQuantityByMonth$ = this._store.pipe(select(statisticalSelector.selectSoldAndBuyProductQuantityByMonth));
 
-  constructor(private _store: Store<IAppState>, private _userService: UserService, private _statiscalDateService: StatisticalDateService) {}
+  constructor(
+    protected override _router: Router,
+    protected override _store: Store<IAppState>, private _userService: SellerService,
+    private _statiscalDateService: StatisticalDateService) {
+      super(_store, _router);
+    }
 
   ngOnInit() {
-    this.buyProductPriceByCategoryAndMonth$ = this._store.pipe(select(statisticalSelector.selectBuyProductPriceByCategoryAndMonth));
-    this.soldProductPriceByCategoryAndMonth$ = this._store.pipe(select(statisticalSelector.selectSoldProductPriceByCategoryAndMonth));
-    this.buyProductQuantityByCategoryAndMonth$ = this._store.pipe(select(statisticalSelector.selectBuyProductQuantityByCategoryAndMonth));
-    this.soldProductQuantityByCategoryAndMonth$ = this._store.pipe(select(statisticalSelector.selectSoldProductQuantityByCategoryAndMonth));
-    this.soldAndBuyProductPriceByMonth$ = this._store.pipe(select(statisticalSelector.selectSoldAndBuyProductPriceByMonth));
-    this.soldAndBuyProductQuantityByMonth$ = this._store.pipe(select(statisticalSelector.selectSoldAndBuyProductQuantityByMonth));
+    this.getMonthData();
+  }
 
-    if(!this.user)
-      return;
+  /**
+   * Récupération des données du mois
+   */
+  getMonthData() {
+    this.isSellerAuthentified()
+    .pipe(take(1))
+    .subscribe(sellerId => {
 
-    this._store.dispatch(getActualMonthDataAction({
-      sellerId: this.user.userId,
-      month: this._statiscalDateService.getActualMonth(),
-      year: this._statiscalDateService.getActualYear()
-    }));
+      if(!sellerId)
+        return;
+
+      this._store.dispatch(getActualMonthDataAction({
+        sellerId,
+        month: this._statiscalDateService.getActualMonth(),
+        year: this._statiscalDateService.getActualYear()
+      }));
+    })
+
   }
 }

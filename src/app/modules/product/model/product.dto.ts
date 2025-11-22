@@ -53,7 +53,8 @@ export interface ISummarizeProductDto {
  */
 export interface IGetSellerProductsDto {
   sellerProducts: ISummarizeProductDto[],
-  responseMessage: string
+  responseMessage: string,
+  productQuantity: number
 }
 
 /**

@@ -1,0 +1,52 @@
+<app-main-container>
+  <div class="flex flex-1 justify-content-center align-items-center">
+    <form (submit)="register()" [formGroup]="registerFG" class="flex flex-column align-items-center">
+      <header class="py-6 flex w-full justify-content-center">
+        <h2 class="text-center">Créer un compte</h2>
+      </header>
+      <div class="flex flex-column">
+        <!-- Email-->
+        <div class="p-3">
+          <p-floatlabel  variant="on">
+            <input formControlName="email" pInputText id="over_label" autocomplete="off" />
+            <label for="over_label">Email</label>
+          </p-floatlabel>
+          <!--Message d'erreur-->
+          <div class="min-h-0 h-1rem">
+            <p-message  class="p-message" severity="error" text="Votre email est obligatoire"
+            *ngIf="registerFG.get('email')?.touched && registerFG.get('email')?.errors?.['required']">
+            </p-message>
+          </div>
+        </div>
+        <!--Surnom-->
+        <div class="p-3">
+          <p-floatlabel  variant="on">
+            <input formControlName="nickname" pInputText id="over_label" autocomplete="off" />
+            <label for="over_label">Surnom</label>
+          </p-floatlabel>
+          <!--Message d'erreur-->
+          <div class="min-h-0 h-1rem">
+            <p-message  class="p-message" severity="error" text="Le surnom est obligatoire"
+            *ngIf="registerFG.get('nickname')?.touched && registerFG.get('nickname')?.errors?.['required']">
+            </p-message>
+          </div>
+        </div>
+
+        <!--Mot de passe-->
+        <div class="p-3">
+          <p-floatlabel  variant="on">
+              <input formControlName="password" type="password" pInputText id="over_label" autocomplete="off" />
+              <label for="over_label">Mot de passe</label>
+          </p-floatlabel>
+           <!--Message d'erreur-->
+          <div class="min-h-0 h-1rem">
+            <p-message  class="p-message" severity="error" text="Le mot de passe est obligatoire"
+            *ngIf="registerFG.get('password')?.touched && registerFG.get('password')?.errors?.['required']">
+            </p-message>
+          </div>
+        </div>
+      </div>
+      <p-button type="submit" class="p-5" label="Créer un compte" [raised]="true" severity="success" />
+    </form>
+  </div>
+</app-main-container>

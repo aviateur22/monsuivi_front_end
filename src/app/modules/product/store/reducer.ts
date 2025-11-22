@@ -1,7 +1,6 @@
 import { createReducer, on } from "@ngrx/store";
 import { IProductState } from "./state";
 import * as productAction from "./action";
-import { DesactivateProduct, ProductDetail } from "../model/product.model";
 
 export const initialProductState: IProductState = {
   addProduct: {
@@ -13,7 +12,8 @@ export const initialProductState: IProductState = {
   sellerProducts: {
     isLoading: false,
     isSuccess: false,
-    summarizeProducts: []
+    summarizeProducts: [],
+    productQuantity: 0
   },
   desactivateProduct: {
     isLoading: false,
@@ -62,7 +62,8 @@ export const reducers = createReducer(
     ...state, sellerProducts: {
       isLoading: false,
       isSuccess: products.isSuccess,
-      summarizeProducts: products.summarizeProducts
+      summarizeProducts: products.summarizeProducts,
+      productQuantity: products.summarizeProducts.length
     }
   })),
   on(productAction.clearButtonfilterVisibilityAction, (state, {isFilterClearButtonVisible})=>({
@@ -82,6 +83,7 @@ export const reducers = createReducer(
       isLoading: false,
       summarizeProducts: state.sellerProducts.summarizeProducts
         .filter(product=>product.productId != desactivateProduct.desactivateProduct?.productId),
+      productQuantity: state.sellerProducts.productQuantity - 1,
       isSuccess: true
     }
   })),
@@ -172,7 +174,8 @@ export const reducers = createReducer(
       ...state.sellerProducts,
       isLoading: false,
       isSuccess: true,
-      summarizeProducts: products.summarizeProducts
+      summarizeProducts: products.summarizeProducts,
+      productQuantity:products.summarizeProducts.length
     }
   })),
   on(productAction.updateProductFilterValueAction, (state, {filterValue}) => ({
@@ -189,6 +192,15 @@ export const reducers = createReducer(
       ...state.sellerProducts,
       isLoading: false,
       isSuccess: false
+    }
+  })),
+  on(productAction.resetProductFilter, (state) => ({
+    ...state, productFilterValue : {
+      ...state.productFilterValue,
+      areSoldProductVisible: false,
+      filterByName: "",
+      filterByCategoryCode: "",
+      filterByRegisterPeriod: 0
     }
   }))
 
