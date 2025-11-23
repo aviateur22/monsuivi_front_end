@@ -1,0 +1,10 @@
+<app-main-container>
+  <div class="flex flex-1 justify-content-center align-items-center">
+    <form (submit)="logout()" class="flex flex-column align-items-center">
+      <header class="py-6 flex w-full justify-content-center">
+        <h2 class="text-center">Se déconnecter</h2>
+      </header>
+      <p-button type="submit" class="p-5" label="Deconnexion" [raised]="true" severity="success" />
+    </form>
+  </div>
+</app-main-container>

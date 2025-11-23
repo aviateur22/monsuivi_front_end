@@ -4,8 +4,20 @@ export default {
   addProduct: {
     url: `${environment.api_base}/products`
   },
+  login:{
+    url: `${environment.api_base}/auth/login`
+  },
+  logout: {
+    url: `${environment.api_base}/auth/logout/{sellerId}`
+  },
+  register: {
+    url: `${environment.api_base}/auth/register`
+  },
   getSellerProducts: {
-    url:`${environment.api_base}/products/seller/{sellerId}/sold-product-visibility/{areSoldProductVisible}`
+    url:`${environment.api_base}/products/seller/{sellerId}/all-products`
+  },
+  getDesactivateSellerProducts: {
+    url:`${environment.api_base}/products/seller/{sellerId}/desactivate-products`
   },
   filterSellerProducts: {
     url:`${environment.api_base}/products/seller/{sellerId}/filter`
@@ -15,6 +27,9 @@ export default {
   },
   desactivateProduct: {
     url: `${environment.api_base}/products/desactivate`
+  },
+  activateProduct: {
+    url: `${environment.api_base}/products/activate`
   },
   getProductDetail: {
     url: `${environment.api_base}/products/{productId}/seller-id/{sellerId}`

@@ -1,44 +1,45 @@
 import { Component, Input } from '@angular/core';
 import { SummarizeProduct } from '../../model/product.model';
-import apiUrl from '../../../../../misc/api.url';
 import { IAppState } from '../../../../store/state';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { desactivateProduct } from '../../store/action';
-import { UserService } from '../../../../users/service/user.service';
-import { IGetProductDetailDto } from '../../model/product.dto';
-import { getProductDetailAction } from '../../store/action';
 import { Router } from '@angular/router';
+import * as productSelector from '../../store/selector';
+import * as productAction from '../../store/action';
 import pagesInformations from '../../../../../misc/pages-informations';
+import { ActifSeller } from '../../../auth/models/actif-seller';
+import { map, Observable, of, startWith, take } from 'rxjs';
+import { ProductService } from '../../services/product.service';
 
 @Component({
   selector: 'app-summarize-product',
   templateUrl: './summarize-product.component.html',
   styleUrl: './summarize-product.component.css'
 })
-export class SummarizeProductComponent {
+export class SummarizeProductComponent extends ActifSeller {
   @Input() product!: SummarizeProduct;
 
+  placeholder = "image/cbasic60.svg";
   //Path de l'image du produit à charger
-  imageUrl: string = '';
-
-  user = this._userService.getUser();
+  imageUrl$: Observable<string> = of('');
+  areProductInActivateMode$ = this._store.pipe(select(productSelector.areDetailProductInActivateMode));
 
   constructor(
-    private _router: Router,
-    private _store: Store<IAppState>,
-    private _userService: UserService){}
+    private _productService: ProductService,
+    protected override _router: Router,
+    protected override _store: Store<IAppState>){
+      super(_store, _router);
+    }
 
   ngOnChanges() {
-    if (this.product) {
-      this.imageUrl = apiUrl.streamImage.url.replace('{imagePath}', this.product.imagePath);
+  if (this.product && this.product.imagePath) {
+    this.imageUrl$ = this._productService.streamProductImage(this.product.imagePath)
+      .pipe(
+        map(blob => URL.createObjectURL(blob)),
+        startWith(this.placeholder)
+      );
     }
   }
-
-  ngOnInit() {
-    // Réchargement utilisateur
-    this._userService.loadUserFromStorage();
-  }
-
 
   /**
    * Désactivation du produit
@@ -46,11 +47,38 @@ export class SummarizeProductComponent {
   desactivateProduct(event:MouseEvent) {
     event.stopPropagation();
     console.log("[SummarizeProductComponent]" + "[desactivateProduct]");
-    if(this.user)
+
+    this.isSellerAuthentified()
+    .pipe(take(1))
+    .subscribe(sellerId => {
+      if(!sellerId)
+        return;
       this._store.dispatch(desactivateProduct({productToDesactivate: {
-        sellerId: this.user.userId,
+        sellerId,
         productId: this.product.productId}
       }));
+    })
+  }
+
+  /**
+   * Réactivation du produit
+   */
+  activateProduct(event:MouseEvent) {
+    event.stopPropagation();
+    console.log("[SummarizeProductComponent]" + "[activateProduct]");
+
+    this.isSellerAuthentified()
+    .pipe(take(1))
+    .subscribe( sellerId => {
+      if(!sellerId)
+        return;
+
+      this._store.dispatch(productAction.activateProductAction({activareProduct: {
+        sellerId: sellerId,
+        productId: this.product.productId
+      }
+    }));
+    });
   }
 
   /**
@@ -58,16 +86,5 @@ export class SummarizeProductComponent {
    */
   showProductDetail() {
     this._router.navigate([pagesInformations.detailProduct.url.replace(":product-id", this.product.productId)]);
-
-    // if(!this.user)
-    //   throw new Error("");
-
-    // const detailProductDto: IGetProductDetailDto = {
-    //   sellerId: this.user.userId,
-    //   productId: this.product.productId
-    // }
-
-    // console.log(`[SummarizeProductComponent] [showProductDetail] - idseller ${this.user.userId} - idproduct ${ this.product.productId}`);
-    // this._store.dispatch(getProductDetailAction({getProductDetail: detailProductDto}))
   }
 }

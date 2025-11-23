@@ -2,7 +2,7 @@
   <div class="flex flex-column-reverse overflow-y-scroll
   md:overflow-y-auto">
     <div class="md:p-5">
-      <form [formGroup]="filterProductsFG" class="w-ful" (submit)="fiterProducts()">
+      <form [formGroup]="filterProductsFG" class="w-ful" (submit)="filterProducts()">
         <!-- Affichage si aucune selection de filtre-->
         <div class="w-full h-4rem">
           <div class="w-full" *ngIf="filterProductsFG.errors?.['atLeastOneFieldAvailable']">
@@ -36,11 +36,14 @@
           <!--Rercherche par catégorie -->
           <div class="flex flex-column p-2">
             <label class="text-color-secondary" for="productCategory">Catégorie du produit</label>
-            <p-select
-            [options]="productFilterByCategories"
-            formControlName="productCategory"
-            optionLabel="name"
-            placeholder="Catégorie de produit" />
+            <ng-container *ngIf="productFilterByCategories$ | async as productFilterByCategories">
+              <p-select
+              [options]="productFilterByCategories"
+              formControlName="productCategory"
+              optionLabel="name"
+              placeholder="Catégorie de produit" />
+
+            </ng-container>
           </div>
 
           <!--Rercherche par durée de creation-->
@@ -49,12 +52,14 @@
               Recherche de produit ajouté depuis moins de:
             </label>
             <div>
-              <p-selectbutton [options]="productFilterByMaxAges" formControlName="dateRegisterSelect" [multiple]="false" optionLabel="maxAgeLabel" optionValue="maxAgeValue" />
+              <ng-container *ngIf="productFilterByMaxAges$ | async as productFilterByMaxAges">
+                <p-selectbutton [options]="productFilterByMaxAges" formControlName="dateRegisterSelect" [multiple]="false" optionLabel="maxAgeLabel" optionValue="maxAgeValue" />
+              </ng-container>
             </div>
           </div>
           <div class="flex flex-column w-full justify-content-center align-items-center text-right p-3
             md:w-8 md:flex-row">
-            <p-button  type="submit" severity="success" class="p-2 full--width--button" label="Filtrer les produits"/>
+            <p-button  type="submit" severity="success" class="p-2 w-full full--width--button" label="Filtrer les produits"/>
             <div class="w-full p-2 md:w-6">
               <p-button (onClick)="resteFilter()" label="Réinitialiser le filtre" class="full--width--button" variant="outlined" severity="danger" />
             </div>
@@ -63,7 +68,7 @@
       </form>
     </div>
     <div class="flex w-full justify-content-end">
-     <p-button *ngIf="isClosedButtonFilterVisible" (onClick)="closedFilterProducts()" icon="pi pi-times" [rounded]="true" severity="danger" [outlined]="true" />
+     <p-button *ngIf="isClosedButtonFilterVisible$ | async" (onClick)="closedFilterProducts()" icon="pi pi-times" [rounded]="true" severity="danger" [outlined]="true" />
     </div>
   </div>
 </div>

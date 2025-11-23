@@ -1,4 +1,4 @@
-import { DesactivateProduct, ProductDetail, SummarizeProduct } from "../model/product.model"
+import { UpdateProductActivation, ProductDetail, SummarizeProduct } from "../model/product.model"
 
 export interface IAddProductAction {
   addProduct: FormData | null,
@@ -8,12 +8,14 @@ export interface IAddProductAction {
 
 export interface ISellerProducts {
   summarizeProducts: SummarizeProduct[],
+  productQuantity: number,
+  areProductInActivateMode: boolean,
   isLoading: boolean,
   isSuccess: boolean
 }
 
-export interface IDesactivateProductAction {
-  desactivateProduct: DesactivateProduct | null,
+export interface IUpdateProductActivation {
+  updateProductActivation: UpdateProductActivation | null,
   isLoading: boolean,
   isSuccess: boolean
 }

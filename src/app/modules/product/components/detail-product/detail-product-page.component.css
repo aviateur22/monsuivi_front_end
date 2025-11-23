@@ -32,6 +32,13 @@ header {
 
 header img {
   object-fit: cover;
+  left: 50%;
+  z-index: 1;
+
+}
+
+.no--img {
+  transform: translateY(14%) !important;
 }
 
 .closed--button {
@@ -45,6 +52,7 @@ header img {
   cursor: pointer;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   background: linear-gradient(to bottom, rgba(255, 0, 0, 1), rgba(102, 34, 34, 0));
+  z-index: 2;
 }
 
 .closed--button:hover {

@@ -14,6 +14,10 @@ ul {
 
 }
 
+.logout {
+  color: red;
+}
+
 .active {
   font-weight: 900;
   position: relative;
@@ -29,5 +33,10 @@ ul {
   display: flex;
   transition: opacity 0.3s ease;
   z-index: 30;
+}
+
+.image--container {
+  height: var(--nav_height);
+  object-fit: contain;
 }
 

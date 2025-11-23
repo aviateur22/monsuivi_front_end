@@ -13,25 +13,23 @@ import * as statisticalSelector from '../../../statistic/store/selector';
 export class LoadingComponent {
 
   // Chargement des détails d'un produit
-  isProductDetailLoading$: Observable<boolean>;
+  isProductDetailLoading$ =  this._store.pipe(select(productSelector.isProductDetailLoading));
 
   // Chargement en cours de la creation d'un produit
-  isAddProductLoading$: Observable<boolean>;
+  isAddProductLoading$ = this._store.pipe(select(productSelector.selectIsAddProductLoading));
 
   // Chargement des produits d'un vendeur
-  isSellerProductsLoading$: Observable<boolean>;
+  isSellerProductsLoading$ = this._store.pipe(select(productSelector.selectIsGetSellerProductsLoading));
 
   // En cours de désactivation d'un produit depuis la liste
-  isDesactivateProductLoading$: Observable<boolean>;
+  isDesactivateProductLoading$ = this._store.pipe(select(productSelector.isDesactivateProductLoading));
 
   // Chargement des données statitique du mois
-  isActualStatisticalMonthLoading$: Observable<boolean>;
+  isActualStatisticalMonthLoading$ = this._store.pipe(select(statisticalSelector.selectIsActualMonthDataLoading));
+
+  // Activation d'un produit
+  isActivateProductLoading$ = this._store.pipe(select(productSelector.isActivateProductLoadingSelector));
 
   constructor(private _store: Store<IAppState>) {
-    this.isProductDetailLoading$ = this._store.pipe(select(productSelector.isProductDetailLoading));
-    this.isAddProductLoading$ = this._store.pipe(select(productSelector.selectIsAddProductLoading));
-    this.isDesactivateProductLoading$ = this._store.pipe(select(productSelector.isDesactivateProductLoading));
-    this.isActualStatisticalMonthLoading$ = this._store.pipe(select(statisticalSelector.selectIsActualMonthDataLoading));
-    this.isSellerProductsLoading$ = this._store.pipe(select(productSelector.selectIsGetSellerProductsLoading));
   }
 }

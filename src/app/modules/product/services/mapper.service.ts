@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { IDesactivateProductResponseDto, IProductFilterValueDto, IGetProductDetailResponseDto, IGetSellerProductsDto, IProductUpdateResponseDto, ISummarizeProductDto } from '../model/product.dto';
+import { IUpdateProductActivationResponseDto, IProductFilterValueDto, IGetProductDetailResponseDto, IGetSellerProductsDto, IProductUpdateResponseDto, ISummarizeProductDto } from '../model/product.dto';
 import { GetSellerProducts, ProductDetail, ProductStatus, SummarizeProduct } from '../model/product.model';
 import { Observable } from 'rxjs';
 
@@ -59,7 +59,8 @@ export class MapperService {
       var summarizeProducts = dto.sellerProducts.map(product=>this.mapToSummarizeProduct(product));
       return new GetSellerProducts(
         dto.responseMessage,
-        summarizeProducts
+        summarizeProducts,
+        dto.productQuantity
       )
     }
 
@@ -72,6 +73,7 @@ export class MapperService {
       return new ProductDetail(
         dto.productId,
         dto.productName,
+        dto.productCategory.categoryName,
         dto.productSoldPrice,
         dto.productPurchasePrice,
         dto.photoImagePath,

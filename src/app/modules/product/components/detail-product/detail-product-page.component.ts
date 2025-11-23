@@ -1,8 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { IAppState } from '../../../../store/state';
 import { select, Store } from '@ngrx/store';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { map, Observable, of, startWith, takeUntil } from 'rxjs';
 import { ProductDetail } from '../../model/product.model';
 import * as productSelector from '../../store/selector';
 import * as productAction from '../../store/action'
@@ -10,12 +10,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { validateNumber } from '../../validators/input.validator';
 import apiUrl from '../../../../../misc/api.url';
 import { MapperService } from '../../services/mapper.service';
-import { UserService } from '../../../../users/service/user.service';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IGetProductDetailDto } from '../../model/product.dto';
 import { getProductDetailAction } from '../../store/action';
-import pagesInformations from '../../../../../misc/pages-informations';
+import { ActifSeller } from '../../../auth/models/actif-seller';
+import { ProductService } from '../../services/product.service';
 
 @Component({
   selector: 'app-detail-product-page',
@@ -33,17 +33,14 @@ import pagesInformations from '../../../../../misc/pages-informations';
     ])
   ]
 })
-export class DetailProductComponent implements OnInit, OnDestroy {
-  //
-  private destroy$ = new Subject<void>();
-
+export class DetailProductComponent extends ActifSeller implements OnInit {
   /**
    * Donnée sur le produit
    */
-  productDetail$: Observable<ProductDetail | null>;
-  isProductDetailPopupVisible$: Observable<boolean>;
-  isProductDetailLoading$: Observable<boolean>;
-
+  productDetail$ = this._store.pipe(select(productSelector.productDetail));
+  isProductDetailPopupVisible$ = this._store.pipe(select(productSelector.isProductDetailPopupVisible));
+  isProductDetailLoading$ = this._store.pipe(select(productSelector.isProductDetailLoading));
+  areProductInActivateMode$ = this._store.pipe(select(productSelector.areDetailProductInActivateMode));
 
   /**
    * Données du produit a modifier
@@ -58,85 +55,82 @@ export class DetailProductComponent implements OnInit, OnDestroy {
       productStatus: ['', [Validators.required]]
     })
 
-  //Path de l'image du produit
-  imageUrl: string = '';
+   placeholder = "image/cbasic60.svg";
+    //Path de l'image du produit à charger
+    imageUrl$: Observable<string> = of('');
 
-  // Utilisateur
-  user = this._userService.getUser();
-
-  private productDetail: ProductDetail | null = null;
+  //private productDetail: ProductDetail | null = null;
 
   constructor(
+    private _productService: ProductService,
     private _location: Location,
-    private _router: Router,
     private _activedRoute: ActivatedRoute,
-    private _store: Store<IAppState>,
     private _fb: FormBuilder,
     private _mapper: MapperService,
-    private _userService: UserService) {
-    this.productDetail$ = this._store.pipe(select(productSelector.productDetail));
-    this.isProductDetailPopupVisible$ = this._store.pipe(select(productSelector.isProductDetailPopupVisible));
-    this.isProductDetailLoading$ = this._store.pipe(select(productSelector.isProductDetailLoading));
-  }
-
-  ngOnDestroy(): void {
-     this.destroy$.next();
-     this.destroy$.complete();
+    protected override _store: Store<IAppState>,
+    protected override _router: Router) {
+      super(_store,_router);
   }
 
   ngOnInit() {
-    // Réchargement utilisateur
-    this._userService.loadUserFromStorage();
-
-
-    // Detail du produit
-    this.productDetail$
-    .pipe(takeUntil(this.destroy$))
-    .subscribe(productDetail=>{
-      this.productDetail = productDetail;
-      this.updateFormData();
-    });
-
     // Chargement du produit
     this.loadProductDetail(this._activedRoute.snapshot.paramMap.get('product-id'));
+    // Detail du produit
+
+    this.productDetail$
+    .pipe(takeUntil(this._destroy$))
+    .subscribe(productDetail => {
+
+      if(!productDetail)
+        throw new Error("Pas données disponible sur le produit");
+
+      // Mise a jour formulaire
+      this.updateFormData(productDetail);
 
 
-    // Abonement sur la mise à jour de la checkbox
-    this.subscribeToCheckboxProductSold();
+      // Abonement sur la mise à jour de la checkbox
+      this.subscribeToCheckboxProductSold(productDetail);
+    });
   }
 
-  updateFormData(): void {
-      // Chargement du FG
+  /**
+   * Mise a joiur du contenu du formulaire
+   */
+  updateFormData(productDetail: ProductDetail): void {
+      this.imageUrl$ = of('');
       this.updateProductFg.patchValue({
-        productName: this.productDetail?.productName,
-        productId: this.productDetail?.productId,
-        productPurchasePrice: this.productDetail?.productBuyPrice,
-        productSoldPrice: this.productDetail?.productSoldPrice,
-        productSoldDate: this.productDetail?.productSoldDay,
-        productBuyDate: this.productDetail?.productBuyDay,
-        productStatus: this._mapper.mapProductStatusToBoolean(this.productDetail?.productStatus)
+        productName: productDetail.productName,
+        productId: productDetail.productId,
+        productPurchasePrice: productDetail.productBuyPrice,
+        productSoldPrice: productDetail.productSoldPrice,
+        productSoldDate: productDetail.productSoldDay,
+        productBuyDate: productDetail.productBuyDay,
+        productStatus: this._mapper.mapProductStatusToBoolean(productDetail.productStatus)
       });
 
-      if(this.productDetail)
-        this.imageUrl = apiUrl.streamImage.url.replace('{imagePath}', this.productDetail.productImagePath);
+      if(productDetail.productImagePath)
+       this.imageUrl$ = this._productService.streamProductImage(productDetail.productImagePath)
+        .pipe(
+          map(blob => URL.createObjectURL(blob)),
+          startWith(this.placeholder)
+        );
   }
 
 
   /**
    * Check la checkbox produit vendu
    */
-  subscribeToCheckboxProductSold() {
+  subscribeToCheckboxProductSold(productDetail: ProductDetail) {
     this.updateProductFg.get('productStatus')?.valueChanges
-    .pipe(takeUntil(this.destroy$))
+    .pipe(takeUntil(this._destroy$))
     .subscribe(isCheckboxCheck => {
-      if(!this.productDetail)
+      if(!productDetail)
         return;
 
       // Récupération des valeur initiale
-      const initialSoldPrice: number = this.productDetail.productSoldPrice;
-      const initialSoldDate: Date = this.productDetail.productSoldDay  ;
+      const initialSoldPrice: number = productDetail.productSoldPrice;
+      const initialSoldDate: Date = productDetail.productSoldDay  ;
 
-      console.log(initialSoldDate);
       if(isCheckboxCheck) {
         this.updateProductFg.get('productSoldDate')?.enable();
         this.updateProductFg.get('productSoldPrice')?.enable();
@@ -171,47 +165,80 @@ export class DetailProductComponent implements OnInit, OnDestroy {
    * Mise a jour du produit
    */
   updateProduct() {
+    this.isSellerAuthentified()
+    .pipe(takeUntil(this._destroy$))
+    .subscribe( sellerId => {
+      if(!sellerId)
+        return;
 
-    if(!this.user)
-      throw new Error("L'utilisateur n'est pas défini");
-
-    this._store.dispatch(productAction.productUpdateAction(
-      {  productUpdate: {
-        sellerId:this.user?.userId,
-        productId: this.updateProductFg.get('productId')?.value,
-        productBuyDay: this._mapper.mapDateToDdMmYyyy(this.updateProductFg.get('productBuyDate')?.value),
-        productPurchasePrice: this.updateProductFg.get('productPurchasePrice')?.value,
-        productSoldPrice: this.updateProductFg.get('productSoldPrice')?.value,
-        productSoldDay:this._mapper.mapDateToDdMmYyyy(this.updateProductFg.get('productSoldDate')?.value),
-        productStatus: this._mapper.mapBooleanToProductStatus(this.updateProductFg.get('productStatus')?.value)
-      }
-    }));
+      this._store.dispatch(productAction.productUpdateAction(
+        {  productUpdate: {
+          sellerId,
+          productId: this.updateProductFg.get('productId')?.value,
+          productBuyDay: this._mapper.mapDateToDdMmYyyy(this.updateProductFg.get('productBuyDate')?.value),
+          productPurchasePrice: this.updateProductFg.get('productPurchasePrice')?.value,
+          productSoldPrice: this.updateProductFg.get('productSoldPrice')?.value,
+          productSoldDay:this._mapper.mapDateToDdMmYyyy(this.updateProductFg.get('productSoldDate')?.value),
+          productStatus: this._mapper.mapBooleanToProductStatus(this.updateProductFg.get('productStatus')?.value)
+        }
+      }));
+    });
   }
 
   /**
    * Suppression du produit
    */
   desactivateProduct() {
-    if(!this.user)
-      throw new Error("L'utilisateur n'est pas défini");
+     this.isSellerAuthentified()
+    .pipe(takeUntil(this._destroy$))
+    .subscribe( sellerId => {
+      if(!sellerId)
+        return;
 
-    this._store.dispatch(productAction.productDetailDesactivateAction({productToDesactivate: {
-      sellerId: this.user.userId,
-      productId: this.updateProductFg.get('productId')?.value}
-    }));
-
+      this._store.dispatch(productAction.productDetailDesactivateAction({productToDesactivate: {
+        sellerId: sellerId,
+        productId: this.updateProductFg.get('productId')?.value}
+      }));
+    });
   }
 
+  /**
+   * Réactivation du produit
+   */
+  activateProduct() {
+    this.isSellerAuthentified()
+    .pipe(takeUntil(this._destroy$))
+    .subscribe( sellerId => {
+      if(!sellerId)
+        return;
+
+      this._store.dispatch(productAction.activateProductAction({activareProduct: {
+        sellerId: sellerId,
+        productId: this.updateProductFg.get('productId')?.value}
+      }));
+    });
+  }
+
+  /**
+   * Chargement des tetail du produits
+   *
+   * @param productId L'identifiant du produit a afficher
+   */
   loadProductDetail(productId: string | null) {
 
-    if(!this.user || !productId)
-      throw new Error("Identitifant utilisateur ou produit manquant");
+    this.isSellerAuthentified()
+    .pipe(takeUntil(this._destroy$))
+    .subscribe( sellerId => {
+      if(!sellerId || !productId)
+        return;
 
-    const detailProductDto: IGetProductDetailDto = {
-      sellerId: this.user.userId,
-      productId: productId
-    }
+      const detailProductDto: IGetProductDetailDto = {
+        sellerId,
+        productId: productId
+      }
 
-    this._store.dispatch(getProductDetailAction({getProductDetail: detailProductDto}))
+      this._store.dispatch(getProductDetailAction({getProductDetail: detailProductDto}));
+    });
+
   }
 }

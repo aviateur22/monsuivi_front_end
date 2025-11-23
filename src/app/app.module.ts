@@ -1,10 +1,11 @@
-import { APP_INITIALIZER, NgModule, isDevMode } from "@angular/core";
+import { NgModule, isDevMode } from "@angular/core";
 import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app-routing.module";
 import { BrowserModule } from "@angular/platform-browser";
-import { provideHttpClient } from "@angular/common/http";
+import { provideHttpClient, withInterceptors } from "@angular/common/http";
 import { EffectsModule } from "@ngrx/effects";
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { httpInterceptor } from "./interceptor/http.interceptor";
 import { StoreModule } from "@ngrx/store";
 import Lara from '@primeng/themes/lara';
 
@@ -16,18 +17,12 @@ import { ProductEffect } from "./modules/product/store/effect";
 import { AuthorizeModule } from "./modules/authorize/authorize.module";
 import { ProductModule } from "./modules/product/product.module";
 import { ShareModule } from "./modules/share/share.module";
-import { UserService } from "./users/service/user.service";
+import { AuthModule } from "./modules/auth/auth.module";
 
 import { ToastModule } from 'primeng/toast';
 import { StatisticModule } from "./modules/statistic/statistic.module";
 import { provideAnimationsAsync } from "@angular/platform-browser/animations/async";
 import { providePrimeNG } from "primeng/config";
-
-export function initialize(userService: UserService) {
-  return ()=>{
-    userService.fakeUser();
-  }
-}
 
 @NgModule({
   declarations: [
@@ -40,6 +35,7 @@ export function initialize(userService: UserService) {
     AuthorizeModule,
     AppRoutingModule,
     StatisticModule,
+    AuthModule,
     ToastModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([
@@ -58,13 +54,7 @@ export function initialize(userService: UserService) {
     })
   ],
   providers: [
-    provideHttpClient(),
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initialize,
-      deps: [UserService],
-      multi: true
-    },
+    provideHttpClient(withInterceptors([httpInterceptor])),
     provideAnimationsAsync(),
     providePrimeNG({
       theme: {

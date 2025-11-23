@@ -28,13 +28,15 @@ export class SummarizeProduct {
 export class GetSellerProducts {
   constructor(
     public readonly responseMessage: string,
-    public readonly products: SummarizeProduct[]){}
+    public readonly products: SummarizeProduct[],
+    public readonly productQuantity: number
+  ){}
 }
 
 /**
  * Produit Désactivé
  */
-export class DesactivateProduct {
+export class UpdateProductActivation {
   constructor(
     public readonly sellerId: string,
     public readonly productId: string,
@@ -46,6 +48,7 @@ export class ProductDetail {
   constructor(
     public readonly productId: string,
     public readonly productName: string,
+    public readonly productCatgegoryLabel: string,
     public readonly productSoldPrice: number,
     public readonly productBuyPrice: number,
     public readonly productImagePath: string,
