@@ -112,6 +112,7 @@ export class FilterBarComponent extends ActifSeller implements OnInit {
         return;
 
       this._filterProduct.clearFilter(sellerId);
+      this.filterProductsFG.reset();
     });
   }
 

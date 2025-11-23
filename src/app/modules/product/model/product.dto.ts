@@ -65,7 +65,15 @@ export interface IDesactivateProductDto {
   sellerId: string,
 }
 
-export interface IDesactivateProductResponseDto extends IResponseMessage {
+/**
+ * Activation d'un produit qui n'est pas activé
+ */
+export interface IActivateProductDto {
+  productId: string,
+  sellerId: string,
+}
+
+export interface IUpdateProductActivationResponseDto extends IResponseMessage {
   productId: string,
   sellerId: string,
   isProductActif: boolean
@@ -89,6 +97,7 @@ export interface IGetProductDetailResponseDto {
   productBuyAt: Date,
   productSoldAt: Date,
   productStatus: string,
+  productCategory: IProductCategoryDto,
   responseMessage: string
 }
 

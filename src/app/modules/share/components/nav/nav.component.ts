@@ -53,7 +53,7 @@ export class NavComponent implements OnInit {
      *
      */
     checkWidth() {
-      if (window.innerWidth > 768 && this.isMenuVisible) {
+      if (window.innerWidth > 950 && this.isMenuVisible) {
         this.isMenuVisible = false;
       }
     }

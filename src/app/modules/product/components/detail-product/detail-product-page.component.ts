@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { IAppState } from '../../../../store/state';
 import { select, Store } from '@ngrx/store';
@@ -40,7 +40,7 @@ export class DetailProductComponent extends ActifSeller implements OnInit {
   productDetail$ = this._store.pipe(select(productSelector.productDetail));
   isProductDetailPopupVisible$ = this._store.pipe(select(productSelector.isProductDetailPopupVisible));
   isProductDetailLoading$ = this._store.pipe(select(productSelector.isProductDetailLoading));
-
+  areProductInActivateMode$ = this._store.pipe(select(productSelector.areDetailProductInActivateMode));
 
   /**
    * Données du produit a modifier
@@ -196,6 +196,23 @@ export class DetailProductComponent extends ActifSeller implements OnInit {
         return;
 
       this._store.dispatch(productAction.productDetailDesactivateAction({productToDesactivate: {
+        sellerId: sellerId,
+        productId: this.updateProductFg.get('productId')?.value}
+      }));
+    });
+  }
+
+  /**
+   * Réactivation du produit
+   */
+  activateProduct() {
+    this.isSellerAuthentified()
+    .pipe(takeUntil(this._destroy$))
+    .subscribe( sellerId => {
+      if(!sellerId)
+        return;
+
+      this._store.dispatch(productAction.activateProductAction({activareProduct: {
         sellerId: sellerId,
         productId: this.updateProductFg.get('productId')?.value}
       }));

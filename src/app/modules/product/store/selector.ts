@@ -9,10 +9,11 @@ export const selectIsAddProductLoading = createSelector(selector, (state)=>state
 export const selectIsGetSellerProductsLoading = createSelector(selector,(state)=>state.sellerProducts.isLoading);
 export const selectProductsQuantitySelector = createSelector(selector,(state)=>state.sellerProducts.productQuantity);
 export const selectGetSellerProducts = createSelector(selector, (state)=>state.sellerProducts.summarizeProducts);
-export const isDesactivateProductLoading = createSelector(selector,(state)=>state.desactivateProduct.isLoading);
+export const isDesactivateProductLoading = createSelector(selector,(state)=>state.updateProductActivation.isLoading);
 export const isProductDetailPopupVisible = createSelector(selector, (state)=>state.productDetail.isPopupShow);
 export const isProductDetailLoading = createSelector(selector, (state)=>state.productDetail.isLoading);
 export const productDetail = createSelector(selector, (state)=>state.productDetail.productDetail);
 export const clearButtonFilterVisibility = createSelector(selector, (state)=>state.isMobileClearButtonVisible);
 export const filterProductValueSelector = createSelector(selector, (state)=>state.productFilterValue);
-
+export const areDetailProductInActivateMode = createSelector(selector, (state)=>state.sellerProducts.areProductInActivateMode);
+export const isActivateProductLoadingSelector = createSelector(selector, (state)=>state.updateProductActivation.isLoading);

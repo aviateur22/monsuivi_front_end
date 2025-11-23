@@ -13,12 +13,13 @@ export const initialProductState: IProductState = {
     isLoading: false,
     isSuccess: false,
     summarizeProducts: [],
-    productQuantity: 0
+    productQuantity: 0,
+    areProductInActivateMode: false
   },
-  desactivateProduct: {
+  updateProductActivation: {
     isLoading: false,
     isSuccess: false,
-    desactivateProduct: null
+    updateProductActivation: null
   },
   productDetail: {
     isLoading: false,
@@ -26,6 +27,7 @@ export const initialProductState: IProductState = {
     productDetail: null
   },
   isMobileClearButtonVisible: false,
+
   productFilterValue: {
     filterByCategoryCode: '',
     filterByName: '',
@@ -47,7 +49,6 @@ export const reducers = createReducer(
     addProduct: product.addProduct,
     isLoading: product.isLoading,
     isSuccess: product.isSuccess
-
   }
   })),
   on(productAction.addProductActionfailed,(state)=>({...state, addProduct: {...state.addProduct,
@@ -63,31 +64,34 @@ export const reducers = createReducer(
       isLoading: false,
       isSuccess: products.isSuccess,
       summarizeProducts: products.summarizeProducts,
-      productQuantity: products.summarizeProducts.length
+      productQuantity: products.summarizeProducts.length,
+      areProductInActivateMode: false
     }
   })),
   on(productAction.clearButtonfilterVisibilityAction, (state, {isFilterClearButtonVisible})=>({
     ...state, isMobileClearButtonVisible: isFilterClearButtonVisible
   })),
-  on(productAction.desactivateProduct, (state)=>({...state, desactivateProduct: {
+  on(productAction.desactivateProduct, (state)=>({
+    ...state, productDetail: {
+      ...state.productDetail,
     isLoading: true,
-    isSuccess: false,
-    desactivateProduct: null
-  }
+    isSuccess: false }
   })),
-  on(productAction.desactivateProductComplete, (state, {desactivateProduct})=>({
-    ...state, desactivateProduct: {
-      ...desactivateProduct, isLoading: false, isSuccess: true
+  on(productAction.desactivateProductComplete, (state, { desactivateProduct })=>({
+    ...state, productDetail: {
+      ...state.productDetail,
+      isLoading: false
     },
     sellerProducts: {
       isLoading: false,
       summarizeProducts: state.sellerProducts.summarizeProducts
-        .filter(product=>product.productId != desactivateProduct.desactivateProduct?.productId),
+        .filter(product=>product.productId != desactivateProduct.updateProductActivation?.productId),
       productQuantity: state.sellerProducts.productQuantity - 1,
-      isSuccess: true
+      isSuccess: true,
+      areProductInActivateMode: false
     }
   })),
-  on(productAction.desactivateProductFailed,(state)=>({...state, desactivateProduct: {...state.desactivateProduct, isLoading: false, isSuccess: false}})),
+  on(productAction.desactivateProductFailed,(state)=>({...state, updateProductActivation: {...state.updateProductActivation, isLoading: false, isSuccess: false}})),
   on(productAction.getProductDetailAction,(state)=>({
     ...state, productDetail: {
       ...state.productDetail,
@@ -152,7 +156,7 @@ export const reducers = createReducer(
   })),
   on(productAction.productDetailDesactivateCompleteAction, (state, {productDesactivate})=>({
     ...state, productDetail: {
-      ...state.productDetail, isLoading: false , isPopupShow: false
+      ...state.productDetail, isLoading: false
     },
     sellerProducts: { ...state.sellerProducts,
       summarizeProducts: state.sellerProducts.summarizeProducts
@@ -164,9 +168,36 @@ export const reducers = createReducer(
     ...state, productDetail: { ...state.productDetail, isLoading: false, isPopupShow: false }
 
   })),
+  on(productAction.activateProductAction, (state) => ({
+    ...state, updateProductActivation: {
+      ...state.updateProductActivation,
+      isLoading: true
+    }
+  })),
+  on(productAction.activateProductCompleteAction, (state, { activateProductResult }) => ({
+    ...state, updateProductActivation: {
+      ...state.updateProductActivation,
+      isLoading: false,
+      isSuccess: true,
+      updateProductActivation: activateProductResult
+    },
+    sellerProducts: {
+      ...state.sellerProducts,
+      summarizeProducts: state.sellerProducts.summarizeProducts
+      .filter(product => product.productId != activateProductResult.productId)
+    }
+  })),
+  on(productAction.activateProductFailedAction, (state) => ({
+    ...state, updateProductActivation: {
+      ...state.updateProductActivation,
+      isLoading: false
+    }
+  })),
   on(productAction.filterSellerProductsAction, (state)=> ({
     ...state, sellerProducts: {
-      ...state.sellerProducts, isLoading: true
+      ...state.sellerProducts,
+      isLoading: true,
+      areProductInActivateMode: false
     }
   })),
   on(productAction.filterSellerProductsCompleteAction, (state, {products})=>({
@@ -201,6 +232,29 @@ export const reducers = createReducer(
       filterByName: "",
       filterByCategoryCode: "",
       filterByRegisterPeriod: 0
+    }
+  })),
+  on(productAction.getSellerDesactivateProductsAction,(state) => ({
+    ...state, sellerProducts : {
+      ...state.sellerProducts,
+      isLoading: true
+    }
+  })),
+  on(productAction.getSellerDesactivateProductsCompleteAction, (state, { products }) => ({
+    ...state, sellerProducts: {
+      ...state.sellerProducts,
+      isLoading: false,
+      isSuccess: true,
+      summarizeProducts: products.summarizeProducts,
+      productQuantity: products.productQuantity,
+      areProductInActivateMode: true
+    }
+  })),
+  on(productAction.getSellerDesactivateProductsAction,(state) => ({
+    ...state, sellerProducts : {
+      ...state.sellerProducts,
+      isLoading: false,
+      isSuccess: false
     }
   }))
 

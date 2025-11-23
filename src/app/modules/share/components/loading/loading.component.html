@@ -1,7 +1,7 @@
 <!--Chargement liée au detail d'un produit-->
 <ng-container  *ngIf="isProductDetailLoading$ | async as isProductDetailLoading">
   <!--Loading-->
-  <div class="fixed flex align-items-center justify-content-center top-0 left-0 w-full h-screen bg-black-alpha-70 z-3">
+  <div class="fixed flex align-items-center justify-content-center top-0 left-0 w-full h-screen bg-black-alpha-70 z-4">
     <p-progress-spinner ariaLabel="loading" />
   </div>
 </ng-container>
@@ -9,7 +9,7 @@
 <!--Chargement liée à l'ajout d'un produit-->
 <ng-container  *ngIf="isAddProductLoading$ | async as isAddProductLoading">
   <!--Loading-->
-  <div class="fixed flex align-items-center justify-content-center top-0 left-0 w-full h-screen bg-black-alpha-70 z-3">
+  <div class="fixed flex align-items-center justify-content-center top-0 left-0 w-full h-screen bg-black-alpha-70 z-4">
     <p-progress-spinner ariaLabel="loading" />
   </div>
 </ng-container>
@@ -17,7 +17,7 @@
 <!--Chargement liée a la désactivation d'un produit-->
 <ng-container  *ngIf="isDesactivateProductLoading$ | async as isDesactivateProductLoading">
   <!--Loading-->
-  <div class="fixed flex align-items-center justify-content-center top-0 left-0 w-full h-screen bg-black-alpha-70 z-3">
+  <div class="fixed flex align-items-center justify-content-center top-0 left-0 w-full h-screen bg-black-alpha-70 z-4">
     <p-progress-spinner ariaLabel="loading" />
   </div>
 </ng-container>
@@ -25,7 +25,7 @@
 <!--Chargement liée à la récupération des produits d'un vendeur -->
 <ng-container  *ngIf="isSellerProductsLoading$ | async as isSellerProductsLoading">
   <!--Loading-->
-  <div class="fixed flex align-items-center justify-content-center top-0 left-0 w-full h-screen bg-black-alpha-70 z-3">
+  <div class="fixed flex align-items-center justify-content-center top-0 left-0 w-full h-screen bg-black-alpha-70 z-4">
     <p-progress-spinner ariaLabel="loading" />
   </div>
 </ng-container>
@@ -33,7 +33,15 @@
 <!--Chargement liée au chargement des données graphique du mois en cours -->
 <ng-container  *ngIf="isActualStatisticalMonthLoading$ | async as isActualStatisticalMonthLoading">
   <!--Loading-->
-  <div class="fixed flex align-items-center justify-content-center top-0 left-0 w-full h-screen bg-black-alpha-70 z-3">
+  <div class="fixed flex align-items-center justify-content-center top-0 left-0 w-full h-screen bg-black-alpha-70 z-4">
+    <p-progress-spinner ariaLabel="loading" />
+  </div>
+</ng-container>
+
+  <!--Chargement liée à l'activation d'un produit -->
+  <ng-container  *ngIf="isActivateProductLoading$ | async as isActivateProductLoading">
+  <!--Loading-->
+  <div class="fixed flex align-items-center justify-content-center top-0 left-0 w-full h-screen bg-black-alpha-70 z-4">
     <p-progress-spinner ariaLabel="loading" />
   </div>
 </ng-container>
