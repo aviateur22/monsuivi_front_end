@@ -12,7 +12,7 @@ ng serve
 npm run moe
 
 ## Build MOE
-ng build --configuration moe
+ng build --configuration=moe
 
 ## Build PROD
 ng build --configuration=production
