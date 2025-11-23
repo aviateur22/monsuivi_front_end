@@ -1,10 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { SummarizeProduct } from '../../model/product.model';
-import apiUrl from '../../../../../misc/api.url';
 import { IAppState } from '../../../../store/state';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { desactivateProduct } from '../../store/action';
 import { Router } from '@angular/router';
+import * as productSelector from '../../store/selector';
+import * as productAction from '../../store/action';
 import pagesInformations from '../../../../../misc/pages-informations';
 import { ActifSeller } from '../../../auth/models/actif-seller';
 import { map, Observable, of, startWith, take } from 'rxjs';
@@ -21,7 +22,7 @@ export class SummarizeProductComponent extends ActifSeller {
   placeholder = "image/cbasic60.svg";
   //Path de l'image du produit à charger
   imageUrl$: Observable<string> = of('');
-
+  areProductInActivateMode$ = this._store.pipe(select(productSelector.areDetailProductInActivateMode));
 
   constructor(
     private _productService: ProductService,
@@ -57,6 +58,27 @@ export class SummarizeProductComponent extends ActifSeller {
         productId: this.product.productId}
       }));
     })
+  }
+
+  /**
+   * Réactivation du produit
+   */
+  activateProduct(event:MouseEvent) {
+    event.stopPropagation();
+    console.log("[SummarizeProductComponent]" + "[activateProduct]");
+
+    this.isSellerAuthentified()
+    .pipe(take(1))
+    .subscribe( sellerId => {
+      if(!sellerId)
+        return;
+
+      this._store.dispatch(productAction.activateProductAction({activareProduct: {
+        sellerId: sellerId,
+        productId: this.product.productId
+      }
+    }));
+    });
   }
 
   /**

@@ -1,5 +1,28 @@
 <app-main-container>
-  <div class="flex flex-1 justify-content-center align-items-center">
+  <div class="relative w-full">
+    <!--Liste des produits-->
+    <div class="w-full h-full
+      md:p-5">
+      <!--Titre-->
+      <header class="py-6 flex w-full justify-content-center align-items-center text-center">
+       <h2 class="p-2">Vos produits désactivés</h2>
+      </header>
 
+     <!--Liste des produits-->
+      <main class="w-full flex flex-column align-items-center justify-content-center"
+         *ngIf="sellerProducts$ | async as products" [@listAnimation]="products.length">
+        <!-- Affichage liste de produits -->
+        <div class="w-full flex flex-column
+            lg:flex-row lg:flex-wrap lg:gap-5 lg:justify-content-center" *ngIf="products.length > 0; else emptyList">
+          <li class="w-full lg:w-5" *ngFor="let product of products; let index = index; let isLast = last">
+            <app-summarize-product class="w-full flex justify-content-center" [product]="product"></app-summarize-product>
+          </li>
+        </div>
+        <!-- Si liste de produit vide -->
+        <ng-template #emptyList>
+          <app-products-list-empty></app-products-list-empty>
+        </ng-template>
+      </main>
+    </div>
   </div>
 </app-main-container>

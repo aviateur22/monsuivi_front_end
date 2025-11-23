@@ -38,8 +38,18 @@
   </div>
  <!--Boutton désactivation d'un produit-->
  <div class="delete__button__container">
-    <div (click)="desactivateProduct($event)" class="flex border-circle mr-4 shadow-4 bg-white align-items-center justify-content-center">
-      <i class="p-2 pi pi-trash pi-cog" style="color:red; font-size: 1.5rem"></i>
-    </div>
+    <!-- Reactivation du produit-->
+    <ng-container *ngIf="areProductInActivateMode$ | async; else notInProductInActivateMode">
+      <div (click)="activateProduct($event)" class="flex border-circle mr-4 shadow-4 bg-white align-items-center justify-content-center">
+        <i class="p-2 pi pi-check-circle pi-cog" style="color:rgb(63, 231, 57); font-size: 1.5rem"></i>
+      </div>
+    </ng-container>
+
+    <!-- Desactivation du produit-->
+    <ng-template #notInProductInActivateMode>
+      <div (click)="desactivateProduct($event)" class="flex border-circle mr-4 shadow-4 bg-white align-items-center justify-content-center">
+        <i class="p-2 pi pi-trash pi-cog" style="color:red; font-size: 1.5rem"></i>
+      </div>
+    </ng-template>
   </div>
 </div>

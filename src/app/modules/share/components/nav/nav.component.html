@@ -9,7 +9,7 @@
 
       <!--Menu si authentifié-->
       <ng-container *ngIf="seller$ | async as seller; else login">
-        <ul class="hidden sm:p-4 sm:flex sm:w-full">
+        <ul class="hidden sm:p-4 lg:flex sm:w-full">
           <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
             <a class="link" [routerLink]=homeLink routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Accueil</a>
           </li>
@@ -51,7 +51,7 @@
 
   <!--Menu vertical pour mobile-->
   <ng-container *ngIf="isMenuVisible">
-    <nav class="inline sm:hidden flex overlay">
+    <nav class="inline lg:hidden flex overlay">
         <div class="w-full flex flex-column">
           <div class="flex w-12 p-2 justify-content-end">
             <p-button (onClick)="displayMenuOverlay()"  icon="pi pi-times" [rounded]="true" [text]="true" severity="danger"></p-button>

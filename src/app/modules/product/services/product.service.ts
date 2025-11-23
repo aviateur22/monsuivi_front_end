@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { IAddProductResponseDto, IDesactivateProductDto, IDesactivateProductResponseDto, IProductFilterValueDto, IFilterProductByMaxAgeDto, IGetProductDetailDto, IGetProductDetailResponseDto, IGetSellerProductsDto, IFilterProductByCategoryDto, IProductUpdateDto, IProductUpdateResponseDto } from '../model/product.dto';
+import { IAddProductResponseDto, IDesactivateProductDto, IUpdateProductActivationResponseDto, IProductFilterValueDto, IFilterProductByMaxAgeDto, IGetProductDetailDto, IGetProductDetailResponseDto, IGetSellerProductsDto, IFilterProductByCategoryDto, IProductUpdateDto, IProductUpdateResponseDto, IActivateProductDto } from '../model/product.dto';
 import { map, Observable, of } from 'rxjs';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import apiUrl from '../../../../misc/api.url';
-import { ISellerProducts } from '../store/model';
-import { GetSellerProducts, ProductDetail, SummarizeProduct } from '../model/product.model';
+import { GetSellerProducts } from '../model/product.model';
 import { MapperService } from './mapper.service';
 
 @Injectable({
@@ -47,9 +46,9 @@ export class ProductService {
       map(dto=>this._mapper.mapToGetSellerProducts(dto)));
   }
 
-  desactivateProduct(desactivateProductDto: IDesactivateProductDto): Observable<IDesactivateProductResponseDto> {
+  desactivateProduct(desactivateProductDto: IDesactivateProductDto): Observable<IUpdateProductActivationResponseDto> {
     console.log(`[ProductService] - desactivateProduct - seller id: ${desactivateProductDto}`);
-    return this._http.put<IDesactivateProductResponseDto>(apiUrl.desactivateProduct.url, desactivateProductDto);
+    return this._http.put<IUpdateProductActivationResponseDto>(apiUrl.desactivateProduct.url, desactivateProductDto);
   }
 
   getProductDetail(productDetail: IGetProductDetailDto):Observable<IGetProductDetailResponseDto> {
@@ -93,6 +92,22 @@ export class ProductService {
 
     return this._http.get<IGetSellerProductsDto>(url, { params }).pipe(
       map(res => this._mapper.mapToGetSellerProducts(res)));
+  }
+
+  getDesactivateProducts(sellerId: string): Observable<GetSellerProducts> {
+    console.log(`[ProductService] - getDesactivateProducts -  ${sellerId}`);
+    let url = apiUrl.getDesactivateSellerProducts.url
+    .replace('{sellerId}', sellerId);
+
+    return this._http.get<IGetSellerProductsDto>(url)
+    .pipe(
+      map(dto=>this._mapper.mapToGetSellerProducts(dto))
+    );
+  }
+
+  activateProducts(activateProduct: IActivateProductDto): Observable<IUpdateProductActivationResponseDto> {
+    console.log(`[ProductService] - activateProducts -  ${activateProduct}`);
+    return this._http.put<IUpdateProductActivationResponseDto>(apiUrl.activateProduct.url, activateProduct);
   }
 
   streamProductImage(imageName :string): Observable<Blob> {
